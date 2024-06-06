@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern</title>
+</head>
+<body>
+    <h1>Intern Seite</h1>
+    <button onclick="goBackHome()">Zurück zur Homepage</button>
+
+    <script>
+        function goBackHome() {
+            window.location.href = '{{ url_for('back_to_home') }}';
+        }
+    </script>
+</body>
+</html>

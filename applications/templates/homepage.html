@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
+<body>
+    <h1>Willkommen auf der Homepage</h1>
+    <button onclick="goToTerminal()">Gehe zum Terminal</button>
+    <button onclick="goToIntern()">Gehe zu Intern</button>
+
+    <script>
+        function goToTerminal() {
+            window.location.href = '{{ url_for('terminal') }}';
+        }
+
+        function goToIntern() {
+            window.location.href = '{{ url_for('intern') }}';
+        }
+    </script>
+</body>
+</html>
