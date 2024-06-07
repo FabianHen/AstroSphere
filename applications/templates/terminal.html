@@ -10,10 +10,25 @@
     <button onclick="goBackHome()">Zurück zur Homepage</button>
 
 
-    <img src="../static/placeholderImg.png" alt="Snacks">
-    <img src="../static/placeholderImg.png" alt="Merch">
-    <img src="../static/placeholderImg.png" alt="Tickets">
-    <img>
+    <div style="display: flex; align-items: center; justify-content: space-around;">
+        <div>
+            <img src="../static/placeholderImg.png" alt="Snacks">
+            <h5>zum Snackshop</h5>
+        </div>
+        
+        <div>
+            <img src="../static/placeholderImg.png" alt="Merch">
+            <h5>zum Merchshop</h5>
+        </div>
+        <div>
+            <img src="../static/placeholderImg.png" alt="Tickets">
+            <h5>zum Ticketshop</h5>
+        </div>
+    </div>
+
+
+
+
     <script>
         function goBackHome() {
             window.location.href = "{{ url_for('back_to_home') }}";
