@@ -41,14 +41,14 @@
         </form>
     </div>
 
-    <script>
-        function goToTerminal() {
-            window.location.href = "{{ url_for('terminal') }}";
-        }
+    <div id="navigateButtons">
+        <div id="seperateLine"></div>
+        <button class="nav-button" style="background: linear-gradient(to bottom, var(--pink), var(--purple));" onclick="goToStart()">Startseite</button>
+        <button class="nav-button" style="background: linear-gradient(to bottom, var(--pink), var(--purple));" onclick="goToTerminal()">Terminal</button>
+        <button class="nav-button" style="background: linear-gradient(to bottom, var(--pink), var(--purple));" onclick="showLogInPage()">Intern</button>
+        <button class="nav-button" style="background: linear-gradient(to bottom, var(--pink), var(--purple));" onclick="goToAboutUs()">About Us</button>
+        <button class="nav-button" style="background: linear-gradient(to bottom, var(--pink), var(--purple));" onclick="goToImpressum()">Impressum</button>
+    </div>
 
-        function goToIntern() {
-            window.location.href = "{{ url_for('intern') }}";
-        }
-    </script>
 </body>
 </html>

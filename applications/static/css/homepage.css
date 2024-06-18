@@ -59,7 +59,7 @@ html{
 
 
 #loginpage {
-    display: block;
+    display: none;
     position: absolute;
     left: 40%;
     top: 20%;
@@ -123,4 +123,42 @@ html{
 
 .btn-cancel:hover {
     background-color: #630101;
+}
+
+
+
+
+#navigateButtons{
+    position: fixed;
+    bottom: 10px;
+    right: 30px;
+    display: flex;
+}
+
+.nav-button {
+    padding: 7px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+    margin-right: 2px;
+}
+
+.nav-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+#seperateLine{
+    height: 2px;
+    width: 28%;
+    background-color: #001225;
+    border-radius: 5px;
+    position: fixed;
+    bottom: 5%;
+    right: 0;
 }

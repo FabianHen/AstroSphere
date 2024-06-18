@@ -12,3 +12,33 @@ function login(event){
     const password = document.getElementById('password').value;
     console.log("try to login with user: "+username+", and password: "+password);
 }
+
+
+
+
+
+
+function goToStart(){
+    console.log("go to start");
+}
+function goToAboutUs(){
+    console.log("go to about us");
+}
+function goToImpressum(){
+    console.log("go to impressum");
+}
+
+
+
+
+
+
+
+
+function goToTerminal() {
+    window.location.href = "{{ url_for('terminal') }}";
+}
+
+function goToIntern() {
+    window.location.href = "{{ url_for('intern') }}";
+}
