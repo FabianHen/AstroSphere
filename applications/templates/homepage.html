@@ -18,8 +18,28 @@
 
 
     <button onclick="goToTerminal()" id="terminalButton" class="buttons">Gehe zum Terminal</button>
-    <button onclick="goToIntern()" id="loginButton" class="buttons">Gehe zu Intern</button>
+    <button onclick="showLogInPage()" id="loginButton" class="buttons">Gehe zu Intern</button>
     
+
+
+
+
+
+    <div id="loginpage">
+        <form id="loginForm" onsubmit="login(event)">
+            <h3 id="errorLogin" class="error-message">Falscher Nutzername oder falsches Passwort</h3>
+            <h2 class="form-title">Anmelden</h2>
+            <label for="username">Nutzername:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit" class="btn btn-primary">Anmelden</button>
+            <button type="button" class="btn btn-cancel" onclick="hideLogInPage()">Abbrechen</button>
+        </form>
+    </div>
+
     <script>
         function goToTerminal() {
             window.location.href = "{{ url_for('terminal') }}";
