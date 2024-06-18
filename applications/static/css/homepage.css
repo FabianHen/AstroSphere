@@ -59,7 +59,7 @@ html{
 
 
 #loginpage {
-    display: none;
+    display: block;
     position: absolute;
     left: 40%;
     top: 20%;
@@ -79,14 +79,17 @@ html{
 }
 
 .error-message {
-    color: red;
-    display: none;
+    color: rgb(133, 2, 2);
+    display: block;
 }
 
 #loginpage label {
-    display: block;
     margin-bottom: 8px;
-    color: #555;
+    color: #202020;
+}
+#loginpage img{
+    display: block;
+    margin-left: 39%;
 }
 #loginpage input[type="text"],
 #loginpage input[type="password"] {
@@ -105,19 +108,19 @@ html{
     cursor: pointer;
 }
 .btn-primary {
-    background-color: #007BFF;
+    background-color: #001225;
     color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #002b58;
 }
 .btn-cancel {
     margin-top: 2px;
-    background-color: #9c0000;
+    background-color: #250000;
     color: #fff;
 }
 
 .btn-cancel:hover {
-    background-color: #d10000;
+    background-color: #630101;
 }
