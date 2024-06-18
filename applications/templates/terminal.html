@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/terminal.css') }}">
     <title>Terminal</title>
 </head>
 <body>
-    <h1>Terminal Seite</h1>
+    <header>
+        <img src="{{ url_for('static', filename= 'images/AstroSphere_Logo.png') }}" alt="AstroSphere Logo">
+    </header>
     <button onclick="goBackHome()">Zurück zur Homepage</button>
 
 
-    <div style="display: flex; align-items: center; justify-content: space-around;">
+    <div class="container">
         <div>
             <img src="../static/placeholderImg.png" alt="Snacks">
             <h5>zum Snackshop</h5>
