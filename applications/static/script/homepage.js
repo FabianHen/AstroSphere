@@ -11,6 +11,9 @@ function login(event){
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     console.log("try to login with user: "+username+", and password: "+password);
+    if(username=="admin" && password=="admin"){
+        window.location.href = "/intern";
+    }
 }
 
 
@@ -36,9 +39,9 @@ function goToImpressum(){
 
 
 function goToTerminal() {
-    window.location.href = "{{ url_for('terminal') }}";
+    window.location.href = "/terminal";
 }
 
 function goToIntern() {
-    window.location.href = "{{ url_for('intern') }}";
+    showLogInPage();
 }

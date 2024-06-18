@@ -80,7 +80,7 @@ html{
 
 .error-message {
     color: rgb(133, 2, 2);
-    display: block;
+    display: none;
 }
 
 #loginpage label {
