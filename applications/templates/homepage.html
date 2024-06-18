@@ -9,9 +9,16 @@
     <title>Homepage</title>
 </head>
 <body>
-    <h1>Willkommen auf der Homepage</h1>
-    <button onclick="goToTerminal()">Gehe zum Terminal</button>
-    <button onclick="goToIntern()">Gehe zu Intern</button>
+
+    <div>
+        <img src="../static/images/AstroSphere_Logo.png" alt="AstroSphere Logo" height="100" id="logo">
+        <h1 id="Titel">AstroSphere</h1>
+        <div id="bar"></div>
+    </div>
+
+
+    <button onclick="goToTerminal()" id="terminalButton" class="buttons">Gehe zum Terminal</button>
+    <button onclick="goToIntern()" id="loginButton" class="buttons">Gehe zu Intern</button>
     
     <script>
         function goToTerminal() {
