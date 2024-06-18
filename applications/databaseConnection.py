@@ -16,9 +16,7 @@ password = "astrosphere"
 
 
 def execute_sql_query(sql_query):
-    global dsn
-    global user
-    global password
+    global dsn, user, password
 
     connection = None
     cursor = None
@@ -33,7 +31,13 @@ def execute_sql_query(sql_query):
         results = cursor.fetchall()
 
         for row in results:
-            print(row)
+            processedRow=[]
+            for col in row:
+                if isinstance(col, cx_Oracle.LOB):
+                    processedRow.append(col.read())
+                else:
+                    processedRow.append(col)
+            print(processedRow)
         
         return results
     

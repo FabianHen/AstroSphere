@@ -1,0 +1,54 @@
+:root{
+    --pink: #d30da4;
+    --purple: #4204b0;
+    --darkGrey: #2e2e2e;
+    --lightGrey: #5e5e5e;
+    --textFont: Arial, Helvetica, sans-serif;
+}
+
+
+html{
+    font-family: Arial, Helvetica, sans-serif
+}
+
+
+#Titel{
+    color: transparent;
+    background-image: linear-gradient(to right, var(--darkGrey), var(--pink), var(--purple), var(--lightGrey));
+    -webkit-background-clip: text;
+    background-clip: text;
+    position: absolute;
+    top: 0;
+    left: 45%;
+    font-size: 45px;
+}
+
+#logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#bar{
+    height: 2px;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    top: 12%;
+    border-radius: 5px;
+}
+
+.buttons{
+    border-radius: 5px;
+    background: linear-gradient(to right, var(--pink), var(--purple));
+    color: white;
+    padding: 10px;
+    font-size: 12px;
+}
+
+#terminalButton{
+    
+}
+#loginButton{
+
+}
