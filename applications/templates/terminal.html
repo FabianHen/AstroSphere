@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/terminal.css') }}">
+    <link rel="stylesheet" href="../static/css/terminal.css">
     <title>Terminal</title>
 </head>
+
 <body>
     <header>
-        <img src="{{ url_for('static', filename= 'images/AstroSphere_Logo.png') }}" alt="AstroSphere Logo">
+        <img src="../static/images/AstroSphere_Logo.png" alt="AstroSphere Logo" height="100" width="100">
     </header>
     <button onclick="goBackHome()">Zurück zur Homepage</button>
 
 
     <div class="container">
-        <div>
-            <img src="../static/placeholderImg.png" alt="Snacks">
-            <h5>zum Snackshop</h5>
+        <div class="menu_buttons">
+            <img src="../static/placeholderImg.png" alt="Snack-Shop">
+            <h5>Snacks</h5>
         </div>
-        
-        <div>
-            <img src="../static/placeholderImg.png" alt="Merch">
-            <h5>zum Merchshop</h5>
+
+        <div class="menu_buttons">
+            <img src="../static/placeholderImg.png" alt="Merch-Shop">
+            <h5>Merch</h5>
         </div>
-        <div>
-            <img src="../static/placeholderImg.png" alt="Tickets">
-            <h5>zum Ticketshop</h5>
+        <div class="menu_buttons">
+            <img src="../static/placeholderImg.png" alt="Ticket-Shop">
+            <h5>Tickets</h5>
         </div>
     </div>
-
-
+    <footer>
+        <h6>AstroSphere © 2024</h6>
+    </footer>
 
 
     <script>
@@ -38,4 +41,5 @@
         }
     </script>
 </body>
+
 </html>
