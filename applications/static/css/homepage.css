@@ -162,3 +162,47 @@ html{
     bottom: 5%;
     right: 0;
 }
+
+
+#aboutUs {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 10%;
+    background-color: #ffffff;
+    width: 100%;
+    height: 84%;
+    color: rgb(0, 0, 0);
+    font-family: Arial, sans-serif;
+    padding: 2%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#aboutUs h1 {
+    font-size: 45px;
+    margin-left: 5%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#aboutUs p {
+    margin-left: 5%;
+    margin-right: 5%;
+    line-height: 1.6;
+    font-size: 18px;
+}
+
+#aboutUs ul {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+#aboutUs ul li {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+

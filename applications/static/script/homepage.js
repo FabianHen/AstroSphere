@@ -25,7 +25,7 @@ function goToStart(){
     console.log("go to start");
 }
 function goToAboutUs(){
-    console.log("go to about us");
+    document.getElementById('aboutUs').style.display="block";
 }
 function goToImpressum(){
     console.log("go to impressum");
@@ -39,7 +39,7 @@ function goToImpressum(){
 
 
 function goToTerminal() {
-    window.location.href = "/terminal";
+    window.location.href = "{{ url_for('terminal') }}";
 }
 
 function goToIntern() {
