@@ -25,14 +25,18 @@ function login(event){
 
 
 function goToStart(){
-    console.log("go to start");
+    document.getElementById('impressum').style.display="none";
+    document.getElementById('aboutUs').style.display="none";
+    document.getElementById('startpage').style.display="block";
 }
 function goToAboutUs(){
     document.getElementById('impressum').style.display="none";
+    document.getElementById('startpage').style.display="none";
     document.getElementById('aboutUs').style.display="block";
 }
 function goToImpressum(){
     document.getElementById('aboutUs').style.display="none";
+    document.getElementById('startpage').style.display="none";
     document.getElementById('impressum').style.display="block";
 }
 
