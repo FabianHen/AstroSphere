@@ -10,7 +10,7 @@ function showSection(sectionId) {
     selectedSection.classList.add('active');
 }
 
-function showLeftPanel(panelId) {
+function showLeftPanel(panelId, filterId) {
     // Alle Inhaltsbereiche ausblenden
     var sections = document.querySelectorAll('.MainLeftContent');
     sections.forEach(function(section) {
@@ -20,9 +20,21 @@ function showLeftPanel(panelId) {
     // Den ausgewählten Inhaltsbereich anzeigen
     var selectedSection = document.getElementById(panelId);
     selectedSection.classList.add('active');
+
+    if (filterId != null) 
+    {
+        var navLinks = document.querySelectorAll('.MainLeftContent a');
+        navLinks.forEach(function(link) {
+            link.classList.remove('active');
+        });
+
+        // Den ausgewählten Inhaltsbereich anzeigen
+        var selectedSection = document.getElementById(filterId);
+        selectedSection.classList.add('active');
+    }
 }
 
-function navBar(event, sectionId, panelId) {
+function navBar(event, sectionId, panelId, filterId) {
     event.preventDefault();
 
     // Alle Navigationslinks deaktivieren
@@ -36,7 +48,7 @@ function navBar(event, sectionId, panelId) {
 
     showSection(sectionId);
 
-    showLeftPanel(panelId);
+    showLeftPanel(panelId, filterId);
 }
 
 function filter(event, sectionId) {

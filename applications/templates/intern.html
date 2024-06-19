@@ -19,7 +19,7 @@
         <div id="leftVeranstaltungen" class= "MainLeftContent active">
             <h2>Neue Veranstaltung anlegen</h2>
             <h3>Deine Vortrag</h3>
-            <a class="active" href="#" onclick="filter(event, 'veranstaltungen_thema')">Thema</a>
+            <a id="themaFilter" class="active" href="#" onclick="filter(event, 'veranstaltungen_thema')">Thema</a>
             <a href="#" onclick="filter(event, 'veranstaltungen_medien')">Medien</a>
             <h3>Dein Termin</h3>
             <a href="#" onclick="filter(event, 'veranstaltungen_time')">Datum & Uhrzeit</a>
@@ -40,7 +40,7 @@
 
         <div id= "MainRightContent">
             <nav class="nav-links">
-                <a href="#" class="active" onclick="navBar(event, 'veranstaltungen_thema', 'leftVeranstaltungen')">Veranstaltungen</a>
+                <a href="#" class="active" onclick="navBar(event, 'veranstaltungen_thema', 'leftVeranstaltungen', 'themaFilter')">Veranstaltungen</a>
                 <a href="#" onclick="navBar(event, 'raeume', 'leftRaum')">Räume</a>
                 <a href="#" onclick="navBar(event, 'teleskope', 'leftTeleskop')">Teleskope</a>
                 <a href="#" onclick="navBar(event, 'planeten', 'leftPlanet')">Planeten</a>
