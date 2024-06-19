@@ -14,6 +14,9 @@ function login(event){
     if(username=="admin" && password=="admin"){
         window.location.href = "/intern";
     }
+    else{
+        document.getElementById('errorLogin').style.display="block";
+    }
 }
 
 
@@ -41,7 +44,7 @@ function goToImpressum(){
 
 
 function goToTerminal() {
-    window.location.href = "{{ url_for('terminal') }}";
+    window.location.href = "/terminal";
 }
 
 function goToIntern() {
