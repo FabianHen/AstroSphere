@@ -8,13 +8,26 @@
     <title>Intern</title>
 </head>
 <body>
-    <h1>Intern Seite</h1>
-    <button onclick="goBackHome()">Zurück zur Homepage</button>
 
-    <script>
-        function goBackHome() {
-            window.location.href = "{{ url_for('back_to_home') }}";
-        }
-    </script>
+    <div id= "Topbar">
+        <img src="../static/images/AstroSphere_Logo.png" alt="AstroSphere Logo" height="100" id="logo">
+        <h1 id="Titel">AstroSphere</h1>
+        <button id= "Homepage_btn" onclick="goBackHome()">Zurück zur Homepage</button>
+    </div>
+
+    <div id= "MainContent">
+        <div id= "MainLeftContent">
+            <h2>Test</h2>
+        </div>
+
+        <div id= "MainRightContent">
+            <div id= "NavBar">
+                <button id="Veranstaltungen_btn" class="Nav_Btn active" onclick="activateButton(this)">Veranstaltungen</button>
+                <button id="Teleskope_btn" class="Nav_Btn" onclick="activateButton(this)">Teleskope</button>
+                <button id="Raeume_btn" class="Nav_Btn" onclick="activateButton(this)">Räume</button>
+                <button id="Planeten_btn" class="Nav_Btn" onclick="activateButton(this)">Planeten</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
