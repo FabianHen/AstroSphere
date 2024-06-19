@@ -25,10 +25,12 @@ function goToStart(){
     console.log("go to start");
 }
 function goToAboutUs(){
+    document.getElementById('impressum').style.display="none";
     document.getElementById('aboutUs').style.display="block";
 }
 function goToImpressum(){
-    console.log("go to impressum");
+    document.getElementById('aboutUs').style.display="none";
+    document.getElementById('impressum').style.display="block";
 }
 
 
