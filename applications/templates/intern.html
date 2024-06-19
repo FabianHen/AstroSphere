@@ -8,10 +8,83 @@
     <title>Intern</title>
 </head>
 <body>
-    <h1>Intern Seite</h1>
-    <button onclick="goBackHome()">Zurück zur Homepage</button>
 
-    <script>
+    <div id= "Topbar">
+        <img src="../static/images/AstroSphere_Logo.png" alt="AstroSphere Logo" height="100" id="logo">
+        <h1 id="Titel">AstroSphere</h1>
+        <button id= "Homepage_btn" onclick="goBackHome()">Zurück zur Homepage</button>
+    </div>
+
+    <div id= "MainContent">
+        <div id="leftVeranstaltungen" class= "MainLeftContent active">
+            <h2>Neue Veranstaltung anlegen</h2>
+            <h3>Deine Vortrag</h3>
+            <a class="active" href="#" onclick="filter(event, 'veranstaltungen_thema')">Thema</a>
+            <a href="#" onclick="filter(event, 'veranstaltungen_medien')">Medien</a>
+            <h3>Dein Termin</h3>
+            <a href="#" onclick="filter(event, 'veranstaltungen_time')">Datum & Uhrzeit</a>
+            <a href="#" onclick="filter(event, 'veranstaltungen_raum')">Raum</a>
+        </div>
+
+        <div id="leftRaum" class= "MainLeftContent">
+            <h2>Raum Buchen</h2>
+        </div>
+
+        <div id="leftTeleskop" class= "MainLeftContent">
+            <h2>Teleskope Buchen</h2>
+        </div>
+
+        <div id="leftPlanet" class= "MainLeftContent">
+            <h2>Planeten Daten</h2>
+        </div>
+
+        <div id= "MainRightContent">
+            <nav class="nav-links">
+                <a href="#" class="active" onclick="navBar(event, 'veranstaltungen_thema', 'leftVeranstaltungen')">Veranstaltungen</a>
+                <a href="#" onclick="navBar(event, 'raeume', 'leftRaum')">Räume</a>
+                <a href="#" onclick="navBar(event, 'teleskope', 'leftTeleskop')">Teleskope</a>
+                <a href="#" onclick="navBar(event, 'planeten', 'leftPlanet')">Planeten</a>
+            </nav>
+
+            <div id="veranstaltungen_thema" class="content-section active">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Beschreibung</label>
+                    <textarea id="description" name="description" placeholder="In dieser Veranstaltung geht es um..."></textarea>
+                </div>
+            </div>
+            <div id="veranstaltungen_medien" class="content-section">
+                <h2>Medien</h2>
+                <p>Informationen zu den Medien...</p>
+            </div>
+            <div id="veranstaltungen_time" class="content-section">
+                <h2>Datum & Uhrzeit</h2>
+                <p>Informationen zum Datum und Uhrzeit...</p>
+            </div>
+            <div id="veranstaltungen_raum" class="content-section">
+                <h2>Veranstaltungsraum</h2>
+                <p>Informationen zum Veranstaltungsraum...</p>
+            </div>
+
+            <div id="raeume" class="content-section">
+                <h2>Räume</h2>
+                <p>Informationen zu den Räumen...</p>
+            </div>
+            <div id="teleskope" class="content-section">
+                <h2>Teleskope</h2>
+                <p>Informationen zu den Teleskopen...</p>
+            </div>
+            <div id="planeten" class="content-section">
+                <h2>Planeten</h2>
+                <p>Informationen zu den Planeten...</p>
+            </div>
+        </div>
+    </div>
+
+    <script> 
         function goBackHome() {
             window.location.href = "{{ url_for('back_to_home') }}";
         }
