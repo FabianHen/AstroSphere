@@ -10,9 +10,21 @@ def homepage():
 def terminal():
     return render_template('terminal.html')
 
-@app.route('/intern')
-def intern():
-    return render_template('intern.html')
+@app.route('/intern/events')
+def intern_events():
+    return render_template('intern_events.html')
+
+@app.route('/intern/rooms')
+def intern_rooms():
+    return render_template('intern_rooms.html')
+
+@app.route('/intern/planets')
+def intern_planets():
+    return render_template('intern_planets.html')
+
+@app.route('/intern/telescopes')
+def intern_telescopes():
+    return render_template('intern_telescopes.html')
 
 @app.route('/back_to_home')
 def back_to_home():

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/intern.css">
+    <script src="../static/script/intern.js"></script>
+    <title>Intern Planets</title>
+</head>
+<body>
+
+    <header>
+        <img src="../static/images/AstroSphere_Logo.png" alt="AstroSphere Logo" height="100" id="logo">
+        <h1 id="Titel">AstroSphere</h1>
+        <button id= "Homepage_btn" onclick="goBackHome()">Zurück zur Homepage</button>
+    </header>
+
+    <div class= "main">
+        <div class= "leftComponent">
+            <h2>Planeten Daten</h2>
+        </div>
+
+        <div class= "rightComponent">
+            <nav class="navigationBar">
+                <a href="#" onclick="goToEvents()">Veranstaltungen</a>
+                <a href="#" onclick="goToRooms()">Räume</a>
+                <a href="#" class="active" onclick="goToPlanets()">Planeten</a>
+                <a href="#" onclick="goToTelescopes()">Teleskope</a>
+            </nav>
+            <div id="raeume" class="mainContent active">
+                <h2>Planeten</h2>
+                <p>Informationen zu den Planeten...</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/intern.css">
+    <script src="../static/script/intern.js"></script>
+    <title>Intern Events</title>
+</head>
+<body>
+
+    <header>
+        <img src="../static/images/AstroSphere_Logo.png" alt="AstroSphere Logo" height="100" id="logo">
+        <h1 id="Titel">AstroSphere</h1>
+        <button id= "Homepage_btn" onclick="goBackHome()">Zurück zur Homepage</button>
+    </header>
+
+    <div class= "main">
+        <div class= "leftComponent">
+            <h2>Neue Veranstaltung anlegen</h2>
+            <h3>Deine Vortrag</h3>
+            <a class="active" href="#" onclick="filter(event, 'topic')">Thema</a>
+            <a href="#" onclick="filter(event, 'media')">Medien</a>
+            <h3>Dein Termin</h3>
+            <a href="#" onclick="filter(event, 'date')">Datum & Uhrzeit</a>
+            <a href="#" onclick="filter(event, 'room')">Raum</a>
+        </div>
+
+        <div class= "rightComponent">
+            <nav class="navigationBar">
+                <a href="#" class="active" onclick="goToEvents()">Veranstaltungen</a>
+                <a href="#" onclick="goToRooms()">Räume</a>
+                <a href="#" onclick="goToPlanets()">Planeten</a>
+                <a href="#" onclick="goToTelescopes()">Teleskope</a>
+            </nav>
+
+            <div id="topic" class="mainContent active">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Beschreibung</label>
+                    <textarea id="description" name="description" placeholder="In dieser Veranstaltung geht es um..."></textarea>
+                </div>
+            </div>
+            <div id="media" class="mainContent">
+                <div class="mediaHeader">
+                    <div>
+                        <h2>Medien</h2>
+                        <p>Wähle die Medien aus, die du für deinen Vortrag benötigst</p>
+                    </div>
+                    <button id="speichern">Speichern</button>
+                </div>
+                <div id="mediaGrid" class="media-grid">
+                    
+                </div>
+            </div>
+            <div id="date" class="mainContent">
+                <h2>Datum & Uhrzeit</h2>
+                <p>Informationen zum Datum und Uhrzeit...</p>
+            </div>
+            <div id="room" class="mainContent">
+                <h2>Veranstaltungsraum</h2>
+                <p>Informationen zum Veranstaltungsraum...</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
