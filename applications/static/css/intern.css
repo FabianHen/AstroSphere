@@ -8,6 +8,7 @@
 
 html,
 body {
+    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     width: 100%;
     height: 100%;
@@ -15,15 +16,7 @@ body {
     padding: 0;
     background-color: white;
     flex-direction: column;
-}
-
-h1,
-h2,
-h3,
-p,
-label,
-a {
-    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
 }
 
 header {
@@ -47,10 +40,7 @@ header {
     background-image: linear-gradient(to right, var(--darkGrey), var(--pink), var(--purple), var(--lightGrey));
     -webkit-background-clip: text;
     background-clip: text;
-    margin-left: auto;
-    margin-top: auto;
-    margin-right: auto;
-    margin-bottom: auto;
+    margin: auto;
     font-size: 45px;
 }
 
@@ -180,8 +170,62 @@ header {
     height: 100px;
 }
 
+#media {
+    margin-left: 7%;
+}
+
+.mediaHeader {
+    display: flex;
+    flex-direction: row;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.media-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    overflow-y: scroll; /* Vertikales Scrollen aktivieren */
+    overflow-x: hidden; /* Horizontales Scrollen deaktivieren */
+}
+
+.media-item {
+    width: 150px;
+    text-align: center;
+    color: #333;
+}
+
+.media-item.active {
+    background-color: #ddd;
+}
+
+.media-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.media-item h3 {
+    font-size: 16px;
+    margin: 10px 0 5px 0;
+}
+
+.media-item p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+#speichern {
+    border-radius: 5px;
+    background: linear-gradient(to right, var(--pink), var(--purple));
+    color: white;
+    padding: 10px;
+    font-size: 12px;
+    margin: auto;
+}
+
 /* Class for active text elements  */
 .active {
     font-weight: bold;
-    color: var(--purple);
 }
