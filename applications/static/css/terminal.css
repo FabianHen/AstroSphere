@@ -57,6 +57,11 @@ button {
     color: var(--astrosphere-blue);
 }
 
+.menu_icons {
+    width: 90%;
+    height: 90%;
+}
+
 footer {
     display: flex;
     flex-direction: row;
