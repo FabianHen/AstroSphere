@@ -15,28 +15,28 @@
     </header>
 
     <div>
-        <button onclick="goBackHome()">Back</button>
+        <button class="back_button" onclick="goBackHome()">Back</button>
     </div>
 
     <div class="container">
-        <div class="menu_buttons">
-            <img src="../static/images/fast-food_thin.svg" alt="Snack-Shop">
+        <button class="menu_buttons" id="snacks" onclick="goToShop(document.getElementById('snacks'))">
+            <img src="../static/images/fast-food_thin.svg" alt="Snack-Shop" height="250" width="250">
             <label for="">Snacks</label>
-        </div>
+        </button>
 
-        <div class="menu_buttons">
-            <img src="../static/images/t-shirt_thin.svg" alt="Merch-Shop">
+        <button class="menu_buttons" id="merch" onclick="goToShop(document.getElementById('merch'))">
+            <img src="../static/images/t-shirt_thin.svg" alt="Merch-Shop" height="250" width="250">
             <label for="">Merch</label>
-        </div>
+        </button>
 
-        <div class="menu_buttons">
-            <img src="../static/images/tickets_thin.svg" alt="Ticket-Shop">
+        <button class="menu_buttons" id="ticket" onclick="goToShop(document.getElementById('ticket'))">
+            <img src="../static/images/tickets_thin.svg" alt="Ticket-Shop" height="250" width="250">
             <label for="">Tickets</label>
-        </div>
+        </button>
     </div>
 
     <footer>
-        <h6>AstroSphere © 2024</h6>
+        AstroSphere © 2024
     </footer>
 </body>
 
