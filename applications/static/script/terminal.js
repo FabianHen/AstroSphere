@@ -1,3 +1,8 @@
 function goBackHome() {
-    window.location.href = "{{ url_for('back_to_home') }}";
+    window.location.href = '/';
+}
+
+function goToShop(element) {
+    // window.location.href = `/shop/${element.id}`;
+    window.location.href += '/shop';
 }
