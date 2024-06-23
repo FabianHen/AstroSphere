@@ -10,6 +10,10 @@ def homepage():
 def terminal():
     return render_template('terminal.html')
 
+@app.route('/terminal/shop')
+def shop():
+    return render_template('shop.html')
+
 @app.route('/intern/events')
 def intern_events():
     return render_template('intern_events.html')
