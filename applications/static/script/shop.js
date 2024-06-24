@@ -5,7 +5,7 @@ function goBack() {
 
 
 
-const shoppingCart=[];
+ shoppingCart=[];
 
 class Artikel {
     constructor(type, anzahl, preis) {
@@ -41,9 +41,22 @@ function removeItemFromCart(type, anzahl){
     console.log(`Artikel ${type} nicht gefunden.`);
 }
 
+
+
+function goTo_shoppingCart(){
+    if(document.getElementById('shopping_Cart').style.display=="flex"){
+        document.getElementById('shopping_Cart').style.display="none";    
+    }
+    else{
+        document.getElementById('shopping_Cart').style.display="flex";
+    }
+    
+}
+
 function cancel_Order(){
     console.log("cancel Order");
     shoppingCart=[];
+    document.getElementById('shopping_Cart').style.display="none";
 }
 function buy_Order(){
     console.log("buy Order");

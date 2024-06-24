@@ -51,7 +51,7 @@ button {
     height: 80vh;
     width: 80%;
     background-color: rgb(217, 217, 217);
-    display: flex;
+    display: none;
     justify-content: center;
 }
 #shopping_Cart div{
