@@ -63,12 +63,48 @@
 
 
 
-    <div id="shopping_Cart">
-        <div>
-            <button id="cancel" onclick="cancel_Order()">Cancel</button>
-            <button id="buy" onclick="buy_Order()">Buy now</button>
+
+
+    <div id="shoppingCart">
+        <h1>Warenkorb</h1>
+        
+        
+        <div id="itemList">
+
+            <div class="item">
+                <div style="height: 100%; width: 100%;">
+                    <img src="../static/images/pictureNotFound.png" alt="item image">
+                    <h3>Item Name</h3>
+                    <div class="line"></div>
+
+                    <p class="beschreibung"><b>Beschreibung</b><br>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, </p>
+               
+                    <p class="preis">Preis: 00.00€</p>
+
+                    <input type="number" min="0" max="7" class="numberOfItems" placeholder="Menge: 1">
+                    <p class="Lager">Auf Lager</p>
+                    <p class="nLager">Nicht Auf Lager</p>
+            
+                </div>
+            </div>
+
+            
+
+
+
         </div>
-    </div>
+
+
+
+        <div id="gesKosten">
+            <h3 id="gesKostenNum">00.00€</h3>
+        </div>
+    <button id="cancel" onclick="cancel_Order()">Cancel</button>
+    <button id="buy" onclick="buy_Order()">Buy now</button>
+</div>
+
+
+
 </body>
 
 </html>

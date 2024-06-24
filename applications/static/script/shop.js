@@ -5,7 +5,8 @@ function goBack() {
 
 
 
- shoppingCart=[];
+shoppingCart=[];
+var numberOfItems=0;
 
 class Artikel {
     constructor(type, anzahl, preis) {
@@ -21,9 +22,11 @@ function addItemToCart(type, anzahl, preis){
         const item = shoppingCart[i];
         if (item.type === type) {
             item.anzahl += anzahl;
+            numberOfItems += anzahl;
             return;
         }
     }
+    numberOfItems += anzahl;
     shoppingCart.push(aktItem);
 }
 
@@ -41,14 +44,22 @@ function removeItemFromCart(type, anzahl){
     console.log(`Artikel ${type} nicht gefunden.`);
 }
 
+function updateShoppingCart(){
+    const gesSumme=0.0;
+    for(let i = 0; i< shoppingCart.length; i++){
+        const item = shoppingCart[i];
+        gesSumme+=item.anzahl*item.preis;
+    }   
+    document.getElementById('gesKostenNum').textContent=gesSumme+"€";
+}
 
 
 function goTo_shoppingCart(){
-    if(document.getElementById('shopping_Cart').style.display=="flex"){
-        document.getElementById('shopping_Cart').style.display="none";    
+    if(document.getElementById('shoppingCart').style.display=="flex"){
+        document.getElementById('shoppingCart').style.display="none";    
     }
     else{
-        document.getElementById('shopping_Cart').style.display="flex";
+        document.getElementById('shoppingCart').style.display="flex";
     }
     
 }
@@ -56,7 +67,7 @@ function goTo_shoppingCart(){
 function cancel_Order(){
     console.log("cancel Order");
     shoppingCart=[];
-    document.getElementById('shopping_Cart').style.display="none";
+    document.getElementById('shoppingCart').style.display="none";
 }
 function buy_Order(){
     console.log("buy Order");

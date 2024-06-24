@@ -7,7 +7,7 @@
 
 html {
     font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
+    overflow: auto;
 }
 
 body {
@@ -44,23 +44,138 @@ button {
     border-radius: 5px;
 }
 
-#shopping_Cart{
+
+.item{
+    width: 100%;
+    height: 50%;
+    margin-top: 1px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+
+    background-color: rgba(150, 150, 150, 0.772);
+}
+
+.item img{
+    height: 90%;
+    width: 15%;
+    margin-left: 1%;
+}
+.item h3{
+    position: absolute;
+    color: white;
+    top: 5%;
+    left: 26%;
+}
+.item .beschreibung{
+    position: absolute;
+    color: white;
+    top: 18%;
+    left: 26%;
+    width: 35%;
+}
+.item .line{
+    position: absolute;
+    top: 5%;
+    left: 26%;
+    width: 70%;
+    height: 2px;
+    background-color: #2e2e2e;   
+}
+.item .preis{
+    position: absolute;
+    color: white;
+    top: 5%;
+    right: 6%;
+}
+
+.item .numberOfItems{
+    height: 35px;
+    width: 87px;
+    color: var(--astrosphere-blue);
+    border-radius: 5px;
+
+    position: absolute;
+    top: 30%;
+    right: 6%;
+}
+
+.item .Lager{
+    position: absolute;
+    margin-left: 35%;
+    top : 6%;
+    color: rgb(2, 93, 2);
+}
+.item .nLager{
+    display: none;
+    position: absolute;
+    margin-left: 35%;
+    top : 6%;
+    color: rgb(112, 7, 7);
+}
+
+
+
+
+#shoppingCart{
     position: absolute;
     top: 20vh;
     left: 20%;
     height: 80vh;
     width: 80%;
-    background-color: rgb(217, 217, 217);
-    display: none;
-    justify-content: center;
+    background-color: #888888;
 }
-#shopping_Cart div{
+
+#shoppingCart h1{
+    color: transparent;
+    background-image: linear-gradient(to right, var(--astrosphere-pink), var(--astrosphere-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: 50px;
     position: absolute;
-    bottom: 10px;
+    top: 0.5%;
+    left: 41.5%;
 }
-#shopping_Cart button{
-    padding: 8px 40px 8px 40px;
+
+#itemList{
+    position: absolute;
+    left: 0;
+    top: 15%;
+    width: 100%;
+    height: 70%;
+    background-color: #0440b041;
+    overflow: auto;
 }
-#shopping_Cart button:hover{
+
+#shoppingCart #cancel{
+    position: absolute;
+    bottom: 1%;
+    left: 43%;
+    font-size: 15px;
+    padding: 10 18 10 18;
+}
+#shoppingCart #buy{
+    position: absolute;
+    bottom: 1%;
+    left: 51%;
+    font-size: 15px;
+    padding: 10 18 10 18;
+}
+
+#shoppingCart button:hover{
     opacity: 60%;
+}
+
+#gesKosten{
+    position: absolute;
+    bottom: 8%;
+    right: 1%;
+
+    width: 80%;
+    height: 2px;
+    background-color: #2e2e2e;
+}
+#gesKosten h3{
+    color: black;
+    position: absolute;
+    right: 0;
 }
