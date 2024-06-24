@@ -19,25 +19,26 @@
     </div>
     <main>
         <div class="filter">
-            <ul>
-                <li>Snacks
-                    <ul>
-                        <li>Alles Anzeigen</li>
-                        <li>Getränke</li>
-                        <li>Süß</li>
-                        <li>Salzig</li>
-                    </ul>
-                </li>
-                <li>Merch
-                    <ul>
-                        <li>Alles Anzeigen</li>
-                        <li>Hoodies</li>
-                        <li>T-Shirts</li>
-                        <li>Sonstiges</li>
-                    </ul>
-                </li>
-                <li>Tickets</li>
-            </ul>
+            <button class="collapsible" type="button" onclick="collapseFilter('snack_filter')"><h4>Snacks</h4></button>
+
+            <div id="snack_filter" class="filter_content">
+                <div>Alles Anzeigen</div>
+                <div>Getränke</div>
+                <div>Süß</div>
+                <div>Salzig</div>
+            </div>
+
+            <button class="collapsible" type="button" onclick="collapseFilter('merch_filter')"><h4>Merch</h4></button>
+
+            <div id="merch_filter" class="filter_content">
+                <div>Alles Anzeigen</div>
+                <div>Hoodies</div>
+                <div>T-Shirts</div>
+                <div>Sonstiges</div>
+            </div>
+
+            <button class="collapsible" type="button"><h4>Tickets</h4></button>
+
         </div>
 
         <div class="products">
@@ -67,24 +68,26 @@
 
     <div id="shoppingCart">
         <h1>Warenkorb</h1>
-        
-        
+
+
         <div id="itemList">
 
             <div class="item" id="item_1">
                 <div style="height: 100%; width: 100%;">
-                    <img src="../static/images/pictureNotFound.png" alt="item image" id="item_1Img">
+                    <img src="../static/images/pictureNotFound.png" alt="item image" id="item_1Img" width="100"
+                        height="100">
                     <h3 id="item_1Name">Item Name</h3>
                     <div class="line"></div>
 
-                    <p class="beschreibung" id="item_1Desc"><b>Beschreibung</b><br>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, </p>
-               
+                    <p class="beschreibung" id="item_1Desc"><b>Beschreibung</b><br>Lorem ipsum dolor sit amet,
+                        consetetur sadipscing elitr, </p>
+
                     <p class="preis" id="item_1Preis">Preis: 00.00€</p>
 
                     <input type="number" min="0" max="7" class="numberOfItems" placeholder="Menge: 1" id="item_1Num">
                     <p class="Lager" id="item_1L">Auf Lager</p>
                     <p class="nLager" id="item_1nL">Nicht Auf Lager</p>
-            
+
                 </div>
             </div>
 
@@ -97,9 +100,9 @@
         <div id="gesKosten">
             <h3 id="gesKostenNum">00.00€</h3>
         </div>
-    <button id="cancel" onclick="cancel_Order()">Cancel</button>
-    <button id="buy" onclick="buy_Order()">Buy now</button>
-</div>
+        <button id="cancel" onclick="cancel_Order()">Cancel</button>
+        <button id="buy" onclick="buy_Order()">Buy now</button>
+    </div>
 
 
 
