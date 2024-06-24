@@ -61,31 +61,31 @@ button {
     margin-left: 1%;
 }
 .item h3{
-    position: absolute;
+    position: relative;
     color: white;
-    top: 5%;
-    left: 26%;
+    bottom: 80%;
+    left: 27%;
 }
 .item .beschreibung{
-    position: absolute;
+    position: relative;
     color: white;
-    top: 18%;
-    left: 26%;
+    bottom: 72%;
+    left: 27%;
     width: 35%;
 }
 .item .line{
-    position: absolute;
-    top: 5%;
+    position: relative;
+    bottom: 98%;
     left: 26%;
     width: 70%;
     height: 2px;
     background-color: #2e2e2e;   
 }
 .item .preis{
-    position: absolute;
+    position: relative;
     color: white;
-    top: 5%;
-    right: 6%;
+    bottom: 120%;
+    left: 89%;
 }
 
 .item .numberOfItems{
@@ -100,16 +100,17 @@ button {
 }
 
 .item .Lager{
-    position: absolute;
+    display: block;
+    position: relative;
     margin-left: 35%;
-    top : 6%;
+    bottom : 135%;
     color: rgb(2, 93, 2);
 }
 .item .nLager{
     display: none;
-    position: absolute;
+    position: relative;
     margin-left: 35%;
-    top : 6%;
+    bottom: 135%;
     color: rgb(112, 7, 7);
 }
 
@@ -143,7 +144,8 @@ button {
     width: 100%;
     height: 70%;
     background-color: #0440b041;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #shoppingCart #cancel{
