@@ -86,14 +86,10 @@
 
                     <input type="number" min="0" max="7" class="numberOfItems" placeholder="Menge: 1" id="item_1Num">
                     <p class="Lager" id="item_1L">Auf Lager</p>
-                    <p class="nLager" id="item_1nL">Nicht Auf Lager</p>
+                    <p class="nLager" id="item_1nL" style="display: none;">Nicht Auf Lager</p>
 
                 </div>
             </div>
-
-
-
-
 
 
         </div>
@@ -104,6 +100,17 @@
         <button id="buy" onclick="buy_Order()">Buy now</button>
     </div>
 
+    <div id="purchaseS" class="purchaseInfo">
+        <h1>
+            Bestellvorgang wurde erfolgreich abgeschlossen!
+        </h1>
+    </div>
+    <div id="purchaseN" class="purchaseInfo">
+        <h1>
+            Fehler: Bestellvorgang wurde abgebrochen!
+        </h1>
+    </div>
+    
 
 
 </body>

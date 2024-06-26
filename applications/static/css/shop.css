@@ -133,7 +133,6 @@ button:hover{
 }
 
 .item .Lager {
-    display: block;
     position: relative;
     left: 89%;
     bottom: 120%;
@@ -141,9 +140,8 @@ button:hover{
 }
 
 .item .nLager {
-    display: none;
     position: relative;
-    right: 5%;
+    left: 89%;
     bottom: 120%;
     color: rgb(112, 7, 7);
 }
@@ -217,4 +215,34 @@ button:hover{
     color: black;
     position: absolute;
     right: 0;
+}
+
+.purchaseInfo{
+    position: absolute;
+    top: 5%;
+    left: 36%;
+
+    height: 10%;
+    width: 28%;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px;
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.71); 
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.71);
+}
+.purchaseInfo h1{
+    font-size: 130%;
+}
+
+#purchaseN{
+    display: none;
+    background-color: red;
+}
+#purchaseS{
+    display: none;
+    background-color: green;
 }

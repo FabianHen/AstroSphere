@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 app = Flask(__name__)
 
@@ -33,6 +33,47 @@ def intern_telescopes():
 @app.route('/back_to_home')
 def back_to_home():
     return redirect(url_for('homepage'))
+
+@app.route('/send_data', methods=['POST'])
+def send_data():
+    try:
+        action = request.json.get('action')
+        data = request.json.get('data')
+
+        result = False
+
+        if action == "checkAvailableItems":
+            result=check_data(data)
+        elif action == "buyShoppingCart":
+            result=buyShoppingCart(data)
+
+        return jsonify(success=result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(success=False), 500
+
+
+def check_data(data):
+    available=[]
+    for item in data['shoppingCart']:
+        #check ob das item: type anzahl-mal in der Datenbank verfügbar ist
+        if(False):
+            available.append(True)
+        else:
+            available.append(False)
+    return available
+
+def buyShoppingCart(data):
+    #send items to Database and reduce item number
+    buySuccessful=False
+    if buySuccessful:
+        return True
+    else:
+        return False
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
