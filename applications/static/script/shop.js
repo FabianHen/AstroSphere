@@ -119,6 +119,7 @@ function cancel_Order() {
     shoppingCart = [];
     document.getElementById('shoppingCart').style.display = "none";
 }
+
 function buy_Order() {
     console.log("buy Order");
 
