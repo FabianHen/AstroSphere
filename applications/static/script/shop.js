@@ -17,16 +17,19 @@ shoppingCart = [];
 var numberOfItems = 0;
 
 class Artikel {
-    constructor(type, anzahl, preis, imagePath) {
+    constructor(id, type, beschreibung, größe, preis, anzahl, imagePath) {
+        this.id=id;
         this.type = type;
+        this.beschreibung=beschreibung;
+        this.größe=größe;
+        this.preis=preis;
         this.anzahl = anzahl;
-        this.preis = preis;
         this.image = imagePath;
     }
 }
 
-function addItemToCart(type, anzahl, preis, imagePath) {
-    aktItem = new Artikel(type, anzahl, preis, imagePath);
+function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath) {
+    aktItem = new Artikel(id, type, beschreibung, größe, preis, anzahl, imagePath);
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
         if (item.type === type) {
@@ -65,9 +68,9 @@ function createItems() {
         newHTMLItem += "' alt='item image' id='item_" + i + "Img'>\n";
         newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>" + shoppingCart[i].type + "</h3>\n";
         newHTMLItem += "\t\t<div class='line'></div>\n";
-        newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, </p>\n";
+        newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>"+ shoppingCart[i].beschreibung +"</p>\n";
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: "+ shoppingCart[i].preis +"</p>\n";
-        newHTMLItem += "\t\t<input type='number' min='0' max='7' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true, this.value)'>\n";
+        newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true, this.value)'>\n";
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: block;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
         newHTMLItem += "\t</div>\n</div>";
@@ -131,10 +134,10 @@ function cancel_Order() {
 }
 
 async function buy_Order() {
-    addItemToCart("Marsian Mug", 5, 4.99, "../static/images/products/Marsian_Mug.png");
-    addItemToCart("Astro Shirt", 5, 19.99, "../static/images/products/AstroShirt.png");
-    addItemToCart("Marsian Mug", 2, 4.99, "../static/images/products/Marsian_Mug.png");
-    addItemToCart("Venus Vest", 5, 4.99, "../static/images/products/Venus_Vest.png");
+    addItemToCart(8, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 1, "../static/images/products/Marsian_Mug.png");
+    addItemToCart(6, "Astro Shirt", "Leichtes Baumwoll-T-Shirt mit klassischem Schnitt und Rundhalsausschnitt. Perfekt für jeden Tag.", "L", 19.99, 2, "../static/images/products/AstroShirt.png");
+    addItemToCart(8, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 3, "../static/images/products/Marsian_Mug.png");
+    addItemToCart(17, "Venus Vest", "Leichte Steppweste mit isolierender Füllung, ideal für Layering. Mit Reißverschlusstaschen und sportlichem Schnitt.", "M", 15.55, 1, "../static/images/products/Venus_Vest.png");
     updateShoppingCart();
     checkIfShoppingCartIsAvailable(true);
 

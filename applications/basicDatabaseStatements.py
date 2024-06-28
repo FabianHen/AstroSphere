@@ -231,6 +231,7 @@ drop index WIRD_GEMIETET_FK;
 drop table VERMIETUNG_TELESKOP cascade constraints;
 """
 
+
 sql_create_Tables="""
 
 /*==============================================================*/
@@ -860,7 +861,6 @@ create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP (
    TELESKOP_ID ASC
 );
 """
-
 
 sql_configuration="""
 SET SQLBLANKLINES ON;
