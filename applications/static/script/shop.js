@@ -17,15 +17,16 @@ shoppingCart = [];
 var numberOfItems = 0;
 
 class Artikel {
-    constructor(type, anzahl, preis) {
+    constructor(type, anzahl, preis, imagePath) {
         this.type = type;
         this.anzahl = anzahl;
         this.preis = preis;
+        this.image = imagePath;
     }
 }
 
-function addItemToCart(type, anzahl, preis) {
-    aktItem = new Artikel(type, anzahl, preis);
+function addItemToCart(type, anzahl, preis, imagePath) {
+    aktItem = new Artikel(type, anzahl, preis, imagePath);
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
         if (item.type === type) {
@@ -39,13 +40,13 @@ function addItemToCart(type, anzahl, preis) {
     createItems();
 }
 
-function removeItemFromCart(type, anzahl) {
+function removeItemFromCart(type) {
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
         if (item.type === type) {
-            item.anzahl -= anzahl;
             if (item.anzahl <= 0) {
                 shoppingCart.splice(i, 1);
+                createItems();
             }
             return;
         }
@@ -59,12 +60,14 @@ function createItems() {
     for (let i = 0; i < shoppingCart.length; i++) {
         var newHTMLItem = "<div class='item' id='item_" + i + "'>\n";
         newHTMLItem += "\t<div style='height: 100%; width: 100%;'>\n";
-        newHTMLItem += "\t\t<img src='../static/images/pictureNotFound.png' alt='item image' id='item_" + i + "Img'>\n";
-        newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>Item Name</h3>\n";
+        newHTMLItem += "\t\t<img src='"
+        newHTMLItem += shoppingCart[i].image;
+        newHTMLItem += "' alt='item image' id='item_" + i + "Img'>\n";
+        newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>" + shoppingCart[i].type + "</h3>\n";
         newHTMLItem += "\t\t<div class='line'></div>\n";
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, </p>\n";
-        newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: 00.00€</p>\n";
-        newHTMLItem += "\t\t<input type='number' min='0' max='7' class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num'>\n";
+        newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: "+ shoppingCart[i].preis +"</p>\n";
+        newHTMLItem += "\t\t<input type='number' min='0' max='7' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true, this.value)'>\n";
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: block;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
         newHTMLItem += "\t</div>\n</div>";
@@ -74,27 +77,35 @@ function createItems() {
     }
 
     document.getElementById('itemList').innerHTML = newHTMLString;
+    checkIfShoppingCartIsAvailable(false);
 }
 
 
-function updateShoppingCart() {
+
+function updateShoppingCart(updateNum, value) {
     var gesSumme = 0.0;
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
         const itemID="item_"+i;
+        const itemNumId = itemID+"Num";
 
-        var aktType = item.type;
-        var aktPreis = item.preis;
+        if(updateNum==true){
+            item.anzahl=document.getElementById(itemNumId).value;
+            console.log(item.type+" "+item.anzahl);
+            if(item.anzahl<=0){
+                removeItemFromCart(item.type, item.anzahl);
+            }
+        }
         var aktAnzahl = item.anzahl;
 
-        document.getElementById(itemID + 'Name').innerHTML = aktType;
-        document.getElementById(itemID + 'Preis').innerHTML = "Preis: " + aktPreis + "€";
         document.getElementById(itemID + 'Num').value = aktAnzahl;
+
 
         gesSumme += item.anzahl * item.preis;
     }
-
-    document.getElementById('gesKostenNum').textContent = gesSumme + "€";
+    createItems();
+    checkIfShoppingCartIsAvailable();
+    document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
 }
 
 
@@ -120,15 +131,20 @@ function cancel_Order() {
 }
 
 async function buy_Order() {
-    addItemToCart("Tasse", 5, 4.99);
-    addItemToCart("T-Shirt", 5, 19.99);
-    addItemToCart("Tasse", 2, 4.99);
+    addItemToCart("Marsian Mug", 5, 4.99, "../static/images/products/Marsian_Mug.png");
+    addItemToCart("Astro Shirt", 5, 19.99, "../static/images/products/AstroShirt.png");
+    addItemToCart("Marsian Mug", 2, 4.99, "../static/images/products/Marsian_Mug.png");
+    addItemToCart("Venus Vest", 5, 4.99, "../static/images/products/Venus_Vest.png");
     updateShoppingCart();
+    checkIfShoppingCartIsAvailable(true);
 
 
+}
+
+async function checkIfShoppingCartIsAvailable(purchaseOrder){
     try{
         var result= await sendData("checkAvailableItems", {shoppingCart});
-        if(checkIfAvailable(result)){
+        if(checkIfAvailable(result) && purchaseOrder){
             var result= await sendData("buyShoppingCart", {shoppingCart});
             if(result.success){
                 document.getElementById('purchaseS').style.display="flex";
@@ -147,7 +163,6 @@ async function buy_Order() {
     } catch(error){
         console.log("Error during checkAvailable processing: ", error);
     }
-
 }
 
 async function checkIfAvailable(result){
@@ -167,7 +182,6 @@ async function checkIfAvailable(result){
         }
         
     }
-    console.log(everythingIsAvailable);
     return everythingIsAvailable;
 }
 

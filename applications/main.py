@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
+import random
 
 app = Flask(__name__)
 
@@ -57,10 +58,16 @@ def check_data(data):
     available=[]
     for item in data['shoppingCart']:
         #check ob das item: type anzahl-mal in der Datenbank verfügbar ist
-        if(False):
+
+        x = random.random()
+        if x<0.5:
             available.append(True)
         else:
             available.append(False)
+        #if(True):
+            #available.append(True)
+        #else:
+            #available.append(False)
     return available
 
 def buyShoppingCart(data):

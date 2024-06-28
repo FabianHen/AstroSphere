@@ -88,6 +88,9 @@ button:hover{
     height: 90%;
     width: 15%;
     margin-left: 1%;
+    margin-top: 5px;
+    -webkit-box-shadow: 3px 1px 16px 2px #000000; 
+    box-shadow: 3px 1px 16px 2px #000000;
 }
 
 .item h3 {
