@@ -193,7 +193,7 @@ async function checkIfAvailable(result){
 
 async function sendData(action, data) {
     try {
-        const response = await fetch('/send_data', {
+        const response = await fetch('/shop/buyOrCheck', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -60,4 +60,4 @@ sql_create_Database= sql_alter_drop_commands+" "+sql_create_Tables+" "+sql_creat
 
 sql_query = "SELECT * FROM BESTAENDE"
 
-execute_sql_query(sql_create_Database)
+#execute_sql_query(sql_create_Database)

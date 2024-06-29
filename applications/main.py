@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import random
+from databaseConnection import *
 
 app = Flask(__name__)
 
@@ -35,7 +36,7 @@ def intern_telescopes():
 def back_to_home():
     return redirect(url_for('homepage'))
 
-@app.route('/send_data', methods=['POST'])
+@app.route('/shop/buyOrCheck', methods=['POST'])
 def send_data():
     try:
         action = request.json.get('action')
