@@ -46,7 +46,10 @@ def send_data():
         if action == "checkAvailableItems":
             result=check_data(data)
         elif action == "buyShoppingCart":
-            result=buyShoppingCart(data)
+            if check_data(data):
+                result=buyShoppingCart(data)
+            else:
+                result=False
 
         return jsonify(success=result)
     except Exception as e:
@@ -60,14 +63,10 @@ def check_data(data):
         #check ob das item: type anzahl-mal in der Datenbank verfügbar ist
 
         x = random.random()
-        if x<0.5:
+        if x<0.8:
             available.append(True)
         else:
             available.append(False)
-        #if(True):
-            #available.append(True)
-        #else:
-            #available.append(False)
     return available
 
 def buyShoppingCart(data):
