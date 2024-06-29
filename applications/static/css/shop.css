@@ -1,0 +1,251 @@
+:root {
+    --astrosphere-pink: #d30da4;
+    --astrosphere-blue: #4204b0;
+    --astrosphere-dark-grey: #2e2e2e;
+    --astrosphere-light-grey: #5e5e5e;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: auto;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 98vh;
+    margin: 0;
+}
+
+header {
+    padding-top: 5px;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+button {
+    background: linear-gradient(to left, var(--astrosphere-pink), var(--astrosphere-blue));
+    border-radius: 3px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 2px 10px 2px 10px;
+}
+
+button:hover{
+    background: var(--astrosphere-blue);
+    cursor: pointer;
+}
+
+
+.filter {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-left: 2%;
+    padding-top: 2%;
+}
+
+.collapsible {
+    margin: 5%;
+    background-color: var(--astrosphere-light-grey);
+}
+
+
+.filter_content {
+    display: none;
+    flex-direction: column;
+    padding-left: 2%;
+    padding-top: 2%;
+}
+
+#cart_button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 5px;
+}
+
+
+.product_card {
+    display: none;
+}
+
+.item {
+    width: 100%;
+    height: 250px;
+    margin-top: 1px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+
+    background-color: rgba(150, 150, 150, 0.772);
+}
+
+.item img {
+    height: 90%;
+    width: 15%;
+    margin-left: 1%;
+    margin-top: 5px;
+    -webkit-box-shadow: 3px 1px 16px 2px #000000; 
+    box-shadow: 3px 1px 16px 2px #000000;
+}
+
+.item h3 {
+    position: relative;
+    color: white;
+    bottom: 80%;
+    left: 27%;
+}
+
+.item .beschreibung {
+    position: relative;
+    color: white;
+    bottom: 72%;
+    left: 27%;
+    width: 35%;
+}
+
+.item .line {
+    position: relative;
+    bottom: 99%;
+    left: 26%;
+    width: 70%;
+    height: 2px;
+    background-color: #2e2e2e;
+}
+
+.item .preis {
+    position: relative;
+    color: white;
+    bottom: 120%;
+    left: 89%;
+}
+
+.item .numberOfItems {
+    height: 35px;
+    width: 87px;
+    color: var(--astrosphere-blue);
+    border-radius: 5px;
+
+    position: relative;
+    bottom: 120%;
+    left: 89%;
+}
+
+.item .Lager {
+    position: relative;
+    left: 89%;
+    bottom: 120%;
+    color: rgb(2, 93, 2);
+}
+
+.item .nLager {
+    position: relative;
+    left: 89%;
+    bottom: 120%;
+    color: rgb(112, 7, 7);
+}
+
+
+
+
+#shoppingCart {
+    display: none;
+    position: absolute;
+    top: 110px;
+    left: 0;
+    height: 80vh;
+    width: 100%;
+    background-color: #888888;
+}
+
+#shoppingCart h1 {
+    color: transparent;
+    background-image: linear-gradient(to right, var(--astrosphere-pink), var(--astrosphere-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: 50px;
+    position: absolute;
+    top: 0.5%;
+    left: 41.5%;
+}
+
+#itemList {
+    position: absolute;
+    left: 0;
+    top: 150px;
+    width: 100%;
+    height: 70%;
+    background-color: #0440b041;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#shoppingCart #cancel {
+    position: absolute;
+    bottom: 1%;
+    left: 43%;
+    font-size: 15px;
+    padding: 10 18 10 18;
+}
+
+#shoppingCart #buy {
+    position: absolute;
+    bottom: 1%;
+    left: 51%;
+    font-size: 15px;
+    padding: 10 18 10 18;
+}
+
+#shoppingCart button:hover {
+    opacity: 60%;
+}
+
+#gesKosten {
+    position: absolute;
+    bottom: 8%;
+    right: 1%;
+
+    width: 80%;
+    height: 2px;
+    background-color: #2e2e2e;
+}
+
+#gesKosten h3 {
+    color: black;
+    position: absolute;
+    right: 0;
+}
+
+.purchaseInfo{
+    position: absolute;
+    top: 5%;
+    left: 36%;
+
+    height: 10%;
+    width: 28%;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px;
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.71); 
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.71);
+}
+.purchaseInfo h1{
+    font-size: 130%;
+}
+
+#purchaseN{
+    display: none;
+    background-color: red;
+}
+#purchaseS{
+    display: none;
+    background-color: green;
+}

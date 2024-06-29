@@ -4,7 +4,7 @@
 
 
 import cx_Oracle
-
+from basicDatabaseStatements import*
 
 #global variables for the database connection
 dsn = cx_Oracle.makedsn("rs03-db-inf-min.ad.fh-bielefeld.de", 1521, sid="orcl")
@@ -56,5 +56,6 @@ def execute_sql_query(sql_query):
 print(cx_Oracle.clientversion())
 
 #sql-example
-sql_query = "SELECT * FROM ABTEILUNG"
+sql_query = "SELECT * FROM MERCHARTIKEL"
+
 execute_sql_query(sql_query)

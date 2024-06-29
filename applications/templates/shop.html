@@ -1,0 +1,118 @@
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../static/images/AstroSphere_Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/css/shop.css">
+    <script src="../static/script/shop.js"></script>
+    <title>Shop</title>
+</head>
+
+<body>
+    <header>
+        <img src="../static/images/AstroSphere_Logo.png" alt="AstroSphere Logo" height="100" width="100">
+    </header>
+
+    <div>
+        <button onclick="goBack()">Back</button>
+    </div>
+    <main>
+        <div class="filter">
+            <button class="collapsible" type="button" onclick="collapseFilter('snack_filter')"><h4>Snacks</h4></button>
+
+            <div id="snack_filter" class="filter_content">
+                <div>Alles Anzeigen</div>
+                <div>Getränke</div>
+                <div>Süß</div>
+                <div>Salzig</div>
+            </div>
+
+            <button class="collapsible" type="button" onclick="collapseFilter('merch_filter')"><h4>Merch</h4></button>
+
+            <div id="merch_filter" class="filter_content">
+                <div>Alles Anzeigen</div>
+                <div>Hoodies</div>
+                <div>T-Shirts</div>
+                <div>Sonstiges</div>
+            </div>
+
+            <button class="collapsible" type="button"><h4>Tickets</h4></button>
+
+        </div>
+
+        <div class="products">
+            <div class="product_card">
+                <img class="product_image" src="../static/images/popcorn_bold.svg" alt="Produktbild">
+                <label class="product_name" for=""></label>
+                <div>
+                    <label class="product_price" for="">€</label>
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="cart_button">
+            <button onclick="goTo_shoppingCart()">
+                <img src="../static/images/cart_bold.svg" alt="Warenkorb" width="25" height="25">
+            </button>
+        </div>
+    </main>
+
+
+
+
+
+
+
+
+    <div id="shoppingCart">
+        <h1>Warenkorb</h1>
+
+
+        <div id="itemList">
+
+            <div class="item" id="item_1">
+                <div style="height: 100%; width: 100%;">
+                    <img src="../static/images/pictureNotFound.png" alt="item image" id="item_1Img" width="100"
+                        height="100">
+                    <h3 id="item_1Name">Item Name</h3>
+                    <div class="line"></div>
+
+                    <p class="beschreibung" id="item_1Desc"><b>Beschreibung</b><br>Lorem ipsum dolor sit amet,
+                        consetetur sadipscing elitr, </p>
+
+                    <p class="preis" id="item_1Preis">Preis: 00.00€</p>
+
+                    <input type="number" min="0" max="7" class="numberOfItems" placeholder="Menge: 1" id="item_1Num" onchange="updateShoppingCart()">
+                    <p class="Lager" id="item_1L">Auf Lager</p>
+                    <p class="nLager" id="item_1nL" style="display: none;">Nicht Auf Lager</p>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div id="gesKosten">
+            <h3 id="gesKostenNum">00.00€</h3>
+        </div>
+        <button id="cancel" onclick="cancel_Order()">Cancel</button>
+        <button id="buy" onclick="buy_Order()">Buy now</button>
+    </div>
+
+    <div id="purchaseS" class="purchaseInfo">
+        <h1>
+            Bestellvorgang wurde erfolgreich abgeschlossen!
+        </h1>
+    </div>
+    <div id="purchaseN" class="purchaseInfo">
+        <h1>
+            Fehler: Bestellvorgang wurde abgebrochen!
+        </h1>
+    </div>
+    
+
+
+</body>
+
+</html>

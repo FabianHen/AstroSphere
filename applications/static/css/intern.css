@@ -8,6 +8,7 @@
 
 html,
 body {
+    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     width: 100%;
     height: 100%;
@@ -15,9 +16,10 @@ body {
     padding: 0;
     background-color: white;
     flex-direction: column;
+    overflow: hidden;
 }
 
-#Topbar {
+header {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -38,10 +40,7 @@ body {
     background-image: linear-gradient(to right, var(--darkGrey), var(--pink), var(--purple), var(--lightGrey));
     -webkit-background-clip: text;
     background-clip: text;
-    margin-left: auto;
-    margin-top: auto;
-    margin-right: auto;
-    margin-bottom: auto;
+    margin: auto;
     font-size: 45px;
 }
 
@@ -57,7 +56,7 @@ body {
     margin-bottom: auto;
 }
 
-#MainContent {
+.main {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -65,45 +64,168 @@ body {
     background-color: white;
 }
 
-#MainLeftContent {
+/* Filter Components */
+.leftComponent {
     display: flex;
     flex-direction: column;
-    width: 20%;
+    width: 15%;
     height: 100%;
     border-right: 1px solid black;
 }
 
-#MainRightContent {
+.leftComponent h2 {
+    margin-top: 20%;
+    margin-left: 5px;
+    color: #333;
+    font-size: 22px;
+}
+
+.leftComponent h3 {
+    margin-left: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+.leftComponent a {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: #bbb;
+    margin-bottom: 10px;
+}
+
+.leftComponent a:hover {
+    background-color: #ddd;
+}
+
+.leftComponent a.active {
+    background-color: #ddd;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Navigation Bar + Main Content */
+.rightComponent {
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 85%;
     height: 100%;
 }
 
-#NavBar {
+/* Bar to switch betweet the main pages */
+.navigationBar {
+    display: flex;
+    margin-top: 5px;
+    gap: 20px;
+}
+.navigationBar a {
+    color: #bbb;
+    text-decoration: none;
+    font-size: 18px;
+    margin: auto;
+}
+.navigationBar a.active {
+    color: #000;
+}
+
+/* The largest part of the page */
+.mainContent {
+    width: 100%;
+    height: 90%;
+    display: none;
+}
+.mainContent.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main Content Events */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.form-group label {
+    display: block;
+    margin: auto;
+    width: 40%;
+    align-items: center;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, .form-group textarea {
+    width: 40%;
+    padding: 10px;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    height: 100px;
+}
+
+#media {
+    margin-left: 7%;
+}
+
+.mediaHeader {
     display: flex;
     flex-direction: row;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.media-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    overflow-y: scroll; /* Vertikales Scrollen aktivieren */
+    overflow-x: hidden; /* Horizontales Scrollen deaktivieren */
+}
+
+.media-item {
+    width: 150px;
+    text-align: center;
+    color: #333;
+}
+
+.media-item.active {
+    background-color: #ddd;
+}
+
+.media-item img {
     width: 100%;
-    height: 10%;
-    background-color: white;
+    height: auto;
+    border-radius: 8px;
 }
 
-.Nav_Btn {
-    background-color: white;
-    font-size: 20px;
-    margin-left: auto;
-    margin-top: auto;
-    margin-right: auto;
-    margin-bottom: auto;
-    border: white;
-    transition: font-weight 0.2s, background-color 0.2s;
+.media-item h3 {
+    font-size: 16px;
+    margin: 10px 0 5px 0;
 }
 
-.Nav_Btn:hover {
-    cursor: pointer;
-    transform: scale(1.05);
+.media-item p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
 }
 
-.Nav_Btn.active {
-    font-weight: bolder;
+#speichern {
+    border-radius: 5px;
+    background: linear-gradient(to right, var(--pink), var(--purple));
+    color: white;
+    padding: 10px;
+    font-size: 12px;
+    margin: auto;
+}
+
+/* Class for active text elements  */
+.active {
+    font-weight: bold;
 }
