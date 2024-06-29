@@ -862,6 +862,25 @@ create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP (
 );
 """
 
+sql_create_Views="""
+-- View zur Anzeige der aktuell nicht vermieteten Räume
+CREATE VIEW FREIE_RAEUME AS
+SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
+FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
+WHERE RAUM.miet_preis IS NOT NULL AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < current_date
+GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
+ORDER BY RAUM.id;
+
+-- View zur Anzeige des aktuellen Bestands der Snacks
+CREATE VIEW BESTAENDE AS
+SELECT SNACK.id, SNACK.bezeichnung, (SUM(BESTELLUNG.anzahl) - SUM(VERKAUF_SNACK.anzahl)) AS BESTAND
+FROM SNACK 
+LEFT JOIN BESTELLUNG ON SNACK.id = BESTELLUNG.snack_id
+LEFT JOIN VERKAUF_SNACK ON SNACK.id = VERKAUF_SNACK.snack_id
+GROUP BY SNACK.id, SNACK.bezeichnung
+ORDER BY SNACK.id;
+"""
+
 sql_configuration="""
 SET SQLBLANKLINES ON;
 SET DEFINE OFF;
