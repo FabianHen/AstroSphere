@@ -56,6 +56,6 @@ def execute_sql_query(sql_query):
 print(cx_Oracle.clientversion())
 
 #sql-example
-sql_query = "SELECT * FROM MERCHARTIKEL"
+sql_query = "SELECT * FROM ABTEILUNG"
 
 execute_sql_query(sql_query)
