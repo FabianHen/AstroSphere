@@ -229,3 +229,13 @@ header {
 .active {
     font-weight: bold;
 }
+
+#dateInput {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+#dateInput label{
+    margin: 10px;
+}
