@@ -56,6 +56,7 @@ def buyOrCheck():
 
 
 def check_data(data):
+    print("checkData####################")
     available=[]
     shoppingCartItems=[]
     ItemNumbersInDatabase=execute_sql_query("SELECT * from BESTAENDE_MERCH")
@@ -65,10 +66,10 @@ def check_data(data):
     
     for databaseItem in ItemNumbersInDatabase:
         for shoppingItem in shoppingCartItems:
-            if databaseItem[0]==shoppingItem[0]:
+            if int(databaseItem[0])==int(shoppingItem[0]):
                 if databaseItem[3]==None:
                     available.append(False)
-                elif databaseItem[3]<shoppingItem[3]:
+                elif int(databaseItem[3])<int(shoppingItem[3]):
                     available.append(False)
                 else:
                     available.append(True)

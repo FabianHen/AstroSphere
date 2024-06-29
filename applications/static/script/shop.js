@@ -137,7 +137,19 @@ function cancel_Order() {
 }
 
 async function buy_Order() {
-
+    var result= await buyOrCheck("buyShoppingCart", {shoppingCart});
+    if(result.success){
+        //success
+        document.getElementById('purchaseS').style.display="flex";
+    }
+    else{
+        //error
+        document.getElementById('purchaseN').style.display="flex";
+    }
+    setTimeout(function(){
+        document.getElementById('purchaseS').style.display="none";
+        document.getElementById('purchaseN').style.display="none";
+    }, 3000);
 }
 
 
