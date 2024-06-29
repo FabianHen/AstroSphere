@@ -129,17 +129,18 @@ function goTo_shoppingCart() {
 }
 
 function cancel_Order() {
-    shoppingCart = [];
-    document.getElementById('shoppingCart').style.display = "none";
-}
-
-async function buy_Order() {
+    //shoppingCart = [];
+    //updateShoppingCart();
+    //document.getElementById('shoppingCart').style.display = "none";
     addItemToCart(8, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 1, "../static/images/products/Marsian_Mug.png");
     addItemToCart(6, "Astro Shirt", "Leichtes Baumwoll-T-Shirt mit klassischem Schnitt und Rundhalsausschnitt. Perfekt für jeden Tag.", "L", 19.99, 2, "../static/images/products/AstroShirt.png");
     addItemToCart(8, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 3, "../static/images/products/Marsian_Mug.png");
     addItemToCart(17, "Venus Vest", "Leichte Steppweste mit isolierender Füllung, ideal für Layering. Mit Reißverschlusstaschen und sportlichem Schnitt.", "M", 15.55, 1, "../static/images/products/Venus_Vest.png");
     updateShoppingCart();
-    checkIfShoppingCartIsAvailable(true);
+}
+
+async function buy_Order() {
+    console.log(checkIfShoppingCartIsAvailable(true));
 
 
 }
