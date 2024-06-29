@@ -37,7 +37,7 @@ def back_to_home():
     return redirect(url_for('homepage'))
 
 @app.route('/shop/buyOrCheck', methods=['POST'])
-def send_data():
+def buyOrCheck():
     try:
         action = request.json.get('action')
         data = request.json.get('data')
@@ -47,10 +47,7 @@ def send_data():
         if action == "checkAvailableItems":
             result=check_data(data)
         elif action == "buyShoppingCart":
-            if check_data(data):
-                result=buyShoppingCart(data)
-            else:
-                result=False
+            result=buyShoppingCart(data)
 
         return jsonify(success=result)
     except Exception as e:
@@ -71,12 +68,13 @@ def check_data(data):
     return available
 
 def buyShoppingCart(data):
-    #send items to Database and reduce item number
-    buySuccessful=False
-    if buySuccessful:
-        return True
-    else:
+    available=check_data(data)
+
+    if False in available:
         return False
+    else:
+        #send items to Database and reduce item number
+        return True
 
 
 

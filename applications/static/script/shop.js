@@ -147,9 +147,10 @@ async function buy_Order() {
 
 async function checkIfShoppingCartIsAvailable(purchaseOrder){
     try{
-        var result= await sendData("checkAvailableItems", {shoppingCart});
-        if(checkIfAvailable(result) && purchaseOrder){
-            var result= await sendData("buyShoppingCart", {shoppingCart});
+        var result= await buyOrCheck("checkAvailableItems", {shoppingCart});
+
+        if(checkIfAvailable(result)){
+            var result= await buyOrCheck("buyShoppingCart", {shoppingCart});
             if(result.success){
                 document.getElementById('purchaseS').style.display="flex";
             }
@@ -191,7 +192,7 @@ async function checkIfAvailable(result){
 
 
 
-async function sendData(action, data) {
+async function buyOrCheck(action, data) {
     try {
         const response = await fetch('/shop/buyOrCheck', {
             method: 'POST',
