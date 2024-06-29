@@ -281,7 +281,9 @@ create index ABTEILUNG___ANGESTELLTER_FK on ANGESTELLTER (
 create table SNACK (
    ID                   NUMBER(8)             not null,
    BEZEICHNUNG          VARCHAR2(100)         not null,
+   BESCHREIBUNG         VARCHAR2(200)         not null,
    VERKAUF_PREIS_KG     NUMBER(5,2)           not null,
+   IMAGE_PATH           VARCHAR(50)           not null,
    constraint PK_SNACK primary key (ID)
 );
 
@@ -291,8 +293,10 @@ create table SNACK (
 create table MERCHARTIKEL (
    ID                   NUMBER(8)             not null,
    BEZEICHNUNG          VARCHAR2(100)         not null,
+   BESCHREIBUNG         VARCHAR(200)          not null,
    GROESSE              CHAR(3)               check ((GROESSE in ('XS','S','M','L','XL','XXL') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    VERKAUF_PREIS_STK    NUMBER(5,2)           not null,
+   IMAGE_PATH           VARCHAR(50)             not null,
    constraint PK_MERCHARTIKEL primary key (ID)
 );
 
@@ -862,6 +866,34 @@ create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP (
 );
 """
 
+sql_create_Views="""
+-- View zur Anzeige der aktuell nicht vermieteten Räume
+CREATE VIEW FREIE_RAEUME AS
+SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
+FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
+WHERE RAUM.miet_preis IS NOT NULL AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < current_date
+GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
+ORDER BY RAUM.id;
+
+-- View zur Anzeige des aktuellen Bestands der Snacks
+CREATE VIEW BESTAENDE_SNACK AS
+SELECT SNACK.id, SNACK.bezeichnung, (SUM(BESTELLUNG.anzahl) - SUM(VERKAUF_SNACK.anzahl)) AS BESTAND
+FROM SNACK 
+LEFT JOIN BESTELLUNG ON SNACK.id = BESTELLUNG.snack_id
+LEFT JOIN VERKAUF_SNACK ON SNACK.id = VERKAUF_SNACK.snack_id
+GROUP BY SNACK.id, SNACK.bezeichnung
+ORDER BY SNACK.id;
+
+-- View zur Anzeige des aktuellen Bestands der Merchartikel
+CREATE VIEW BESTAENDE_MERCH AS
+SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, (SUM(BESTELLUNG.anzahl) - SUM(VERKAUF_MERCH.anzahl)) AS BESTAND
+FROM MERCHARTIKEL 
+LEFT JOIN BESTELLUNG ON MERCHARTIKEL.id = BESTELLUNG.MERCHARTIKEL_ID
+LEFT JOIN VERKAUF_MERCH ON MERCH.id = VERKAUF_MERCH.merchartikel_id
+GROUP BY MERCH.id, MERCH.bezeichnung
+ORDER BY MERCH.id;
+"""
+
 sql_configuration="""
 SET SQLBLANKLINES ON;
 SET DEFINE OFF;
@@ -1128,81 +1160,81 @@ INSERT INTO ASTROSPHERE.LIEFERANT(ID, NAME) VALUES
 --
 -- Inserting data into table ASTROSPHERE.MERCHARTIKEL
 --
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(1, 'AstroHoodie', 'S', 69.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(2, 'AstroHoodie', 'M', 69.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(3, 'AstroHoodie', 'L', 69.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(4, 'AstroShirt', 'S', 19.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(5, 'AstroShirt', 'M', 19.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(6, 'AstroShirt', 'L', 19.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(7, 'Solar System Socks', NULL, 18.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(8, 'Marsian Mug', NULL, 9.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(9, 'Milkyway Mug', NULL, 9.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(10, 'Uranus USB Stick', NULL, 14.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(11, 'Venus Vase', NULL, 59.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(12, 'Jupiter Journal', NULL, 7.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(13, 'Neptune Notebook', NULL, 9.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(14, 'Meteor Magnet', NULL, 5.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(15, 'Saturn Sunglasses', NULL, 14.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(16, 'Venus Vest', 'S', 49.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(17, 'Venus Vest', 'M', 49.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(18, 'Venus Vest', 'L', 49.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(19, 'Nebula Napkins', NULL, 4.99);
-INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, GROESSE, VERKAUF_PREIS_STK) VALUES
-(20, 'Uranus Umbrella', 'L', 15.99);
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(1, 'AstroHoodie', 'Bequemer und stylischer Hoodie aus weicher Baumwollmischung mit Kängurutasche und verstellbarer Kapuze. Ideal für jeden Tag.', 'S', 69.99, '../static/images/products/AstroHoodie.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(2, 'AstroHoodie', 'Bequemer und stylischer Hoodie aus weicher Baumwollmischung mit Kängurutasche und verstellbarer Kapuze. Ideal für jeden Tag.', 'M', 69.99, '../static/images/products/AstroHoodie.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(3, 'AstroHoodie', 'Bequemer und stylischer Hoodie aus weicher Baumwollmischung mit Kängurutasche und verstellbarer Kapuze. Ideal für jeden Tag.', 'L', 69.99, '../static/images/products/AstroHoodie.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(4, 'AstroShirt', 'Klassisches, bequemes T-Shirt aus hochwertiger Baumwolle, ideal für jeden Tag.', 'S', 19.99, '../static/images/products/AstroShirt.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(5, 'AstroShirt', 'Klassisches, bequemes T-Shirt aus hochwertiger Baumwolle, ideal für jeden Tag.', 'M', 19.99, '../static/images/products/AstroShirt.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(6, 'AstroShirt', 'Klassisches, bequemes T-Shirt aus hochwertiger Baumwolle, ideal für jeden Tag.', 'L', 19.99, '../static/images/products/AstroShirt.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(7, 'Solar System Socks', 'Weiche, strapazierfähige Socken aus Baumwollmischung für den täglichen Gebrauch', NULL, 18.99, '../static/images/products/SolarSystem_Socks.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(8, 'Marsian Mug', 'Robuste Keramiktasse mit glänzender Oberfläche und großem Fassungsvermögen, perfekt für heiße Getränke.', NULL, 9.99, '../static/images/products/Marsian_Mug.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(9, 'Milkyway Mug', 'Robuste Keramiktasse mit glänzender Oberfläche und großem Fassungsvermögen, perfekt für heiße Getränke.',NULL, 9.99, '../static/images/products/Milkyway_Mug.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(10, 'Uranus USB Stick', 'Hochwertiger USB-Stick mit schneller Datenübertragung und robustem Gehäuse',NULL, 14.99, '../static/images/products/Uranus_USB_Stick.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(11, 'Venus Vase', 'Elegante Glasvase mit schlankem Design, perfekt für Blumenarrangements und als dekoratives Element in jedem Raum.',NULL, 59.99, '../static/images/products/Venus_Vase.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(12, 'Jupiter Journal', 'Stilvolles Journal mit robustem Einband, ideal für Notizen, Skizzen und persönliche Aufzeichnungen unterwegs.',NULL, 7.99, '../static/images/products/Jupiter_Journal.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(13, 'Neptune Notebook', 'Praktisches Notizbuch mit strapazierfähigem Einband, perfekt für Mitschriften, Skizzen und unterwegs.',NULL, 9.99, '../static/images/products/Neptune_Notebook.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(14, 'Meteor Magnet', 'Robuster Magnet mit ansprechendem Design, ideal für den Kühlschrank oder als dekoratives Element.',NULL, 5.99, '../static/images/products/Meteor_Magnet.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(15, 'Saturn Sunglasses', 'Modische Sonnenbrille mit UV-Schutzgläsern, die perfekt für sonnige Tage und einen coolen Look geeignet ist.',NULL, 14.99, '../static/images/products/Saturn_Sunglasses.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(16, 'Venus Vest', 'Stylische Weste aus hochwertigem Material, ideal für Layering und einen modernen Look.','S', 49.99, '../static/images/products/Venus_Vest.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(17, 'Venus Vest', 'Stylische Weste aus hochwertigem Material, ideal für Layering und einen modernen Look.','M', 49.99, '../static/images/products/Venus_Vest.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(18, 'Venus Vest', 'Stylische Weste aus hochwertigem Material, ideal für Layering und einen modernen Look.','L', 49.99, '../static/images/products/Venus_Vest.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(19, 'Nebula Napkins', 'Hochwertiges Serviettenset aus Baumwolle, perfekt für besondere Anlässe und den täglichen Gebrauch.',NULL, 4.99, '../static/images/products/Nebula_Napkins.png');
+INSERT INTO ASTROSPHERE.MERCHARTIKEL(ID, BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF_PREIS_STK, IMAGE_PATH) VALUES
+(20, 'Uranus Umbrella', 'Robuster Regenschirm mit automatischem Öffnungsmechanismus, ideal für regnerische Tage und unterwegs.','L', 15.99, '../static/images/products/Uranus_Umbrella.png');
 
 
 --
 -- Inserting data into table ASTROSPHERE.SNACK
 --
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(1, 'Neptune Nachos', 79.90);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(2, 'Planetary Popcorn Salt', 49.90);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(3, 'Planetary Popcorn Sugar', 49.90);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(4, 'Solary Salad', 129.90);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(5, 'Venus Vinegar Chips', 26.94);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(6, 'Zodiac Sourcreme Chips', 26.94);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(7, 'Galaxie Gummi Bears', 39.90);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(8, 'Cosmic Coke', 78.00);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(9, 'Cosmic Coke Zero', 84.00);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(10, 'Space Sprite', 78.00);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(11, 'Space Sprite Zero', 84.00);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(12, 'Interplanetary IceTea', 104.00);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(13, 'Interplanetary IceTea Zero', 110.00);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(14, 'Big Bang Beer', 158.00);
-INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, VERKAUF_PREIS_KG) VALUES
-(15, 'Parsec Peanuts', 59.90);
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(1, 'Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 79.90, '../static/images/snacks/Neptune_Nachos.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(2, 'Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 49.90, '../static/images/snacks/Planetary_Popcorn_Salt.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(3, 'Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 49.90, '../static/images/snacks/Planetary_Popcorn_Sugar.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(4, 'Solary Salad', 'Knackiger Salat mit einer bunten Mischung aus frischen Gemüsesorten und einem leicht würzigen Dressing.', 129.90, '../static/images/snacks/Solary_Salad.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(5, 'Venus Vinegar Chips', 'Knackige Kartoffelchips mit einem würzigen Essiggeschmack, perfekt für Liebhaber von herzhaften Snacks.',26.94, '../static/images/snacks/Venus_Vinegar_Chips.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(6, 'Zodiac Sourcreme Chips', 'Knackige Kartoffelchips mit einem cremigen Sauerrahmgeschmack und einer leichten Würze, ideal für Snackliebhaber.', 26.94, '../static/images/snacks/Zodiac_Sourcreme_Chips.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(7, 'Galaxie Gummi Bears', 'Fruchtige und weiche Gummibären in verschiedenen Geschmacksrichtungen, ein beliebter Snack für Jung und Alt.', 39.90, '../static/images/snacks/Galaxie_Gummi_Bears.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(8, 'Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 78.00, '../static/images/snacks/Cosmic_Coke.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(9, 'Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 84.00, '../static/images/snacks/Cosmic_Coke_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(10, 'Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 78.00, '../static/images/snacks/Space_Sprite.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(11, 'Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 84.00, '../static/images/snacks/Space_Sprite_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(12, 'Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 104.00, '../static/images/snacks/Interplanetary_IceTea.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(13, 'Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 110.00, '../static/images/snacks/Interplanetary_IceTea_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(14, 'Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 158.00, '../static/images/snacks/Big_Bang_Beer.png');
+INSERT INTO ASTROSPHERE.SNACK(ID, BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
+(15, 'Parsec Peanuts', 'Geröstete Erdnüsse mit einer leichten Salznote, ideal als Snack für zwischendurch.', 59.90, '../static/images/snacks/Parsec_Peanuts.png');
 
 
 --

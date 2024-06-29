@@ -55,7 +55,9 @@ def execute_sql_query(sql_query):
 #check if cx_Oracle works
 print(cx_Oracle.clientversion())
 
-#sql-example
-sql_query = "SELECT * FROM ABTEILUNG"
 
-execute_sql_query(sql_query)
+sql_create_Database= sql_alter_drop_commands+" "+sql_create_Tables+" "+sql_create_Views
+
+sql_query = "SELECT * FROM BESTAENDE"
+
+#execute_sql_query(sql_create_Database)
