@@ -21,7 +21,7 @@ def execute_sql_query(sql_query):
     connection = None
     cursor = None
 
-    print("User: ", user, "; Password: ", password, "; DSN: ", dsn)
+    #print("User: ", user, "; Password: ", password, "; DSN: ", dsn)
     try:
         connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
         cursor = connection.cursor()
@@ -37,7 +37,7 @@ def execute_sql_query(sql_query):
                     processedRow.append(col.read())
                 else:
                     processedRow.append(col)
-            print(processedRow)
+            #print(processedRow)
         
         return results
     
@@ -53,11 +53,11 @@ def execute_sql_query(sql_query):
             connection.close()
 
 #check if cx_Oracle works
-print(cx_Oracle.clientversion())
+#print(cx_Oracle.clientversion())
 
 
-sql_create_Database= sql_alter_drop_commands+" "+sql_create_Tables+" "+sql_create_Views
+#sql_create_Database= sql_alter_drop_commands+" "+sql_create_Tables+" "+sql_create_Views
 
-sql_query = "SELECT * FROM BESTAENDE"
+#sql_query = "SELECT * FROM BESTAENDE"
 
 #execute_sql_query(sql_create_Database)

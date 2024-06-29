@@ -70,7 +70,7 @@ function createItems() {
         newHTMLItem += "\t\t<div class='line'></div>\n";
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>"+ shoppingCart[i].beschreibung +"</p>\n";
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: "+ shoppingCart[i].preis +"</p>\n";
-        newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true, this.value)'>\n";
+        newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: block;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
         newHTMLItem += "\t</div>\n</div>";
@@ -80,12 +80,11 @@ function createItems() {
     }
 
     document.getElementById('itemList').innerHTML = newHTMLString;
-    checkIfShoppingCartIsAvailable(false);
 }
 
 
 
-function updateShoppingCart(updateNum, value) {
+function updateShoppingCart(updateNum) {
     var gesSumme = 0.0;
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
@@ -94,20 +93,18 @@ function updateShoppingCart(updateNum, value) {
 
         if(updateNum==true){
             item.anzahl=document.getElementById(itemNumId).value;
-            console.log(item.type+" "+item.anzahl);
             if(item.anzahl<=0){
                 removeItemFromCart(item.type, item.anzahl);
             }
         }
-        var aktAnzahl = item.anzahl;
 
-        document.getElementById(itemID + 'Num').value = aktAnzahl;
+        document.getElementById(itemID + 'Num').value = item.anzahl;
 
 
         gesSumme += item.anzahl * item.preis;
     }
     createItems();
-    checkIfShoppingCartIsAvailable();
+    checkIfAvailable();
     document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
 }
 
@@ -140,37 +137,12 @@ function cancel_Order() {
 }
 
 async function buy_Order() {
-    console.log(checkIfShoppingCartIsAvailable(true));
-
 
 }
 
-async function checkIfShoppingCartIsAvailable(purchaseOrder){
-    try{
-        var result= await buyOrCheck("checkAvailableItems", {shoppingCart});
 
-        if(checkIfAvailable(result)){
-            var result= await buyOrCheck("buyShoppingCart", {shoppingCart});
-            if(result.success){
-                document.getElementById('purchaseS').style.display="flex";
-            }
-            else{
-                document.getElementById('purchaseN').style.display="flex";
-            }
-            setTimeout(() => {
-                document.getElementById('purchaseS').style.display = "none";
-                document.getElementById('purchaseN').style.display = "none";
-            }, 3000);
-        }
-        else{
-
-        }
-    } catch(error){
-        console.log("Error during checkAvailable processing: ", error);
-    }
-}
-
-async function checkIfAvailable(result){
+async function checkIfAvailable(){
+    var result = await buyOrCheck("checkAvailableItems", {shoppingCart});
     var boolArray = result.success;
     var everythingIsAvailable=true
 

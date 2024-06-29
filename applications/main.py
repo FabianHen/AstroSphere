@@ -57,14 +57,22 @@ def buyOrCheck():
 
 def check_data(data):
     available=[]
-    for item in data['shoppingCart']:
-        #check ob das item: type anzahl-mal in der Datenbank verfügbar ist
+    shoppingCartItems=[]
+    ItemNumbersInDatabase=execute_sql_query("SELECT * from BESTAENDE_MERCH")
 
-        x = random.random()
-        if x<0.8:
-            available.append(True)
-        else:
-            available.append(False)
+    for aktItem in data['shoppingCart']:
+        shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['größe'], aktItem['anzahl']))
+    
+    for databaseItem in ItemNumbersInDatabase:
+        for shoppingItem in shoppingCartItems:
+            if databaseItem[0]==shoppingItem[0]:
+                if databaseItem[3]==None:
+                    available.append(False)
+                elif databaseItem[3]<shoppingItem[3]:
+                    available.append(False)
+                else:
+                    available.append(True)
+
     return available
 
 def buyShoppingCart(data):
