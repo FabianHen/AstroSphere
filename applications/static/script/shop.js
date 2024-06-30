@@ -12,12 +12,23 @@ function collapseFilter(filter) {
     }
 }
 
+let shop_timeout;
+
+// Funktion, um den Timer zurückzusetzen
+function resetTimer() {
+    clearTimeout(shop_timeout);
+    shop_timeout = setTimeout(goBack, 10000);
+}
+
 window.addEventListener("load", function (e) {
     let params = new URL(document.location).searchParams;
     let selected = params.get("selected");
     if (selected) {
         collapseFilter(selected);
     }
+    document.addEventListener('mousemove', resetTimer);
+    document.addEventListener('click', resetTimer);
+    resetTimer();
 });
 
 
