@@ -3,14 +3,22 @@ function goBack() {
 }
 
 function collapseFilter(filter) {
+    if (filter) {
+        history.replaceState(null, '', `?selected=${filter}`);
+    }
     let content = document.getElementById(filter);
-    if (content.style.display == "flex") {  
-        content.style.display = "none";
-    } else {
-        content.style.display = "flex";
+    if (content) {
+        content.style.display = (content.style.display == "flex") ? "none" : "flex";
     }
 }
 
+window.addEventListener("load", function (e) {
+    let params = new URL(document.location).searchParams;
+    let selected = params.get("selected");
+    if (selected) {
+        collapseFilter(selected);
+    }
+});
 
 
 shoppingCart = [];
@@ -18,11 +26,11 @@ var numberOfItems = 0;
 
 class Artikel {
     constructor(id, type, beschreibung, größe, preis, anzahl, imagePath) {
-        this.id=id;
+        this.id = id;
         this.type = type;
-        this.beschreibung=beschreibung;
-        this.größe=größe;
-        this.preis=preis;
+        this.beschreibung = beschreibung;
+        this.größe = größe;
+        this.preis = preis;
         this.anzahl = anzahl;
         this.image = imagePath;
     }
@@ -48,7 +56,7 @@ function removeItemFromCart(type, num) {
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
         if (item.type === type) {
-            item.anzahl-num;
+            item.anzahl - num;
             if (item.anzahl <= 0) {
                 shoppingCart.splice(i, 1);
             }
@@ -69,8 +77,8 @@ function createItems() {
         newHTMLItem += "' alt='item image' id='item_" + i + "Img'>\n";
         newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>" + shoppingCart[i].type + "</h3>\n";
         newHTMLItem += "\t\t<div class='line'></div>\n";
-        newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>"+ shoppingCart[i].beschreibung +"</p>\n";
-        newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: "+ shoppingCart[i].preis +"</p>\n";
+        newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].beschreibung + "</p>\n";
+        newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: " + shoppingCart[i].preis + "</p>\n";
         newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: none;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
@@ -89,20 +97,20 @@ function updateShoppingCart(updateNum) {
     var gesSumme = 0.0;
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        const itemID="item_"+i;
-        const itemNumId = itemID+"Num";
+        const itemID = "item_" + i;
+        const itemNumId = itemID + "Num";
 
-        if(updateNum==true){
-            item.anzahl=document.getElementById(itemNumId).value;
-            if(item.anzahl<=0){
+        if (updateNum == true) {
+            item.anzahl = document.getElementById(itemNumId).value;
+            if (item.anzahl <= 0) {
                 removeItemFromCart(item.type, item.anzahl);
             }
         }
 
         document.getElementById(itemID + 'Num').value = item.anzahl;
 
-        if(!(item.anzahl*item.preis<=0)){
-            gesSumme+=item.anzahl*item.preis;
+        if (!(item.anzahl * item.preis <= 0)) {
+            gesSumme += item.anzahl * item.preis;
         }
     }
     createItems();
@@ -112,29 +120,29 @@ function updateShoppingCart(updateNum) {
 
 
 
-function showOrder(){
-    var htmlList="";
-    var price=0;
-    for(let i=0; i<shoppingCart.length;i++){
+function showOrder() {
+    var htmlList = "";
+    var price = 0;
+    for (let i = 0; i < shoppingCart.length; i++) {
         const aktItem = shoppingCart[i];
-        if(aktItem.anzahl>0){
-            htmlList+="<div class='boughtItem'>\n\t";
-            htmlList+="<p>"+ aktItem.type +"</p>\n\t";
-            if(aktItem.größe==null){
-                htmlList+="<p>-</p>\n\t";    
+        if (aktItem.anzahl > 0) {
+            htmlList += "<div class='boughtItem'>\n\t";
+            htmlList += "<p>" + aktItem.type + "</p>\n\t";
+            if (aktItem.größe == null) {
+                htmlList += "<p>-</p>\n\t";
             }
-            else{
-                htmlList+="<p>"+ aktItem.größe +"</p>\n\t";
+            else {
+                htmlList += "<p>" + aktItem.größe + "</p>\n\t";
             }
-            htmlList+="<p>"+ aktItem.anzahl +"</p>\n\t";
-            htmlList+="<p>"+ aktItem.preis +"</p>\n\t";
-            htmlList+="</div>\n";
-            price+=aktItem.anzahl*aktItem.preis;
+            htmlList += "<p>" + aktItem.anzahl + "</p>\n\t";
+            htmlList += "<p>" + aktItem.preis + "</p>\n\t";
+            htmlList += "</div>\n";
+            price += aktItem.anzahl * aktItem.preis;
         }
     }
-    htmlList+="\n\t<div id='boughtItemPrice'>\n\t<p>gesamt Preis: "+price+"€</p>\n</div>";
-    document.getElementById('listboughtItems').innerHTML=htmlList;
-    document.getElementById('buyItems').style.display="block";
+    htmlList += "\n\t<div id='boughtItemPrice'>\n\t<p>gesamt Preis: " + price + "€</p>\n</div>";
+    document.getElementById('listboughtItems').innerHTML = htmlList;
+    document.getElementById('buyItems').style.display = "block";
 }
 
 
@@ -163,42 +171,42 @@ function cancel_Order() {
 
 
 async function buy_Order() {
-    var result= await buyOrCheck("buyShoppingCart", {shoppingCart});
-    if(result.success[0][0]){
-        document.getElementById('purchaseS').style.display="flex";
+    var result = await buyOrCheck("buyShoppingCart", { shoppingCart });
+    if (result.success[0][0]) {
+        document.getElementById('purchaseS').style.display = "flex";
         showOrder();
-        document.getElementById('bestellNr').innerHTML="Ihre Bestellung: "+result.success[0][1];
+        document.getElementById('bestellNr').innerHTML = "Ihre Bestellung: " + result.success[0][1];
     }
-    else{
-        document.getElementById('purchaseN').style.display="flex";
+    else {
+        document.getElementById('purchaseN').style.display = "flex";
     }
-    setTimeout(function(){
-        document.getElementById('purchaseS').style.display="none";
-        document.getElementById('purchaseN').style.display="none";
+    setTimeout(function () {
+        document.getElementById('purchaseS').style.display = "none";
+        document.getElementById('purchaseN').style.display = "none";
     }, 3000);
-    setTimeout(function(){
-        document.getElementById('buyItems').style.display="none";
+    setTimeout(function () {
+        document.getElementById('buyItems').style.display = "none";
     }, 8000);
 }
 
 
-async function checkIfAvailable(){
-    var result = await buyOrCheck("checkAvailableItems", {shoppingCart});
+async function checkIfAvailable() {
+    var result = await buyOrCheck("checkAvailableItems", { shoppingCart });
     var boolArray = result.success;
-    var everythingIsAvailable=true
+    var everythingIsAvailable = true
 
-    for(var i=0;i<boolArray.length;i++){
-        var aktItemId="item_"+i;
+    for (var i = 0; i < boolArray.length; i++) {
+        var aktItemId = "item_" + i;
 
-        document.getElementById(aktItemId+'L').style.display="none";
-        document.getElementById(aktItemId+'nL').style.display="none";
-        if(boolArray[i]==true){
-            document.getElementById(aktItemId+'L').style.display="block";
-        }else{
-            document.getElementById(aktItemId+'nL').style.display="block";
-            everythingIsAvailable=false;
+        document.getElementById(aktItemId + 'L').style.display = "none";
+        document.getElementById(aktItemId + 'nL').style.display = "none";
+        if (boolArray[i] == true) {
+            document.getElementById(aktItemId + 'L').style.display = "block";
+        } else {
+            document.getElementById(aktItemId + 'nL').style.display = "block";
+            everythingIsAvailable = false;
         }
-        
+
     }
     return everythingIsAvailable;
 }

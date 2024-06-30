@@ -3,6 +3,5 @@ function goBackHome() {
 }
 
 function goToShop(element) {
-    // window.location.href = `/shop/${element.id}`;
-    window.location.href += '/shop';
+    window.location.href += `/shop?selected=${element}`;
 }
