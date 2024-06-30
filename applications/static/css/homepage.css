@@ -19,7 +19,7 @@ body{
 
 #Titel{
     color: transparent;
-    background-image: linear-gradient(to right, var(--darkGrey), var(--pink), var(--purple), var(--lightGrey));
+    background-image: linear-gradient(to right, var(--pink), var(--purple));
     -webkit-background-clip: text;
     background-clip: text;
     position: absolute;
