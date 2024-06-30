@@ -69,6 +69,11 @@ button:hover{
     border-radius: 5px;
 }
 
+.products{
+    display: flex;
+    flex-wrap: wrap;
+    flex: 5 5 auto;
+}
 
 .product_card {
     display: none;
