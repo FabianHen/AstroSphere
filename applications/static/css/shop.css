@@ -178,7 +178,7 @@ button:hover{
     left: 0;
     top: 150px;
     width: 100%;
-    height: 70%;
+    height: 63%;
     background-color: #0440b041;
     overflow-y: auto;
     overflow-x: hidden;
@@ -248,4 +248,48 @@ button:hover{
 #purchaseS{
     display: none;
     background-color: green;
+}
+
+#buyItems{
+    display: none;
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    height: 50%;
+    width: 60%;
+    background-color: rgb(241, 241, 241);
+    border-radius: 10px;
+}
+#buyItems h1{
+    color: transparent;
+    background-image: linear-gradient(to right, var(--astrosphere-dark-grey), var(--astrosphere-blue), var(--astrosphere-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-left: 35%;
+}
+#buyItems h2{
+    color: transparent;
+    background-image: linear-gradient(to right, var(--astrosphere-dark-grey),var(--astrosphere-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-left: 5%;
+}
+#buyItems #listboughtItems{
+    width: 90%;
+    height: 60%;
+    background-color: rgb(213, 213, 213);
+    margin-left: 5%;
+    overflow: auto;
+}
+.boughtItem{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #c9c1c1;
+}
+#boughtItemPrice{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1%;
 }

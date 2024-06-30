@@ -112,7 +112,30 @@ function updateShoppingCart(updateNum) {
 
 
 
-
+function showOrder(){
+    var htmlList="";
+    var price=0;
+    for(let i=0; i<shoppingCart.length;i++){
+        const aktItem = shoppingCart[i];
+        if(aktItem.anzahl>0){
+            htmlList+="<div class='boughtItem'>\n\t";
+            htmlList+="<p>"+ aktItem.type +"</p>\n\t";
+            if(aktItem.größe==null){
+                htmlList+="<p>-</p>\n\t";    
+            }
+            else{
+                htmlList+="<p>"+ aktItem.größe +"</p>\n\t";
+            }
+            htmlList+="<p>"+ aktItem.anzahl +"</p>\n\t";
+            htmlList+="<p>"+ aktItem.preis +"</p>\n\t";
+            htmlList+="</div>\n";
+            price+=aktItem.anzahl*aktItem.preis;
+        }
+    }
+    htmlList+="\n\t<div id='boughtItemPrice'>\n\t<p>gesamt Preis: "+price+"€</p>\n</div>";
+    document.getElementById('listboughtItems').innerHTML=htmlList;
+    document.getElementById('buyItems').style.display="block";
+}
 
 
 
@@ -138,10 +161,13 @@ function cancel_Order() {
     updateShoppingCart();
 }
 
+
 async function buy_Order() {
     var result= await buyOrCheck("buyShoppingCart", {shoppingCart});
-    if(result.success){
+    if(result.success[0][0]){
         document.getElementById('purchaseS').style.display="flex";
+        showOrder();
+        document.getElementById('bestellNr').innerHTML="Ihre Bestellung: "+result.success[0][1];
     }
     else{
         document.getElementById('purchaseN').style.display="flex";
@@ -150,6 +176,9 @@ async function buy_Order() {
         document.getElementById('purchaseS').style.display="none";
         document.getElementById('purchaseN').style.display="none";
     }, 3000);
+    setTimeout(function(){
+        document.getElementById('buyItems').style.display="none";
+    }, 8000);
 }
 
 

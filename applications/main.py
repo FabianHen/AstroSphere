@@ -47,7 +47,7 @@ def buyOrCheck():
         if action == "checkAvailableItems":
             result=check_data(data)
         elif action == "buyShoppingCart":
-            result=buyShoppingCart(data)
+            result=[buyShoppingCart(data)]
 
         return jsonify(success=result)
     except Exception as e:
@@ -56,7 +56,6 @@ def buyOrCheck():
 
 
 def check_data(data):
-    print("checkData####################")
     available=[]
     shoppingCartItems=[]
     ItemNumbersInDatabase=execute_sql_query("SELECT * from BESTAENDE_MERCH")
@@ -76,14 +75,19 @@ def check_data(data):
 
     return available
 
+OrderNum=9998
 def buyShoppingCart(data):
+    global OrderNum
     available=check_data(data)
 
     if False in available:
-        return False
+        return False,0
     else:
+        OrderNum+=1
+        if OrderNum>9999:
+            OrderNum=0
         #send items to Database and reduce item number
-        return True
+        return True,OrderNum
 
 
 
