@@ -32,24 +32,25 @@ function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath
     aktItem = new Artikel(id, type, beschreibung, größe, preis, anzahl, imagePath);
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        if (item.type === type) {
-            item.anzahl += anzahl;
-            numberOfItems += anzahl;
+        if (item.type == aktItem.type) {
+            item.anzahl += aktItem.anzahl;
+            numberOfItems += aktItem.anzahl;
+            createItems();
             return;
         }
     }
-    numberOfItems += anzahl;
+    numberOfItems += aktItem.anzahl;
     shoppingCart.push(aktItem);
     createItems();
 }
 
-function removeItemFromCart(type) {
+function removeItemFromCart(type, num) {
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
         if (item.type === type) {
+            item.anzahl-num;
             if (item.anzahl <= 0) {
                 shoppingCart.splice(i, 1);
-                createItems();
             }
             return;
         }
@@ -71,7 +72,7 @@ function createItems() {
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>"+ shoppingCart[i].beschreibung +"</p>\n";
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: "+ shoppingCart[i].preis +"</p>\n";
         newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
-        newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: block;'>Auf Lager</p>\n";
+        newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: none;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
         newHTMLItem += "\t</div>\n</div>";
 
@@ -100,8 +101,9 @@ function updateShoppingCart(updateNum) {
 
         document.getElementById(itemID + 'Num').value = item.anzahl;
 
-
-        gesSumme += item.anzahl * item.preis;
+        if(!(item.anzahl*item.preis<=0)){
+            gesSumme+=item.anzahl*item.preis;
+        }
     }
     createItems();
     checkIfAvailable();
@@ -139,11 +141,9 @@ function cancel_Order() {
 async function buy_Order() {
     var result= await buyOrCheck("buyShoppingCart", {shoppingCart});
     if(result.success){
-        //success
         document.getElementById('purchaseS').style.display="flex";
     }
     else{
-        //error
         document.getElementById('purchaseN').style.display="flex";
     }
     setTimeout(function(){
