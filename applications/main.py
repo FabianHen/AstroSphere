@@ -86,7 +86,14 @@ def buyShoppingCart(data):
         OrderNum+=1
         if OrderNum>9999:
             OrderNum=0
-        #send items to Database and reduce item number
+        for aktItem in data:
+            if aktItem['id']%2!=0:
+                sqlCommand="BEGIN VERKAUFEN_SNACK("+aktItem['id']+", "+aktItem['anzahl']+"); END;"
+                execute_sql_query(sqlCommand)
+                pass
+            else:
+                sqlCommand="BEGIN VERKAUFEN_MERCH("+aktItem['id']+", "+aktItem['anzahl']+"); END;"
+                execute_sql_query(sqlCommand)
         return True,OrderNum
 
 
