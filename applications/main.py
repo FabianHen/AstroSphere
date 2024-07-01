@@ -63,8 +63,8 @@ def check_data(data):
     for aktItem in data['shoppingCart']:
         shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['größe'], aktItem['anzahl']))
     
-    for databaseItem in ItemNumbersInDatabase:
-        for shoppingItem in shoppingCartItems:
+    for shoppingItem in shoppingCartItems:
+        for databaseItem in ItemNumbersInDatabase:
             if int(databaseItem[0])==int(shoppingItem[0]):
                 if databaseItem[3]==None:
                     available.append(False)
