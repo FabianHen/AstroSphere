@@ -912,7 +912,7 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20001, 'Merchartikel ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-END VERKAUFEN;
+END VERKAUFEN_MERCH;
 /
 
 
