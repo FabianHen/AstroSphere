@@ -91,6 +91,7 @@ function createItems() {
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].beschreibung + "</p>\n";
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: " + shoppingCart[i].preis + "</p>\n";
         newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
+        newHTMLItem += "\t\t<img src='../static/images/delete.png' alt='delete' class='delete' onclick='deleteItem("+ i +")'>\n"
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: none;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
         newHTMLItem += "\t</div>\n</div>";
@@ -129,7 +130,11 @@ function updateShoppingCart(updateNum) {
     document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
 }
 
-
+function deleteItem(id){
+    const aktItem="item_"+id+"Num";
+    document.getElementById(aktItem).value=0;
+    updateShoppingCart(true);
+}
 
 function showOrder() {
     var htmlList = "";
