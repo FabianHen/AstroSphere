@@ -17,7 +17,7 @@ let shop_timeout;
 // Funktion, um den Timer zurückzusetzen
 function resetTimer() {
     clearTimeout(shop_timeout);
-    shop_timeout = setTimeout(goBack, 10000);
+    shop_timeout = setTimeout(goBack, 30000);
 }
 
 window.addEventListener("load", function (e) {
@@ -177,6 +177,7 @@ function cancel_Order() {
     addItemToCart(11, "Astro Shirt", "Leichtes Baumwoll-T-Shirt mit klassischem Schnitt und Rundhalsausschnitt. Perfekt für jeden Tag.", "L", 19.99, 2, "../static/images/products/AstroShirt.png");
     addItemToCart(15, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 3, "../static/images/products/Marsian_Mug.png");
     addItemToCart(33, "Venus Vest", "Leichte Steppweste mit isolierender Füllung, ideal für Layering. Mit Reißverschlusstaschen und sportlichem Schnitt.", "M", 15.55, 1, "../static/images/products/Venus_Vest.png");
+    addItemToCart(2, "Neptune Nachos", "Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.", 0, 79.9, 2, "../static/images/snacks/Neptune_Nachos.png");
     updateShoppingCart();
 }
 

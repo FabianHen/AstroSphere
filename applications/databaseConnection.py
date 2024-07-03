@@ -86,8 +86,8 @@ def execute_procedure(procedure_name, params):
 
 
 #example of sql Query
-#sql_query = "SELECT * FROM BESTAENDE"
-#execute_sql_query(sql_create_Database)
+#sql_query = "SELECT * FROM SNACK"
+#print(execute_sql_query(sql_query))
 
 #example of stored Procedure
 #procedure = "VERKAUFEN_MERCH"
