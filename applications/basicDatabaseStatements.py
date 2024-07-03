@@ -234,6 +234,27 @@ drop table VERMIETUNG_TELESKOP cascade constraints;
 
 sql_create_Tables="""
 
+create SEQUENCE general_sequence
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+NOMAXVALUE
+NOCYCLE;
+
+create SEQUENCE snack_sequence
+START WITH 2
+INCREMENT BY 2
+MINVALUE 2
+NOMAXVALUE
+NOCYCLE;
+
+create SEQUENCE merch_sequence
+START WITH 1
+INCREMENT BY 2
+MINVALUE 1
+NOMAXVALUE
+NOCYCLE;
+
 /*==============================================================*/
 /* Table: ABTEILUNG                                             */
 /*==============================================================*/
