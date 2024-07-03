@@ -52,12 +52,44 @@ def execute_sql_query(sql_query):
         if connection:
             connection.close()
 
+
+#method to execute a stored Procedure
+# params: procedure_name = "Name of stored Procedure", params = [x, ...] Array of Values
+def execute_procedure(procedure_name, params):
+    connection = None
+    cursor = None
+    try:
+        connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
+        cursor = connection.cursor()
+
+        cursor.callproc(procedure_name, params)
+        
+        return True
+    
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print("Datenbankfehler:", error.message)
+        return False
+    except Exception as e:
+        print("Allgemeiner Fehler:", str(e))
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
+
 #check if cx_Oracle works
 #print(cx_Oracle.clientversion())
 
 
-#sql_create_Database= sql_alter_drop_commands+" "+sql_create_Tables+" "+sql_create_Views
-
+#example of sql Query
 #sql_query = "SELECT * FROM BESTAENDE"
-
 #execute_sql_query(sql_create_Database)
+
+#example of stored Procedure
+#procedure = "VERKAUFEN_MERCH"
+#params = [1,4]
+#execute_procedure(procedure, params)
