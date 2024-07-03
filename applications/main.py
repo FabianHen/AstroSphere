@@ -87,9 +87,9 @@ def buyShoppingCart(data):
         OrderNum+=1
         if OrderNum>9999:
             OrderNum=0
-        for aktItem in data:
-            params=[aktItem['id'], aktItem['anzahl']]
-            if aktItem['id']%2!=0:
+        for aktItem in data['shoppingCart']:
+            params=[int(aktItem['id']), int(aktItem['anzahl'])]
+            if int(aktItem['id'])%2==0:
                 print("update Database with snack")
                 #execute_procedure("VERKAUFEN_SNACK", params)
             else:
