@@ -323,6 +323,11 @@ async function getMerch() {
 }
 
 function processMerch(data) {
+    const specialItems = [
+        "Solar System Socks", "Marsian Mug", "Milkyway Mug", "Uranus USB Stick",
+        "Venus Vase", "Jupiter Journal", "Neptune Notebook", "Meteor Magnet",
+        "Saturn Sunglasses", "Nebula Napkins", "Uranus Umbrella"
+      ];
     var products = document.querySelector('.products');
     var tempHTML = '';
 
@@ -337,9 +342,17 @@ function processMerch(data) {
                     <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
                     <select class="product_size" name="Size">
                         <optgroup label="Size">
-                            <option value="S">S</option>
+                        `
+                        if(specialItems.includes(merch.BEZEICHNUNG)){
+                            tempHTML+=`<option value="M">M</option>`;
+                        }
+                        else{
+                            tempHTML+=`                            <option value="S">S</option>
                             <option value="M">M</option>
-                            <option value="L">L</option>
+                            <option value="L">L</option>`;
+                        }
+
+                tempHTML+=`
                         </optgroup>
                     </select>
                 </div>
