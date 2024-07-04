@@ -7,14 +7,13 @@
 
 html {
     font-family: Arial, Helvetica, sans-serif;
-    overflow: auto;
+    overflow: hidden;
 }
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 98vh;
-    margin: 0;
 }
 
 header {
@@ -78,6 +77,8 @@ button:hover {
     gap: 10px;
     justify-items: center;
     flex: 1 1 auto;
+    height: 83.25vh;
+    overflow-y: auto;
 }
 
 .product_card {
@@ -330,4 +331,12 @@ button:hover {
     display: flex;
     justify-content: flex-end;
     margin-right: 1%;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: -30px;
 }

@@ -15,8 +15,9 @@
     </header>
 
     <div>
-        <button onclick="goBack()">Back</button>
+        <button type="button" onclick="goBack()">Back</button>
     </div>
+
     <main>
         <div class="filter">
             <button class="collapsible" type="button" onclick="collapseFilter('snack_filter')">
@@ -59,8 +60,8 @@
         </div>
 
         <div id="cart_button">
-            <button onclick="goTo_shoppingCart()">
-                <img src="../static/images/cart_bold.svg" alt="Warenkorb" width="25" height="25">
+            <button type="button" onclick="goTo_shoppingCart()">
+                <img src="../static/images/cart_bold.svg" alt="Warenkorb" width="30" height="30">
             </button>
         </div>
     </main>
@@ -82,8 +83,8 @@
         <div id="gesKosten">
             <h3 id="gesKostenNum">00.00€</h3>
         </div>
-        <button id="cancel" onclick="cancel_Order()">Cancel</button>
-        <button id="buy" onclick="buy_Order()">Buy now</button>
+        <button type="button" id="cancel" onclick="cancel_Order()">Cancel</button>
+        <button type="button" id="buy" onclick="buy_Order()">Buy now</button>
     </div>
 
     <div id="purchaseS" class="purchaseInfo">
@@ -108,7 +109,9 @@
         </div>
     </div>
 
-
+    <footer>
+        <h6>AstroSphere © 2024</h6>
+    </footer>
 </body>
 
 </html>
