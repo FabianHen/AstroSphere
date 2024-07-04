@@ -19,25 +19,31 @@
     </div>
     <main>
         <div class="filter">
-            <button class="collapsible" type="button" onclick="collapseFilter('snack_filter')"><h4>Snacks</h4></button>
+            <button class="collapsible" type="button" onclick="collapseFilter('snack_filter')">
+                <h4>Snacks</h4>
+            </button>
 
             <div id="snack_filter" class="filter_content">
-                <div>Alles Anzeigen</div>
-                <div>Getränke</div>
-                <div>Süß</div>
-                <div>Salzig</div>
+                <button type="button" onclick="getSnacks()">Show All</button>
+                <button type="button" onclick="getSnacks()">Drinks</button>
+                <button type="button" onclick="getSnacks()">Sweet</button>
+                <button type="button" onclick="getSnacks()">Salty</button>
             </div>
 
-            <button class="collapsible" type="button" onclick="collapseFilter('merch_filter')"><h4>Merch</h4></button>
+            <button class="collapsible" type="button" onclick="collapseFilter('merch_filter')">
+                <h4>Merch</h4>
+            </button>
 
             <div id="merch_filter" class="filter_content">
-                <div>Alles Anzeigen</div>
-                <div>Hoodies</div>
-                <div>T-Shirts</div>
-                <div>Sonstiges</div>
+                <button type="button" onclick="getMerch()">Show All</button>
+                <button type="button" onclick="getMerch()">Hoodies</button>
+                <button type="button" onclick="getMerch()">T-Shirts</button>
+                <button type="button" onclick="getMerch()">Other</button>
             </div>
 
-            <button class="collapsible" type="button" onclick="collapseFilter('ticket_filter')"><h4>Tickets</h4></button>
+            <button class="collapsible" type="button" onclick="collapseFilter('ticket_filter')">
+                <h4>Tickets</h4>
+            </button>
 
         </div>
 
@@ -90,7 +96,7 @@
             Fehler: Bestellvorgang wurde abgebrochen!
         </h1>
     </div>
-    
+
     <div id="buyItems">
         <h1 id="bestellNr">Bestell-Nr.: 0000</h1>
         <h2>Ihre Bestellung:</h2>
@@ -100,19 +106,19 @@
                 <p>null</p>
                 <p>4</p>
                 <p>4.99</p>
-                
-            <div class='boughtItem'>
-                <p>Astro Shirt</p>
-                <p>L</p>
-                <p>2</p>
-                <p>19.99</p>
-                
-            
-                <div id='boughtItemPrice'>
-                <p>gesamt Preis: 59.94€</p>
+
+                <div class='boughtItem'>
+                    <p>Astro Shirt</p>
+                    <p>L</p>
+                    <p>2</p>
+                    <p>19.99</p>
+
+
+                    <div id='boughtItemPrice'>
+                        <p>gesamt Preis: 59.94€</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
 
 </body>
