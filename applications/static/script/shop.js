@@ -266,6 +266,7 @@ async function getSnacks() {
 }
 
 function processSnacks(data) {
+    const specialItems = ["Solary Salad", "Venus Vinegar Chips", "Zodiac Sourcreme Chips", "Galaxie Gummi Bears", "Parsec Peanuts"];
     var products = document.querySelector('.products');
     var tempHTML='';
 
@@ -281,9 +282,17 @@ function processSnacks(data) {
                     <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
                     <select class="product_size" name="Size">
                         <optgroup label="Size">
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
+                  `
+                  if(specialItems.includes(snack.BEZEICHNUNG)){
+                    tempHTML += `<option value="M">M</option>`;
+                  }
+                  else{
+                    tempHTML += `                            <option value="M">M</option>
+                            <option value="L">L</option>`;
+                  }
+                  
+            tempHTML+=`      
+
                         </optgroup>
                     </select>
                 </div>
@@ -346,5 +355,6 @@ function processMerch(data) {
 
 
 function add(id, type, beschreibung, groesse, preis, anzahl, image){
+    console.log(id+" "+type+""+beschreibung+" "+groesse+" "+preis+" "+anzahl+" "+image);
         addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
 }
