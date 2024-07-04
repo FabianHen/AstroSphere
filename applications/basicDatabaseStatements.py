@@ -1258,55 +1258,55 @@ INSERT INTO ASTROSPHERE.MERCHARTIKEL(BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF
 -- Inserting data into table ASTROSPHERE.SNACK
 --
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 79.90, 'M', '../static/images/snacks/Neptune_Nachos.png');
+('Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 3.99, 'M', '../static/images/snacks/Neptune_Nachos.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 79.90, 'L', '../static/images/snacks/Neptune_Nachos.png');
+('Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 4.99, 'L', '../static/images/snacks/Neptune_Nachos.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 49.90, 'M', '../static/images/snacks/Planetary_Popcorn_Salt.png');
+('Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 2.49, 'M', '../static/images/snacks/Planetary_Popcorn_Salt.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 49.90, 'L' ,'../static/images/snacks/Planetary_Popcorn_Salt.png');
+('Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 3.49, 'L' ,'../static/images/snacks/Planetary_Popcorn_Salt.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 49.90, 'M', '../static/images/snacks/Planetary_Popcorn_Sugar.png');
+('Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 2.49, 'M', '../static/images/snacks/Planetary_Popcorn_Sugar.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 49.90, 'L', '../static/images/snacks/Planetary_Popcorn_Sugar.png');
+('Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 3.49, 'L', '../static/images/snacks/Planetary_Popcorn_Sugar.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Solary Salad', 'Knackiger Salat mit einer bunten Mischung aus frischen Gemüsesorten und einem leicht würzigen Dressing.', 129.90, 'M', '../static/images/snacks/Solary_Salad.png');
+('Solary Salad', 'Knackiger Salat mit einer bunten Mischung aus frischen Gemüsesorten und einem leicht würzigen Dressing.', 5.99, 'M', '../static/images/snacks/Solary_Salad.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Venus Vinegar Chips', 'Knackige Kartoffelchips mit einem würzigen Essiggeschmack, perfekt für Liebhaber von herzhaften Snacks.',26.94, 'M', '../static/images/snacks/Venus_Vinegar_Chips.png');
+('Venus Vinegar Chips', 'Knackige Kartoffelchips mit einem würzigen Essiggeschmack, perfekt für Liebhaber von herzhaften Snacks.', 1.99, 'M', '../static/images/snacks/Venus_Vinegar_Chips.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Zodiac Sourcreme Chips', 'Knackige Kartoffelchips mit einem cremigen Sauerrahmgeschmack und einer leichten Würze, ideal für Snackliebhaber.', 26.94, 'M', '../static/images/snacks/Zodiac_Sourcreme_Chips.png');
+('Zodiac Sourcreme Chips', 'Knackige Kartoffelchips mit einem cremigen Sauerrahmgeschmack und einer leichten Würze, ideal für Snackliebhaber.', 1.99, 'M', '../static/images/snacks/Zodiac_Sourcreme_Chips.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Galaxie Gummi Bears', 'Fruchtige und weiche Gummibären in verschiedenen Geschmacksrichtungen, ein beliebter Snack für Jung und Alt.', 39.90, 'M', '../static/images/snacks/Galaxie_Gummi_Bears.png');
+('Galaxie Gummi Bears', 'Fruchtige und weiche Gummibären in verschiedenen Geschmacksrichtungen, ein beliebter Snack für Jung und Alt.', 1.49, 'M', '../static/images/snacks/Galaxie_Gummi_Bears.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 78.00, 'M', '../static/images/snacks/Cosmic_Coke.png');
+('Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 1.99, 'M', '../static/images/snacks/Cosmic_Coke.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 78.00, 'L', '../static/images/snacks/Cosmic_Coke.png');
+('Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 2.49, 'L', '../static/images/snacks/Cosmic_Coke.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 84.00, 'M', '../static/images/snacks/Cosmic_Coke_Zero.png');
+('Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 2.09, 'M', '../static/images/snacks/Cosmic_Coke_Zero.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 84.00, 'L', '../static/images/snacks/Cosmic_Coke_Zero.png');
+('Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 2.59, 'L', '../static/images/snacks/Cosmic_Coke_Zero.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 78.00, 'M', '../static/images/snacks/Space_Sprite.png');
+('Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 1.99, 'M', '../static/images/snacks/Space_Sprite.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 78.00, 'L', '../static/images/snacks/Space_Sprite.png');
+('Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 2.49, 'L', '../static/images/snacks/Space_Sprite.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 84.00, 'M', '../static/images/snacks/Space_Sprite_Zero.png');
+('Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 2.09, 'M', '../static/images/snacks/Space_Sprite_Zero.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 84.00, 'L', '../static/images/snacks/Space_Sprite_Zero.png');
+('Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 2.59, 'L', '../static/images/snacks/Space_Sprite_Zero.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 104.00, 'M', '../static/images/snacks/Interplanetary_IceTea.png');
+('Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 2.99, 'M', '../static/images/snacks/Interplanetary_IceTea.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 104.00, 'L', '../static/images/snacks/Interplanetary_IceTea.png');
+('Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 3.49, 'L', '../static/images/snacks/Interplanetary_IceTea.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 110.00, 'M', '../static/images/snacks/Interplanetary_IceTea_Zero.png');
+('Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 3.09, 'M', '../static/images/snacks/Interplanetary_IceTea_Zero.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 110.00, 'L', '../static/images/snacks/Interplanetary_IceTea_Zero.png');
+('Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 3.59, 'L', '../static/images/snacks/Interplanetary_IceTea_Zero.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 158.00, 'M', '../static/images/snacks/Big_Bang_Beer.png');
+('Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 4.99, 'M', '../static/images/snacks/Big_Bang_Beer.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 158.00, 'L', '../static/images/snacks/Big_Bang_Beer.png');
+('Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 5.99, 'L', '../static/images/snacks/Big_Bang_Beer.png');
 INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
-('Parsec Peanuts', 'Geröstete Erdnüsse mit einer leichten Salznote, ideal als Snack für zwischendurch.', 59.90, 'M', '../static/images/snacks/Parsec_Peanuts.png');
+('Parsec Peanuts', 'Geröstete Erdnüsse mit einer leichten Salznote, ideal als Snack für zwischendurch.', 1.49, 'M', '../static/images/snacks/Parsec_Peanuts.png');
 
 
 --
