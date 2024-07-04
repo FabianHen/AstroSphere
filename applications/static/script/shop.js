@@ -274,30 +274,32 @@ function processSnacks(data) {
 
 
     data.forEach(snack => {
-        tempHTML += `
-            <div class="product_card">
-                <img class="product_image" src="${snack.IMAGE_PATH}" alt="${snack.BEZEICHNUNG} Bild" width="150" height="150">
-                <label class="product_name" for="">${snack.BEZEICHNUNG}</label>
-                <div>
-                    <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
-                    <select class="product_size" name="Size">
-                        <optgroup label="Size">
-                  `
-                  if(specialItems.includes(snack.BEZEICHNUNG)){
-                    tempHTML += `<option value="M">M</option>`;
-                  }
-                  else{
-                    tempHTML += `                            <option value="M">M</option>
-                            <option value="L">L</option>`;
-                  }
+        if(!tempHTML.includes(snack.BEZEICHNUNG)){
+            tempHTML += `
+                <div class="product_card">
+                    <img class="product_image" src="${snack.IMAGE_PATH}" alt="${snack.BEZEICHNUNG} Bild" width="150" height="150">
+                    <label class="product_name" for="">${snack.BEZEICHNUNG}</label>
+                    <div>
+                        <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
+                        <select class="product_size" name="Size">
+                            <optgroup label="Size">
+                      `
+                      if(specialItems.includes(snack.BEZEICHNUNG)){
+                        tempHTML += `<option value="M">M</option>`;
+                    }
+                      else{
+                        tempHTML += `                            <option value="M">M</option>
+                                <option value="L">L</option>`;
+                      }
                   
-            tempHTML+=`      
+                tempHTML+=`      
 
-                        </optgroup>
-                    </select>
-                </div>
-                <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', '${snack.GROESSE}', '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
-            </div>`;
+                          </optgroup>
+                        </select>
+                    </div>
+                    <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', '${snack.GROESSE}', '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
+                </div>`;
+        }
     });
 
     products.innerHTML = tempHTML;
@@ -334,30 +336,32 @@ function processMerch(data) {
     products.innerHTML = '';
 
     data.forEach(merch => {
-        tempHTML += `
-            <div class="product_card">
-                <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild" width="150" height="150">
-                <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
-                <div>
-                    <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
-                    <select class="product_size" name="Size">
-                        <optgroup label="Size">
-                        `
-                        if(specialItems.includes(merch.BEZEICHNUNG)){
-                            tempHTML+=`<option value="M">M</option>`;
-                        }
-                        else{
-                            tempHTML+=`                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>`;
-                        }
+        if(!tempHTML.includes(merch.BEZEICHNUNG)){
+            tempHTML += `
+                <div class="product_card">
+                    <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild" width="150" height="150">
+                    <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
+                    <div>
+                        <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
+                        <select class="product_size" name="Size">
+                            <optgroup label="Size">
+                            `
+                            if(specialItems.includes(merch.BEZEICHNUNG)){
+                                tempHTML+=`<option value="M">M</option>`;
+                            }
+                            else{
+                                tempHTML+=`                            <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>`;
+                            }
 
-                tempHTML+=`
-                        </optgroup>
-                    </select>
-                </div>
-                <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', '${merch.GROESSE}', '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
-            </div>`;
+                    tempHTML+=`
+                            </optgroup>
+                        </select>
+                    </div>
+                    <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', '${merch.GROESSE}', '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
+                </div>`;
+        }
     });
 
     products.innerHTML = tempHTML;
