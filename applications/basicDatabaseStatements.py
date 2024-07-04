@@ -281,7 +281,8 @@ create table SNACK (
    ID                   NUMBER(8)            GENERATED ALWAYS AS IDENTITY (START WITH 2 INCREMENT BY 2 MINVALUE 2) not null,
    BEZEICHNUNG          VARCHAR2(100)         not null,
    BESCHREIBUNG         VARCHAR2(200)         not null,
-   VERKAUF_PREIS_KG     NUMBER(5,2)           not null,
+   VERKAUF_PREIS_STK     NUMBER(5,2)           not null,
+   GROESSE              CHAR(3)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    IMAGE_PATH           VARCHAR(100)           not null,
    constraint PK_SNACK primary key (ID)
 );
@@ -895,22 +896,20 @@ ORDER BY MERCHARTIKEL.id;
 
 sql_create_storedProcedure="""
 -- Stored Procedure zur Verbuchung von verkauften Merchartikeln
-create or replace PROCEDURE VERKAUFEN_MERCH (
+CREATE OR REPLACE PROCEDURE VERKAUFEN_MERCH (
     p_merchartikel_id IN MERCHARTIKEL.id%TYPE,
     p_verkauf_anzahl IN VERKAUF_MERCH.anzahl%TYPE
 ) AS
+    verkauf_id ASTROSPHERE.VERKAUF.id%TYPE;
 BEGIN
-    DECLARE
-        verkauf_id ASTROSPHERE.VERKAUF.id%TYPE;
-    BEGIN
-     -- Verkauf verbuchen
-   INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
-   (1, 1, NULL, current_date);
+    -- Verkauf verbuchen
+    INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
+    (1, 1, NULL, CURRENT_DATE);
 
-    SELECT MAX(VERKAUF.id) INTO verkauf_id FROM VERKAUF;
-    
-   INSERT INTO ASTROSPHERE.VERKAUF_MERCH(VERKAUF_ID, MERCHARTIKEL_ID, ANZAHL) VALUES
-   (verkauf_id, p_merchartikel_id, p_verkauf_anzahl);
+    SELECT MAX(VERKAUF.id) INTO verkauf_id FROM ASTROSPHERE.VERKAUF;
+
+    INSERT INTO ASTROSPHERE.VERKAUF_MERCH(VERKAUF_ID, MERCHARTIKEL_ID, ANZAHL) VALUES
+    (verkauf_id, p_merchartikel_id, p_verkauf_anzahl);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
@@ -918,27 +917,24 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20001, 'Merchartikel ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-    END;
 END VERKAUFEN_MERCH;
-
+/
 
 -- Stored Procedure zur Verbuchung von verkauften Snacks
-create or replace PROCEDURE VERKAUFEN_SNACK (
+CREATE OR REPLACE PROCEDURE VERKAUFEN_SNACK (
     p_snack_id IN SNACK.id%TYPE,
     p_verkauf_anzahl IN VERKAUF_SNACK.anzahl%TYPE
 ) AS
+    verkauf_id ASTROSPHERE.VERKAUF.id%TYPE;
 BEGIN
-    DECLARE
-        verkauf_id ASTROSPHERE.VERKAUF.id%TYPE;
-    BEGIN
-     -- Verkauf verbuchen
-   INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
-   (1, 1, NULL, current_date);
+    -- Verkauf verbuchen
+    INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
+    (1, 1, NULL, CURRENT_DATE);
 
-    SELECT MAX(VERKAUF.id) INTO verkauf_id FROM VERKAUF;
-    
-   INSERT INTO ASTROSPHERE.VERKAUF_SNACK(VERKAUF_ID, SNACK_ID, ANZAHL) VALUES
-   (verkauf_id, p_snack_id, p_verkauf_anzahl);
+    SELECT MAX(VERKAUF.id) INTO verkauf_id FROM ASTROSPHERE.VERKAUF;
+
+    INSERT INTO ASTROSPHERE.VERKAUF_SNACK(VERKAUF_ID, SNACK_ID, ANZAHL) VALUES
+    (verkauf_id, p_snack_id, p_verkauf_anzahl);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
@@ -946,8 +942,8 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20001, 'Snack ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-    END;
 END VERKAUFEN_SNACK;
+/
 
 """
 
@@ -1261,36 +1257,56 @@ INSERT INTO ASTROSPHERE.MERCHARTIKEL(BEZEICHNUNG, BESCHREIBUNG, GROESSE, VERKAUF
 --
 -- Inserting data into table ASTROSPHERE.SNACK
 --
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 79.90, '../static/images/snacks/Neptune_Nachos.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 49.90, '../static/images/snacks/Planetary_Popcorn_Salt.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 49.90, '../static/images/snacks/Planetary_Popcorn_Sugar.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Solary Salad', 'Knackiger Salat mit einer bunten Mischung aus frischen Gemüsesorten und einem leicht würzigen Dressing.', 129.90, '../static/images/snacks/Solary_Salad.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Venus Vinegar Chips', 'Knackige Kartoffelchips mit einem würzigen Essiggeschmack, perfekt für Liebhaber von herzhaften Snacks.',26.94, '../static/images/snacks/Venus_Vinegar_Chips.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Zodiac Sourcreme Chips', 'Knackige Kartoffelchips mit einem cremigen Sauerrahmgeschmack und einer leichten Würze, ideal für Snackliebhaber.', 26.94, '../static/images/snacks/Zodiac_Sourcreme_Chips.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Galaxie Gummi Bears', 'Fruchtige und weiche Gummibären in verschiedenen Geschmacksrichtungen, ein beliebter Snack für Jung und Alt.', 39.90, '../static/images/snacks/Galaxie_Gummi_Bears.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 78.00, '../static/images/snacks/Cosmic_Coke.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 84.00, '../static/images/snacks/Cosmic_Coke_Zero.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 78.00, '../static/images/snacks/Space_Sprite.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 84.00, '../static/images/snacks/Space_Sprite_Zero.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 104.00, '../static/images/snacks/Interplanetary_IceTea.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 110.00, '../static/images/snacks/Interplanetary_IceTea_Zero.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 158.00, '../static/images/snacks/Big_Bang_Beer.png');
-INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_KG, IMAGE_PATH) VALUES
-('Parsec Peanuts', 'Geröstete Erdnüsse mit einer leichten Salznote, ideal als Snack für zwischendurch.', 59.90, '../static/images/snacks/Parsec_Peanuts.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 79.90, 'M', '../static/images/snacks/Neptune_Nachos.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Neptune Nachos', 'Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.', 79.90, 'L', '../static/images/snacks/Neptune_Nachos.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 49.90, 'M', '../static/images/snacks/Planetary_Popcorn_Salt.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Planetary Popcorn Salt', 'Luftig-leichtes Popcorn mit einer perfekten Balance aus Knusprigkeit und salzigem Geschmack.', 49.90, 'L' ,'../static/images/snacks/Planetary_Popcorn_Salt.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 49.90, 'M', '../static/images/snacks/Planetary_Popcorn_Sugar.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Planetary Popcorn Sugar', 'Luftig-leichtes Popcorn mit einer köstlichen Zuckerglasur.', 49.90, 'L', '../static/images/snacks/Planetary_Popcorn_Sugar.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Solary Salad', 'Knackiger Salat mit einer bunten Mischung aus frischen Gemüsesorten und einem leicht würzigen Dressing.', 129.90, 'M', '../static/images/snacks/Solary_Salad.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Venus Vinegar Chips', 'Knackige Kartoffelchips mit einem würzigen Essiggeschmack, perfekt für Liebhaber von herzhaften Snacks.',26.94, 'M', '../static/images/snacks/Venus_Vinegar_Chips.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Zodiac Sourcreme Chips', 'Knackige Kartoffelchips mit einem cremigen Sauerrahmgeschmack und einer leichten Würze, ideal für Snackliebhaber.', 26.94, 'M', '../static/images/snacks/Zodiac_Sourcreme_Chips.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Galaxie Gummi Bears', 'Fruchtige und weiche Gummibären in verschiedenen Geschmacksrichtungen, ein beliebter Snack für Jung und Alt.', 39.90, 'M', '../static/images/snacks/Galaxie_Gummi_Bears.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 78.00, 'M', '../static/images/snacks/Cosmic_Coke.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Cosmic Coke', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem unverwechselbaren Geschmack.', 78.00, 'L', '../static/images/snacks/Cosmic_Coke.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 84.00, 'M', '../static/images/snacks/Cosmic_Coke_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Cosmic Coke Zero', 'Kohlensäurehaltiges Erfrischungsgetränk ohne Zucker, aber mit dem vollen Geschmack von Cola.', 84.00, 'L', '../static/images/snacks/Cosmic_Coke_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 78.00, 'M', '../static/images/snacks/Space_Sprite.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Space Sprite', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack und einer leichten Süße.', 78.00, 'L', '../static/images/snacks/Space_Sprite.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 84.00, 'M', '../static/images/snacks/Space_Sprite_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Space Sprite Zero', 'Kohlensäurehaltiges Erfrischungsgetränk mit einem zitronigen Geschmack, aber ohne Zucker.', 84.00, 'L', '../static/images/snacks/Space_Sprite_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 104.00, 'M', '../static/images/snacks/Interplanetary_IceTea.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Interplanetary IceTea', 'Kühlender Eistee mit einem Hauch von Zitrone und einer leichten Süße, perfekt für heiße Tage.', 104.00, 'L', '../static/images/snacks/Interplanetary_IceTea.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 110.00, 'M', '../static/images/snacks/Interplanetary_IceTea_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Interplanetary IceTea Zero', 'Kühlender Eistee mit einem Hauch von Zitrone und keinerlei Zucker.', 110.00, 'L', '../static/images/snacks/Interplanetary_IceTea_Zero.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 158.00, 'M', '../static/images/snacks/Big_Bang_Beer.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Big Bang Beer', 'Hopfenhaltiges Getränk mit einem angenehmen Bittergeschmack und malzigen Aromen.', 158.00, 'L', '../static/images/snacks/Big_Bang_Beer.png');
+INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROESSE, IMAGE_PATH) VALUES
+('Parsec Peanuts', 'Geröstete Erdnüsse mit einer leichten Salznote, ideal als Snack für zwischendurch.', 59.90, 'M', '../static/images/snacks/Parsec_Peanuts.png');
 
 
 --
