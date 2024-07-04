@@ -12,7 +12,39 @@ user = "AstroSphere"
 password = "astrosphere"
 
 
+def execute_sql_query_list_of_dicts(sql_query: str) -> list:
+    global dsn, user, password
 
+    connection = None
+    cursor = None
+
+    #print("User: ", user, "; Password: ", password, "; DSN: ", dsn)
+    try:
+        connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
+        cursor = connection.cursor()
+
+        cursor.execute(sql_query)
+        
+       # Spaltennamen aus cursor.description extrahieren
+        columns = [col[0] for col in cursor.description]
+
+        # Daten als Liste von Dictionaries speichern
+        result = []
+        for row in cursor:
+            result.append(dict(zip(columns, row)))
+
+        return result
+    
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print("Datenbankfehler:", error.message)
+    except Exception as e:
+        print("Allgemeiner Fehler:", str(e))
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
 
 def execute_sql_query(sql_query):
