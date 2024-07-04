@@ -18,19 +18,19 @@ def shop():
 
 @app.route('/terminal/shop/snacks', methods=['GET'])
 def get_snacks():
-    query_result = execute_sql_query("SELECT SNACK.id, SNACK.bezeichnung, SNACK.verkauf_preis_kg " +
-                               "FROM BESTAENDE_SNACK LEFT JOIN SNACK ON BESTAENDE_SNACK.id = SNACK.id " +
+    query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse " +
+                               "FROM SNACK LEFT JOIN BESTAENDE_SNACK ON SNACK.id = BESTAENDE_SNACK.id " +
                                "WHERE BESTAENDE_SNACK.BESTAND > 0" +
                                "ORDER BY SNACK.id")
-    # result = calc_snack_price(query_result)
     return jsonify(query_result)
     
 @app.route('/terminal/shop/merch', methods=['GET'])
 def get_merch():
-    query_result = execute_sql_query("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk " +
-                               "FROM BESTAENDE_MERCH LEFT JOIN MERCHARTIKEL ON BESTAENDE_MERCH.id = MERCHARTIKEL.id " +
+    query_result = execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.groesse " +
+                               "FROM MERCHARTIKEL LEFT JOIN BESTAENDE_MERCH ON MERCHARTIKEL.id = BESTAENDE_MERCH.id " +
                                "WHERE BESTAENDE_MERCH.BESTAND > 0" +
-                               "ORDER BY MERCHARTIKEL.id")
+                               "GROUP BY MERCHARTIKEL.groesse, MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path " +
+                               "ORDER BY MERCHARTIKEL.groesse")
     return jsonify(query_result)
 
 @app.route('/intern/events')
@@ -114,40 +114,6 @@ def buyShoppingCart(data):
                 #execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
 
-
-def calc_snack_price(data: list) -> dict:
-    nacho_weight = 0.1
-    popcorn_weight = 0.075
-    salad_weight = 0.15
-    chips_weight = 0.1
-    gummi_bears_weight = 0.15
-    bottle_volume = 0.33
-    
-    for snack in data:
-        if snack['BEZEICHNUNG'].find('Nachos') != -1:
-            print(snack['BEZEICHNUNG'])
-            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*nacho_weight
-        elif snack['BEZEICHNUNG'].find('Popcorn') != -1:
-            print(snack['BEZEICHNUNG'])
-            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*popcorn_weight
-        elif snack['BEZEICHNUNG'].find('Salad') != -1:
-            print(snack['BEZEICHNUNG'])
-            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*salad_weight
-        elif snack['BEZEICHNUNG'].find('Chips') != -1:
-            print(snack['BEZEICHNUNG'])
-            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*chips_weight
-        elif snack['BEZEICHNUNG'].find('Gummi Bears') != -1:
-            print(snack['BEZEICHNUNG'])
-            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*gummi_bears_weight
-            print(snack['BEZEICHNUNG'])
-        elif (snack['BEZEICHNUNG'].find('Coke') != -1) or (snack['BEZEICHNUNG'].find('Sprite') != -1) or (snack['BEZEICHNUNG'].find('IceTea') != -1) or (snack.BEZEICHNUNG.find('Beer') != -1):
-            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*bottle_volume
-            print(snack['BEZEICHNUNG'])
-        
-            
-    
-    return data
-            
 
 if __name__ == '__main__':
     app.run(debug=True)

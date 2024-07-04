@@ -35,7 +35,7 @@ button {
     padding: 2px 10px 2px 10px;
 }
 
-button:hover{
+button:hover {
     background: var(--astrosphere-blue);
     cursor: pointer;
 }
@@ -44,7 +44,8 @@ button:hover{
 .filter {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    max-width: 10%;
+    min-width: 10%;
     padding-left: 2%;
     padding-top: 2%;
 }
@@ -69,14 +70,27 @@ button:hover{
     border-radius: 5px;
 }
 
-.products{
-    display: flex;
-    flex-wrap: wrap;
-    flex: 5 5 auto;
+.products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    justify-items: center;
+    flex: 1 1 auto;
 }
 
 .product_card {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.product_image,
+.product_name,
+.product_price,
+.product_size
+{
+    margin: 2px 2px;
 }
 
 .item {
@@ -94,7 +108,7 @@ button:hover{
     width: 15%;
     margin-left: 1%;
     margin-top: 5px;
-    -webkit-box-shadow: 3px 1px 16px 2px #000000; 
+    -webkit-box-shadow: 3px 1px 16px 2px #000000;
     box-shadow: 3px 1px 16px 2px #000000;
 }
 
@@ -153,7 +167,8 @@ button:hover{
     bottom: 120%;
     color: rgb(112, 7, 7);
 }
-.item .delete{
+
+.item .delete {
     position: relative;
     bottom: 117%;
     left: 89%;
@@ -234,7 +249,7 @@ button:hover{
     right: 0;
 }
 
-.purchaseInfo{
+.purchaseInfo {
     position: absolute;
     top: 5%;
     left: 36%;
@@ -248,23 +263,25 @@ button:hover{
     align-items: center;
     justify-content: space-around;
     padding: 5px;
-    -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.71); 
-    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.71);
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.71);
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.71);
 }
-.purchaseInfo h1{
+
+.purchaseInfo h1 {
     font-size: 130%;
 }
 
-#purchaseN{
+#purchaseN {
     display: none;
     background-color: red;
 }
-#purchaseS{
+
+#purchaseS {
     display: none;
     background-color: green;
 }
 
-#buyItems{
+#buyItems {
     display: none;
     position: absolute;
     top: 20%;
@@ -274,35 +291,40 @@ button:hover{
     background-color: rgb(241, 241, 241);
     border-radius: 10px;
 }
-#buyItems h1{
+
+#buyItems h1 {
     color: transparent;
     background-image: linear-gradient(to right, var(--astrosphere-dark-grey), var(--astrosphere-blue), var(--astrosphere-pink));
     -webkit-background-clip: text;
     background-clip: text;
     margin-left: 35%;
 }
-#buyItems h2{
+
+#buyItems h2 {
     color: transparent;
-    background-image: linear-gradient(to right, var(--astrosphere-dark-grey),var(--astrosphere-pink));
+    background-image: linear-gradient(to right, var(--astrosphere-dark-grey), var(--astrosphere-pink));
     -webkit-background-clip: text;
     background-clip: text;
     margin-left: 5%;
 }
-#buyItems #listboughtItems{
+
+#buyItems #listboughtItems {
     width: 90%;
     height: 60%;
     background-color: rgb(213, 213, 213);
     margin-left: 5%;
     overflow: auto;
 }
-.boughtItem{
+
+.boughtItem {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-around;
     background-color: #c9c1c1;
 }
-#boughtItemPrice{
+
+#boughtItemPrice {
     display: flex;
     justify-content: flex-end;
     margin-right: 1%;

@@ -90,7 +90,7 @@ function createItems() {
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].beschreibung + "</p>\n";
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: " + shoppingCart[i].preis + "</p>\n";
         newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
-        newHTMLItem += "\t\t<img src='../static/images/delete.png' alt='delete' class='delete' onclick='deleteItem("+ i +")'>\n"
+        newHTMLItem += "\t\t<img src='../static/images/delete.png' alt='delete' class='delete' onclick='deleteItem(" + i + ")'>\n"
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: none;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
         newHTMLItem += "\t</div>\n</div>";
@@ -129,9 +129,9 @@ function updateShoppingCart(updateNum) {
     document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
 }
 
-function deleteItem(id){
-    const aktItem="item_"+id+"Num";
-    document.getElementById(aktItem).value=0;
+function deleteItem(id) {
+    const aktItem = "item_" + id + "Num";
+    document.getElementById(aktItem).value = 0;
     updateShoppingCart(true);
 }
 
@@ -253,24 +253,48 @@ async function buyOrCheck(action, data) {
 
 
 async function getSnacks() {
-    fetch('terminal/shop/snacks')
-        .then(response => {
-            // Check if the request was successful
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            // Parse the response as JSON
-            return response.json();
-        })
-        .then(data => {
-            // Handle the parsed data here
-            console.log(data);
-        })
-        .catch(error => {
-            // Handle any errors that occurred during the fetch
-            console.error('There was a problem with the fetch operation:', error);
-        });
+    try {
+        const response = await fetch('/terminal/shop/snacks');
+
+        if (response.ok) {
+            const data = await response.json();
+            processSnacks(data)
+            return data;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
+
+function processSnacks(data) {
+    var products = document.querySelector('.products');
+    products.innerHTML = '';
+
+
+    data.forEach(snack => {
+        products.innerHTML +=
+            `<div class="product_card">
+                <img class="product_image" src="${snack.IMAGE_PATH}" alt="${snack.BEZEICHNUNG} Bild" width="150" height="150">
+                <label class="product_name" for="">${snack.BEZEICHNUNG}</label>
+                <div>
+                    <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
+                    <button type="button">Add To Cart</button>
+                    <select name="Size">
+                        <optgroup label="Size">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>`;
+    });
+}
+
 
 async function getMerch() {
     try {
@@ -292,15 +316,18 @@ async function getMerch() {
 
 function processMerch(data) {
     var products = document.querySelector('.products');
+    products.innerHTML = '';
+
     data.forEach(merch => {
+
+        // TODO: ins glob artikel array einfügen
         products.innerHTML +=
-            `<div class="product_card_${merch.ID}">
-                <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild">
+            `<div class="product_card">
+                <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild" width="150" height="150">
                 <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
                 <div>
                     <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
-                    <button type="button">Add To Cart</button>
-                    <select name="Size">
+                    <select class="product_size" name="Size">
                         <optgroup label="Size">
                             <option value="S">S</option>
                             <option value="M">M</option>
@@ -308,6 +335,7 @@ function processMerch(data) {
                         </optgroup>
                     </select>
                 </div>
+                <button type="button" onclick="add(this)">Add To Cart</button>
             </div>`;
     });
 }
