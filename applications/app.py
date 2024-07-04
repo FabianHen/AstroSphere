@@ -79,7 +79,8 @@ def check_data(data):
 
     for aktItem in data['shoppingCart']:
         shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['größe'], aktItem['anzahl']))
-    
+
+
     for shoppingItem in shoppingCartItems:
         for databaseItem in ItemNumbersInDatabase:
             if int(databaseItem[0])==int(shoppingItem[0]):
@@ -92,7 +93,7 @@ def check_data(data):
 
     return available
 
-OrderNum=9998
+OrderNum=0
 def buyShoppingCart(data):
     global OrderNum
     available=check_data(data)
@@ -103,14 +104,14 @@ def buyShoppingCart(data):
         OrderNum+=1
         if OrderNum>9999:
             OrderNum=0
-        for aktItem in data:
-            if aktItem['id']%2!=0:
-                sqlCommand="BEGIN VERKAUFEN_SNACK("+aktItem['id']+", "+aktItem['anzahl']+"); END;"
-                execute_sql_query(sqlCommand)
-                pass
+        for aktItem in data['shoppingCart']:
+            params=[int(aktItem['id']), int(aktItem['anzahl'])]
+            if int(aktItem['id'])%2==0:
+                print("update Database with snack")
+                #execute_procedure("VERKAUFEN_SNACK", params)
             else:
-                sqlCommand="BEGIN VERKAUFEN_MERCH("+aktItem['id']+", "+aktItem['anzahl']+"); END;"
-                execute_sql_query(sqlCommand)
+                print("update Database with merch")
+                #execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
 
 

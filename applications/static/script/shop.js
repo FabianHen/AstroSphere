@@ -16,7 +16,7 @@ let shop_timeout;
 
 function resetTimer() {
     clearTimeout(shop_timeout);
-    shop_timeout = setTimeout(goBack, 10000);
+    shop_timeout = setTimeout(goBack, 30000);
 }
 
 window.addEventListener("load", function (e) {
@@ -90,6 +90,7 @@ function createItems() {
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].beschreibung + "</p>\n";
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: " + shoppingCart[i].preis + "</p>\n";
         newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
+        newHTMLItem += "\t\t<img src='../static/images/delete.png' alt='delete' class='delete' onclick='deleteItem("+ i +")'>\n"
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: none;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
         newHTMLItem += "\t</div>\n</div>";
@@ -128,7 +129,11 @@ function updateShoppingCart(updateNum) {
     document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
 }
 
-
+function deleteItem(id){
+    const aktItem="item_"+id+"Num";
+    document.getElementById(aktItem).value=0;
+    updateShoppingCart(true);
+}
 
 function showOrder() {
     var htmlList = "";
@@ -171,10 +176,11 @@ function cancel_Order() {
     //shoppingCart = [];
     //updateShoppingCart();
     //document.getElementById('shoppingCart').style.display = "none";
-    addItemToCart(8, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 1, "../static/images/products/Marsian_Mug.png");
-    addItemToCart(6, "Astro Shirt", "Leichtes Baumwoll-T-Shirt mit klassischem Schnitt und Rundhalsausschnitt. Perfekt für jeden Tag.", "L", 19.99, 2, "../static/images/products/AstroShirt.png");
-    addItemToCart(8, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 3, "../static/images/products/Marsian_Mug.png");
-    addItemToCart(17, "Venus Vest", "Leichte Steppweste mit isolierender Füllung, ideal für Layering. Mit Reißverschlusstaschen und sportlichem Schnitt.", "M", 15.55, 1, "../static/images/products/Venus_Vest.png");
+    addItemToCart(15, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 1, "../static/images/products/Marsian_Mug.png");
+    addItemToCart(11, "Astro Shirt", "Leichtes Baumwoll-T-Shirt mit klassischem Schnitt und Rundhalsausschnitt. Perfekt für jeden Tag.", "L", 19.99, 2, "../static/images/products/AstroShirt.png");
+    addItemToCart(15, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 3, "../static/images/products/Marsian_Mug.png");
+    addItemToCart(33, "Venus Vest", "Leichte Steppweste mit isolierender Füllung, ideal für Layering. Mit Reißverschlusstaschen und sportlichem Schnitt.", "M", 15.55, 1, "../static/images/products/Venus_Vest.png");
+    addItemToCart(2, "Neptune Nachos", "Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.", 0, 79.9, 2, "../static/images/snacks/Neptune_Nachos.png");
     updateShoppingCart();
 }
 
