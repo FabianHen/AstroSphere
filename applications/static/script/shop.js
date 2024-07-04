@@ -174,15 +174,9 @@ function goTo_shoppingCart() {
 }
 
 function cancel_Order() {
-    //shoppingCart = [];
-    //updateShoppingCart();
-    //document.getElementById('shoppingCart').style.display = "none";
-    addItemToCart(15, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 1, "../static/images/products/Marsian_Mug.png");
-    addItemToCart(11, "Astro Shirt", "Leichtes Baumwoll-T-Shirt mit klassischem Schnitt und Rundhalsausschnitt. Perfekt für jeden Tag.", "L", 19.99, 2, "../static/images/products/AstroShirt.png");
-    addItemToCart(15, "Marsian Mug", "Premium-Keramiktasse, 300 ml – Perfekt für Kaffee und Tee. Spülmaschinen- und mikrowellengeeignet.", null, 4.99, 3, "../static/images/products/Marsian_Mug.png");
-    addItemToCart(33, "Venus Vest", "Leichte Steppweste mit isolierender Füllung, ideal für Layering. Mit Reißverschlusstaschen und sportlichem Schnitt.", "M", 15.55, 1, "../static/images/products/Venus_Vest.png");
-    addItemToCart(2, "Neptune Nachos", "Knackige Maischips mit würziger Käsesauce, perfekt für Snacks oder als Beilage zu Dips.", 0, 79.9, 2, "../static/images/snacks/Neptune_Nachos.png");
+    shoppingCart = [];
     updateShoppingCart();
+    document.getElementById('shoppingCart').style.display = "none";
 }
 
 
@@ -273,18 +267,19 @@ async function getSnacks() {
 
 function processSnacks(data) {
     var products = document.querySelector('.products');
+    var tempHTML='';
+
     products.innerHTML = '';
 
 
     data.forEach(snack => {
-        products.innerHTML +=
-            `<div class="product_card">
+        tempHTML += `
+            <div class="product_card">
                 <img class="product_image" src="${snack.IMAGE_PATH}" alt="${snack.BEZEICHNUNG} Bild" width="150" height="150">
                 <label class="product_name" for="">${snack.BEZEICHNUNG}</label>
                 <div>
                     <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
-                    <button type="button">Add To Cart</button>
-                    <select name="Size">
+                    <select class="product_size" name="Size">
                         <optgroup label="Size">
                             <option value="S">S</option>
                             <option value="M">M</option>
@@ -292,8 +287,11 @@ function processSnacks(data) {
                         </optgroup>
                     </select>
                 </div>
+                <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', '${snack.GROESSE}', '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
             </div>`;
     });
+
+    products.innerHTML = tempHTML;
 }
 
 
@@ -340,7 +338,6 @@ function processMerch(data) {
             </div>`;
     });
 
-    // Setzt den gesammelten HTML-String als innerHTML des Ziel-Elements.
     products.innerHTML = tempHTML;
 }
 

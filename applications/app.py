@@ -18,10 +18,11 @@ def shop():
 
 @app.route('/terminal/shop/snacks', methods=['GET'])
 def get_snacks():
-    query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse " +
-                               "FROM SNACK LEFT JOIN BESTAENDE_SNACK ON SNACK.id = BESTAENDE_SNACK.id " +
-                               "WHERE BESTAENDE_SNACK.BESTAND > 0" +
-                               "ORDER BY SNACK.id")
+    query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse "+
+                                "FROM SNACK LEFT JOIN BESTAENDE_SNACK ON SNACK.id = BESTAENDE_SNACK.id "+
+                                "WHERE BESTAENDE_SNACK.BESTAND > 0 "+
+                                "ORDER BY SNACK.id")
+
     return jsonify(query_result)
     
 @app.route('/terminal/shop/merch', methods=['GET'])
