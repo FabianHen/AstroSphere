@@ -50,7 +50,7 @@ function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath
     aktItem = new Artikel(id, type, beschreibung, größe, preis, anzahl, imagePath);
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        if (item.type == aktItem.type) {
+        if (item.type == aktItem.type && item.größe== aktItem.größe) {
             item.anzahl += aktItem.anzahl;
             numberOfItems += aktItem.anzahl;
             createItems();
@@ -62,10 +62,10 @@ function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath
     createItems();
 }
 
-function removeItemFromCart(type, num) {
+function removeItemFromCart(type, größe,num) {
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        if (item.type === type) {
+        if (item.type === type && item.größe==größe) {
             item.anzahl - num;
             if (item.anzahl <= 0) {
                 shoppingCart.splice(i, 1);
@@ -114,7 +114,7 @@ function updateShoppingCart(updateNum) {
         if (updateNum == true) {
             item.anzahl = document.getElementById(itemNumId).value;
             if (item.anzahl <= 0) {
-                removeItemFromCart(item.type, item.anzahl);
+                removeItemFromCart(item.type, item.größe, item.anzahl);
             }
         }
 
@@ -272,7 +272,6 @@ function processSnacks(data) {
 
     products.innerHTML = '';
 
-
     data.forEach(snack => {
         if(!tempHTML.includes(snack.BEZEICHNUNG)){
             tempHTML += `
@@ -281,7 +280,7 @@ function processSnacks(data) {
                     <label class="product_name" for="">${snack.BEZEICHNUNG}</label>
                     <div>
                         <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
-                        <select class="product_size" name="Size">
+                        <select class="product_size" name="Size" id="size_${snack.ID}">
                             <optgroup label="Size">
                       `
                       if(specialItems.includes(snack.BEZEICHNUNG)){
@@ -297,7 +296,7 @@ function processSnacks(data) {
                           </optgroup>
                         </select>
                     </div>
-                    <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', '${snack.GROESSE}', '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
+                    <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', document.getElementById('size_${snack.ID}').value, '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
                 </div>`;
         }
     });
@@ -343,7 +342,7 @@ function processMerch(data) {
                     <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
                     <div>
                         <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
-                        <select class="product_size" name="Size">
+                        <select class="product_size" name="Size" id='size_${merch.ID}'>
                             <optgroup label="Size">
                             `
                             if(specialItems.includes(merch.BEZEICHNUNG)){
@@ -359,7 +358,7 @@ function processMerch(data) {
                             </optgroup>
                         </select>
                     </div>
-                    <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', '${merch.GROESSE}', '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
+                    <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', document.getElementById('size_${merch.ID}').value, '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
                 </div>`;
         }
     });
@@ -372,6 +371,5 @@ function processMerch(data) {
 
 
 function add(id, type, beschreibung, groesse, preis, anzahl, image){
-    console.log(id+" "+type+""+beschreibung+" "+groesse+" "+preis+" "+anzahl+" "+image);
-        addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
+    addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
 }
