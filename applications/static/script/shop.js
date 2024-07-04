@@ -14,7 +14,6 @@ function collapseFilter(filter) {
 
 let shop_timeout;
 
-// Funktion, um den Timer zurückzusetzen
 function resetTimer() {
     clearTimeout(shop_timeout);
     shop_timeout = setTimeout(goBack, 10000);
@@ -166,7 +165,6 @@ function goTo_shoppingCart() {
     else {
         document.getElementById('shoppingCart').style.display = "flex";
     }
-
 }
 
 function cancel_Order() {
@@ -245,5 +243,66 @@ async function buyOrCheck(action, data) {
         console.error('Error:', error);
         return null;
     }
+}
+
+
+async function getSnacks() {
+    fetch('terminal/shop/snacks')
+        .then(response => {
+            // Check if the request was successful
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            // Parse the response as JSON
+            return response.json();
+        })
+        .then(data => {
+            // Handle the parsed data here
+            console.log(data);
+        })
+        .catch(error => {
+            // Handle any errors that occurred during the fetch
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+async function getMerch() {
+    try {
+        const response = await fetch('/terminal/shop/merch');
+
+        if (response.ok) {
+            const data = await response.json();
+            processMerch(data)
+            return data;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+function processMerch(data) {
+    var products = document.querySelector('.products');
+    data.forEach(merch => {
+        products.innerHTML +=
+            `<div class="product_card_${merch.ID}">
+                <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild">
+                <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
+                <div>
+                    <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
+                    <button type="button">Add To Cart</button>
+                    <select name="Size">
+                        <optgroup label="Size">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>`;
+    });
 }
 

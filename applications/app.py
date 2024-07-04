@@ -18,28 +18,20 @@ def shop():
 
 @app.route('/terminal/shop/snacks', methods=['GET'])
 def get_snacks():
-    try:
-        query_result = execute_sql_query("SELECT SNACK.id, SNACK.bezeichnung, SNACK.verkauf_preis_kg " +
-                                   "FROM BESTAENDE_SNACK LEFT JOIN SNACK ON BESTAENDE_SNACK.id = SNACK.id " +
-                                   "WHERE BESTAENDE_SNACK.BESTAND > 0" +
-                                   "ORDER BY SNACK.id")
-        if query_result is not None:
-            result = calc_snack_price(query_result)
-        print(result)
-
-        return jsonify(success=result)
-    except Exception as e:
-        print(f"Fehler: {e}")
-        return jsonify(success=False), 500
+    query_result = execute_sql_query("SELECT SNACK.id, SNACK.bezeichnung, SNACK.verkauf_preis_kg " +
+                               "FROM BESTAENDE_SNACK LEFT JOIN SNACK ON BESTAENDE_SNACK.id = SNACK.id " +
+                               "WHERE BESTAENDE_SNACK.BESTAND > 0" +
+                               "ORDER BY SNACK.id")
+    # result = calc_snack_price(query_result)
+    return jsonify(query_result)
     
 @app.route('/terminal/shop/merch', methods=['GET'])
 def get_merch():
-    try:
-        
-        return jsonify(success=True)
-    except Exception as e:
-        print(f"Fehler: {e}")
-        return jsonify(success=False), 500
+    query_result = execute_sql_query("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk " +
+                               "FROM BESTAENDE_MERCH LEFT JOIN MERCHARTIKEL ON BESTAENDE_MERCH.id = MERCHARTIKEL.id " +
+                               "WHERE BESTAENDE_MERCH.BESTAND > 0" +
+                               "ORDER BY MERCHARTIKEL.id")
+    return jsonify(query_result)
 
 @app.route('/intern/events')
 def intern_events():
@@ -122,27 +114,36 @@ def buyShoppingCart(data):
         return True,OrderNum
 
 
-def calc_snack_price(data):
+def calc_snack_price(data: list) -> dict:
     nacho_weight = 0.1
     popcorn_weight = 0.075
     salad_weight = 0.15
     chips_weight = 0.1
     gummi_bears_weight = 0.15
     bottle_volume = 0.33
-
+    
     for snack in data:
-        if snack[1].find('Nachos') != -1:
-            snack[2] = snack[2]*nacho_weight
-        elif snack[1].find('Popcorn') != -1:
-            snack[2] = snack[2]*popcorn_weight
-        elif snack[1].find('Salad') != -1:
-            snack[2] = snack[2]*salad_weight
-        elif snack[1].find('Chips') != -1:
-            snack[2] = snack[2]*chips_weight
-        elif snack[1].find('Gummi Bears') != -1:
-            snack[2] = snack[2]*gummi_bears_weight
-        elif (snack[1].find('Coke') != -1) or (snack[1].find('Sprite') != -1) or (snack[1].find('IceTea') != -1) or (snack[1].find('Beer') != -1):
-            snack[2] = snack[2]*bottle_volume
+        if snack['BEZEICHNUNG'].find('Nachos') != -1:
+            print(snack['BEZEICHNUNG'])
+            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*nacho_weight
+        elif snack['BEZEICHNUNG'].find('Popcorn') != -1:
+            print(snack['BEZEICHNUNG'])
+            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*popcorn_weight
+        elif snack['BEZEICHNUNG'].find('Salad') != -1:
+            print(snack['BEZEICHNUNG'])
+            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*salad_weight
+        elif snack['BEZEICHNUNG'].find('Chips') != -1:
+            print(snack['BEZEICHNUNG'])
+            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*chips_weight
+        elif snack['BEZEICHNUNG'].find('Gummi Bears') != -1:
+            print(snack['BEZEICHNUNG'])
+            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*gummi_bears_weight
+            print(snack['BEZEICHNUNG'])
+        elif (snack['BEZEICHNUNG'].find('Coke') != -1) or (snack['BEZEICHNUNG'].find('Sprite') != -1) or (snack['BEZEICHNUNG'].find('IceTea') != -1) or (snack.BEZEICHNUNG.find('Beer') != -1):
+            snack['VERKAUF_PREIS_KG'] = snack['VERKAUF_PREIS_KG']*bottle_volume
+            print(snack['BEZEICHNUNG'])
+        
+            
     
     return data
             
