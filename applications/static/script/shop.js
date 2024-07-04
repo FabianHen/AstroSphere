@@ -170,6 +170,7 @@ function goTo_shoppingCart() {
     else {
         document.getElementById('shoppingCart').style.display = "flex";
     }
+    updateShoppingCart(false);
 }
 
 function cancel_Order() {
@@ -305,7 +306,7 @@ async function getMerch() {
             processMerch(data)
             return data;
         } else {
-            console.error('Server error:', response.status);
+            console.error('Server e rror:', response.status);
             return null;
         }
     } catch (error) {
@@ -316,13 +317,13 @@ async function getMerch() {
 
 function processMerch(data) {
     var products = document.querySelector('.products');
+    var tempHTML = '';
+
     products.innerHTML = '';
 
     data.forEach(merch => {
-
-        // TODO: ins glob artikel array einfügen
-        products.innerHTML +=
-            `<div class="product_card">
+        tempHTML += `
+            <div class="product_card">
                 <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild" width="150" height="150">
                 <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
                 <div>
@@ -335,8 +336,18 @@ function processMerch(data) {
                         </optgroup>
                     </select>
                 </div>
-                <button type="button" onclick="add(this)">Add To Cart</button>
+                <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', '${merch.GROESSE}', '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
             </div>`;
     });
+
+    // Setzt den gesammelten HTML-String als innerHTML des Ziel-Elements.
+    products.innerHTML = tempHTML;
 }
 
+
+
+
+
+function add(id, type, beschreibung, groesse, preis, anzahl, image){
+        addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
+}
