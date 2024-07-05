@@ -22,6 +22,8 @@ def get_snacks():
                                 "FROM SNACK LEFT JOIN BESTAENDE_SNACK ON SNACK.id = BESTAENDE_SNACK.id "+
                                 "WHERE BESTAENDE_SNACK.BESTAND > 0 "+
                                 "ORDER BY SNACK.id")
+    #for testing with every item
+    query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse FROM SNACK ")
 
     return jsonify(query_result)
     
@@ -32,6 +34,8 @@ def get_merch():
                                 "WHERE BESTAENDE_MERCH.BESTAND > 0 "+
                                 "GROUP BY MERCHARTIKEL.groesse, MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung "+
                                 "ORDER BY MERCHARTIKEL.groesse")
+    #for testing with every item
+    query_result = execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL")
     return jsonify(query_result)
 
 @app.route('/intern/events')

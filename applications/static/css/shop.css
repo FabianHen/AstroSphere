@@ -357,3 +357,23 @@ footer {
     max-height: 15px;
     align-content: end;
 }
+
+
+#putItemInCard{
+    display: none;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+
+
+    border-radius: 10px;
+    color: rgb(75, 74, 74);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgb(17, 197, 92);
+}
+#putItemInCard h1{
+    font-size: 90%;
+}

@@ -385,4 +385,8 @@ function processMerch(data) {
 
 function add(id, type, beschreibung, groesse, preis, anzahl, image) {
     addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
+    document.getElementById('putItemInCard').style.display="block";
+    setTimeout(function () {
+        document.getElementById('putItemInCard').style.display="none";
+    }, 750);
 }
