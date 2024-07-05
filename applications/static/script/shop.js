@@ -135,6 +135,9 @@ function updateShoppingCart(updateNum) {
     createItems();
     checkIfAvailable();
     document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
+    var cart_badge = document.querySelector('.cart_badge');
+    cart_badge.style.display = 'flex';
+    cart_badge.innerHTML = shoppingCart.length;
 }
 
 function deleteItem(id) {
