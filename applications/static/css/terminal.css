@@ -69,5 +69,9 @@ footer {
     flex-direction: row;
     justify-content: center;
     text-align: center;
-    margin-bottom: -30px;
+    font-size: 12px;
+    font-weight: bold;
+    min-height: 15px;
+    max-height: 15px;
+    align-content: end;
 }
