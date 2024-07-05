@@ -877,11 +877,11 @@ ORDER BY RAUM.id;
 
 -- View zur Anzeige des aktuellen Bestands der Snacks
 CREATE VIEW BESTAENDE_SNACK AS
-SELECT SNACK.id, SNACK.bezeichnung, (SUM(BESTELLUNG.anzahl) - SUM(VERKAUF_SNACK.anzahl)) AS BESTAND
+SELECT SNACK.id, SNACK.bezeichnung, SNACK.groesse, (SUM(BESTELLUNG.anzahl) - SUM(VERKAUF_SNACK.anzahl)) AS BESTAND
 FROM SNACK 
 LEFT JOIN BESTELLUNG ON SNACK.id = BESTELLUNG.snack_id
 LEFT JOIN VERKAUF_SNACK ON SNACK.id = VERKAUF_SNACK.snack_id
-GROUP BY SNACK.id, SNACK.bezeichnung
+GROUP BY SNACK.id, SNACK.bezeichnung, SNACK.groesse
 ORDER BY SNACK.id;
 
 -- View zur Anzeige des aktuellen Bestands der Merchartikel

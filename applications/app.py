@@ -76,21 +76,34 @@ def buyOrCheck():
 def check_data(data):
     available=[]
     shoppingCartItems=[]
-    ItemNumbersInDatabase=execute_sql_query("SELECT * from BESTAENDE_MERCH")
+    itemNumMerch=execute_sql_query("SELECT * from BESTAENDE_MERCH")
+    itemNumSnack=execute_sql_query("SELECT * from BESTAENDE_SNACK")
+
 
     for aktItem in data['shoppingCart']:
         shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['größe'], aktItem['anzahl']))
 
 
     for shoppingItem in shoppingCartItems:
-        for databaseItem in ItemNumbersInDatabase:
-            if int(databaseItem[0])==int(shoppingItem[0]):
-                if databaseItem[3]==None:
-                    available.append(False)
-                elif int(databaseItem[3])<int(shoppingItem[3]):
-                    available.append(False)
-                else:
-                    available.append(True)
+        if int(shoppingItem[0])%2==0:
+            for databaseItem in itemNumSnack:
+                if int(databaseItem[0])==int(shoppingItem[0]):
+                    if databaseItem[3]==None:
+                        available.append(False)
+                    elif int(databaseItem[3]<int(shoppingItem[3])):
+                        available.append(False)
+                    else:
+                        available.append(True)
+        
+        else:
+            for databaseItem in itemNumMerch:
+                if int(databaseItem[0])==int(shoppingItem[0]):
+                    if databaseItem[3]==None:
+                        available.append(False)
+                    elif int(databaseItem[3])<int(shoppingItem[3]):
+                        available.append(False)
+                    else:
+                        available.append(True)
 
     return available
 
