@@ -332,9 +332,29 @@ function processSnacks(data) {
 }
 
 
-async function getMerch() {
+async function getMerch(filter) {
     try {
-        const response = await fetch('/terminal/shop/merch');
+        var response;
+        switch (filter) {
+            case "clothing":
+                response = await fetch("/terminal/shop/merch/clothing");
+                break;
+            case "accessoires":
+                response = await fetch("/terminal/shop/merch/accessoires");
+                break;
+            case "householdItem":
+                response = await fetch("/terminal/shop/merch/householdItem");
+                break;
+            case "stationery":
+                response = await fetch("/terminal/shop/merch/stationery");
+                break;
+            case "other":
+                response = await fetch("/terminal/shop/merch/other");
+                break;
+            default:
+                response = await fetch("/terminal/shop/merch");
+                break;
+        }
 
         if (response.ok) {
             const data = await response.json();

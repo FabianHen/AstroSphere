@@ -54,7 +54,37 @@ def get_merch():
                                 "ORDER BY MERCHARTIKEL.groesse")
     #for testing with every item
     query_result = execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL")
+    print(query_result)
     return jsonify(query_result)
+
+@app.route('/terminal/shop/merch/clothing', methods=['GET'])
+def get_clothing():
+    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE bezeichnung LIKE '%Hoodie%' OR bezeichnung LIKE '%Shirt%' OR bezeichnung LIKE '%Sock%' OR bezeichnung LIKE '%Vest%'")
+    return jsonify(query_result)
+
+@app.route('/terminal/shop/merch/accessoires', methods=['GET'])
+def get_accessoires():
+    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%brille%' OR beschreibung LIKE '%Magnet%' OR beschreibung LIKE '%Stick%'")
+    return jsonify(query_result)
+
+@app.route('/terminal/shop/merch/householdItem', methods=['GET'])
+def get_householdItem():
+    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%tasse%' OR beschreibung LIKE '%vase%' OR beschreibung LIKE '%set%'")
+    return jsonify(query_result)
+
+@app.route('/terminal/shop/merch/stationery', methods=['GET'])
+def get_stationery():
+    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%Skizze%'")
+    return jsonify(query_result)
+
+@app.route('/terminal/shop/merch/other', methods=['GET'])
+def get_other():
+    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%schirm%'")
+    return jsonify(query_result)
+
+
+
+
 
 @app.route('/intern/events')
 def intern_events():
