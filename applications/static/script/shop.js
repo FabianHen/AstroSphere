@@ -260,9 +260,23 @@ async function buyOrCheck(action, data) {
 }
 
 
-async function getSnacks() {
+async function getSnacks(filter) {
     try {
-        const response = await fetch('/terminal/shop/snacks');
+        var response;
+        switch (filter) {
+            case "drinks":
+                response = await fetch('/terminal/shop/snacks/drinks');
+                break;
+            case "sweet":
+                response = await fetch('/terminal/shop/snacks/sweet');
+                break;
+            case "salty":
+                response = await fetch('/terminal/shop/snacks/salty');
+                break;
+            default:
+                response = await fetch('/terminal/shop/snacks');
+                break;
+        }
 
         if (response.ok) {
             const data = await response.json();

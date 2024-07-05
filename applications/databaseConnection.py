@@ -125,3 +125,7 @@ def execute_procedure(procedure_name, params):
 #procedure = "VERKAUFEN_MERCH"
 #params = [1,4]
 #execute_procedure(procedure, params)
+
+
+sql_query = "SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse FROM SNACK WHERE beschreibung LIKE '%Nachos%' OR beschreibung LIKE '%chips%' OR beschreibung LIKE '%salt%'"
+print(execute_sql_query_list_of_dicts(sql_query))
