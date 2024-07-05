@@ -50,7 +50,7 @@ function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath
     aktItem = new Artikel(id, type, beschreibung, größe, preis, anzahl, imagePath);
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        if (item.type == aktItem.type && item.größe== aktItem.größe) {
+        if (item.type == aktItem.type && item.größe == aktItem.größe) {
             item.anzahl += aktItem.anzahl;
             numberOfItems += aktItem.anzahl;
             createItems();
@@ -60,15 +60,23 @@ function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath
     numberOfItems += aktItem.anzahl;
     shoppingCart.push(aktItem);
     createItems();
+    var cart_badge = document.querySelector('.cart_badge');
+    cart_badge.style.display = 'flex';
+    cart_badge.innerHTML = shoppingCart.length;
 }
 
-function removeItemFromCart(type, größe,num) {
+function removeItemFromCart(type, größe, num) {
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        if (item.type === type && item.größe==größe) {
+        if (item.type === type && item.größe == größe) {
             item.anzahl - num;
             if (item.anzahl <= 0) {
                 shoppingCart.splice(i, 1);
+            }
+            var cart_badge = document.querySelector('.cart_badge');
+            cart_badge.innerHTML = shoppingCart.length;
+            if (shoppingCart.length == 0) {
+                cart_badge.style.display = 'none';
             }
             return;
         }
@@ -268,12 +276,12 @@ async function getSnacks() {
 function processSnacks(data) {
     const specialItems = ["Solary Salad", "Venus Vinegar Chips", "Zodiac Sourcreme Chips", "Galaxie Gummi Bears", "Parsec Peanuts"];
     var products = document.querySelector('.products');
-    var tempHTML='';
+    var tempHTML = '';
 
     products.innerHTML = '';
 
     data.forEach(snack => {
-        if(!tempHTML.includes(snack.BEZEICHNUNG)){
+        if (!tempHTML.includes(snack.BEZEICHNUNG)) {
             tempHTML += `
                 <div class="product_card">
                     <img class="product_image" src="${snack.IMAGE_PATH}" alt="${snack.BEZEICHNUNG} Bild" width="150" height="150">
@@ -283,15 +291,15 @@ function processSnacks(data) {
                         <select class="product_size" name="Size" id="size_${snack.ID}">
                             <optgroup label="Size">
                       `
-                      if(specialItems.includes(snack.BEZEICHNUNG)){
-                        tempHTML += `<option value="M">M</option>`;
-                    }
-                      else{
-                        tempHTML += `                            <option value="M">M</option>
+            if (specialItems.includes(snack.BEZEICHNUNG)) {
+                tempHTML += `<option value="M">M</option>`;
+            }
+            else {
+                tempHTML += `                            <option value="M">M</option>
                                 <option value="L">L</option>`;
-                      }
-                  
-                tempHTML+=`      
+            }
+
+            tempHTML += `      
 
                           </optgroup>
                         </select>
@@ -314,7 +322,7 @@ async function getMerch() {
             processMerch(data)
             return data;
         } else {
-            console.error('Server e rror:', response.status);
+            console.error('Server error:', response.status);
             return null;
         }
     } catch (error) {
@@ -328,14 +336,14 @@ function processMerch(data) {
         "Solar System Socks", "Marsian Mug", "Milkyway Mug", "Uranus USB Stick",
         "Venus Vase", "Jupiter Journal", "Neptune Notebook", "Meteor Magnet",
         "Saturn Sunglasses", "Nebula Napkins", "Uranus Umbrella"
-      ];
+    ];
     var products = document.querySelector('.products');
     var tempHTML = '';
 
     products.innerHTML = '';
 
     data.forEach(merch => {
-        if(!tempHTML.includes(merch.BEZEICHNUNG)){
+        if (!tempHTML.includes(merch.BEZEICHNUNG)) {
             tempHTML += `
                 <div class="product_card">
                     <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild" width="150" height="150">
@@ -345,16 +353,16 @@ function processMerch(data) {
                         <select class="product_size" name="Size" id='size_${merch.ID}'>
                             <optgroup label="Size">
                             `
-                            if(specialItems.includes(merch.BEZEICHNUNG)){
-                                tempHTML+=`<option value="M">M</option>`;
-                            }
-                            else{
-                                tempHTML+=`                            <option value="S">S</option>
+            if (specialItems.includes(merch.BEZEICHNUNG)) {
+                tempHTML += `<option value="M">M</option>`;
+            }
+            else {
+                tempHTML += `                            <option value="S">S</option>
                                 <option value="M">M</option>
                                 <option value="L">L</option>`;
-                            }
+            }
 
-                    tempHTML+=`
+            tempHTML += `
                             </optgroup>
                         </select>
                     </div>
@@ -370,6 +378,6 @@ function processMerch(data) {
 
 
 
-function add(id, type, beschreibung, groesse, preis, anzahl, image){
+function add(id, type, beschreibung, groesse, preis, anzahl, image) {
     addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
 }
