@@ -54,7 +54,6 @@ def get_merch():
                                 "ORDER BY MERCHARTIKEL.groesse")
     #for testing with every item
     query_result = execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL")
-    print(query_result)
     return jsonify(query_result)
 
 @app.route('/terminal/shop/merch/clothing', methods=['GET'])

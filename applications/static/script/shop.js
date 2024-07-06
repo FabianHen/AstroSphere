@@ -168,7 +168,7 @@ function showOrder() {
             price += aktItem.anzahl * aktItem.preis;
         }
     }
-    htmlList += "\n\t<div id='boughtItemPrice'>\n\t<p>gesamt Preis: " + price + "€</p>\n</div>";
+    htmlList += "\n\t<div id='boughtItemPrice'>\n\t<p>gesamt Preis: " + price.toFixed(2) + "€</p>\n</div>";
     document.getElementById('listboughtItems').innerHTML = htmlList;
     document.getElementById('buyItems').style.display = "block";
 }
@@ -209,7 +209,8 @@ async function buy_Order() {
     }, 3000);
     setTimeout(function () {
         document.getElementById('buyItems').style.display = "none";
-    }, 8000);
+        cancel_Order();
+    }, 9000);
 }
 
 
