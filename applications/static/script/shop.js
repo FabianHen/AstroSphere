@@ -472,6 +472,7 @@ function processTickets(data) {
     products.innerHTML = '';
 
     data.forEach(ticket => {
+        console.log(ticket);
         if (!tempHTML.includes(ticket.STUFE)) {
             tempHTML += `
                 <div class="product_card">
@@ -480,7 +481,7 @@ function processTickets(data) {
                     <div>
                         <label class="product_price" for="">${ticket.PREIS} €</label>
                     </div>
-                    <button type="button" onclick="add('${ticket.STUFE}', '${ticket.ZEITRAUM}', '', '', '${ticket.PREIS}', document.getElementById('size_${ticket.STUFE}').value, '${ticket.PREIS}', 1), '${ticket.IMAGE_PATH}'">Add To Cart</button>
+                    <button type="button" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.PREIS}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
                 </div>`;
         }
     });

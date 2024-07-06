@@ -611,10 +611,10 @@ create table TELESKOP (
 /* Table: TICKETSTUFE                                           */
 /*==============================================================*/
 create table TICKETSTUFE (
-   STUFE                CHAR(20)              default 'Tag' check (STUFE in ('Tag','Monat','Jahr')) not null,
+   STUFE                VARCHAR2(20)              default 'Tag' check (STUFE in ('Tag','Monat','Jahr')) not null,
    ZEITRAUM             NUMBER(3)             default 1 check (ZEITRAUM between 1 and 365 and ZEITRAUM in (1,30,365)) not null,
    PREIS                NUMBER(5,2)           not null,
-   IMAGE_PATH           VARCHAR(100)          not null,
+   IMAGE_PATH           VARCHAR2(100)          not null,
    constraint PK_TICKETSTUFE primary key (STUFE),
    constraint MATCHING_STUFE_ZEITRAUM check((STUFE = 'Tag' AND ZEITRAUM = 1) OR (STUFE = 'Monat' AND ZEITRAUM = 30) OR (STUFE = 'Jahr' AND ZEITRAUM = 365))
 );
