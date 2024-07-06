@@ -81,8 +81,25 @@ def get_other():
     query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%schirm%'")
     return jsonify(query_result)
 
+@app.route('/terminal/shop/tickets', methods=['GET'])
+def get_tickets():
+    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis FROM TICKETSTUFE")
+    return jsonify(query_result)
 
+@app.route('/terminal/shop/tickets/day', methods=['GET'])
+def get_ticket_day():
+    query_result= execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Tag'")
+    return jsonify(query_result)
 
+@app.route('/terminal/shop/tickets/month', methods=['GET'])
+def get_ticket_month():
+    query_result= execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Monat'")
+    return jsonify(query_result)
+
+@app.route('/terminal/shop/tickets/year', methods=['GET'])
+def get_ticket_year():
+    query_result= execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Jahr'")
+    return jsonify(query_result)
 
 
 @app.route('/intern/events')

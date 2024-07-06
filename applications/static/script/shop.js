@@ -4,11 +4,30 @@ function goBack() {
 
 function collapseFilter(filter) {
     if (filter) {
-        history.replaceState(null, '', `?selected=${filter}`);
-    }
-    let content = document.getElementById(filter);
-    if (content) {
-        content.style.display = (content.style.display == "flex") ? "none" : "flex";
+        let content = document.getElementById(filter);
+        if (content) {
+            if (content.style.display == 'flex') {
+                content.style.display = 'none';
+                history.replaceState(null, '', document.location.origin + document.location.pathname);
+            } else {
+                // document.getElementsByClassName('filter_content').forEach(f => { f.style.display = 'none'; });
+                content.style.display = 'flex';
+                history.replaceState(null, '', `?selected=${filter}`);
+                switch (filter) {
+                    case 'snack_filter':
+                        getSnacks('all');
+                        break;
+                    case 'merch_filter':
+                        getMerch('all');
+                        break;
+                    case 'ticket_filter':
+                        getTicket('all');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }
 
@@ -414,14 +433,64 @@ function processMerch(data) {
     products.innerHTML = tempHTML;
 }
 
+async function getTicket(filter) {
+    try {
+        var response;
+        switch (filter) {
+            case "day":
+                response = await fetch("/terminal/shop/tickets/day");
+                break;
+            case "month":
+                response = await fetch("/terminal/shop/tickets/month");
+                break;
+            case "year":
+                response = await fetch("/terminal/shop/tickets/year");
+                break;
+            default:
+                response = await fetch("/terminal/shop/tickets");
+                break;
+        }
 
+        if (response.ok) {
+            const data = await response.json();
+            processTickets(data)
+            return data;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
 
+function processTickets(data) {
+    var products = document.querySelector('.products');
+    var tempHTML = '';
 
+    products.innerHTML = '';
+
+    data.forEach(ticket => {
+        if (!tempHTML.includes(ticket.STUFE)) {
+            tempHTML += `
+                <div class="product_card">
+                    <label class="product_name" for="">${ticket.STUFE}</label>
+                    <div>
+                        <label class="product_price" for="">${ticket.PREIS} €</label>
+                    </div>
+                    <button type="button" onclick="add('${ticket.STUFE}', '${ticket.ZEITRAUM}', '', '', '${ticket.PREIS}', document.getElementById('size_${ticket.STUFE}').value, '${ticket.PREIS}', 1), ''">Add To Cart</button>
+                </div>`;
+        }
+    });
+
+    products.innerHTML = tempHTML;
+}
 
 function add(id, type, beschreibung, groesse, preis, anzahl, image) {
     addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
-    document.getElementById('putItemInCard').style.display="block";
+    document.getElementById('putItemInCard').style.display = "block";
     setTimeout(function () {
-        document.getElementById('putItemInCard').style.display="none";
+        document.getElementById('putItemInCard').style.display = "none";
     }, 750);
 }

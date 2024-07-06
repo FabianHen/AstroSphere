@@ -40,6 +40,22 @@ button:hover {
     cursor: pointer;
 }
 
+.button-secondary{
+    background: white;
+    border-radius: 3px;
+    border: none;
+    color: var(--astrosphere-pink);
+    font-weight: bold;
+    padding: 2px 10px 2px 10px;
+    margin: 2px;
+}
+
+.button-secondary:hover {
+    color: white;
+    background: var(--astrosphere-pink);
+    cursor: pointer;
+}
+
 
 .filter {
     display: flex;

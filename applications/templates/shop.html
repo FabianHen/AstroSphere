@@ -25,10 +25,9 @@
             </button>
 
             <div id="snack_filter" class="filter_content">
-                <button type="button" onclick="getSnacks('all')">Show All</button>
-                <button type="button" onclick="getSnacks('drinks')">Drinks</button>
-                <button type="button" onclick="getSnacks('sweet')">Sweet</button>
-                <button type="button" onclick="getSnacks('salty')">Salty</button>
+                <button class="button-secondary" type="button" onclick="getSnacks('drinks')">Drinks</button>
+                <button class="button-secondary" type="button" onclick="getSnacks('sweet')">Sweet</button>
+                <button class="button-secondary" type="button" onclick="getSnacks('salty')">Salty</button>
             </div>
 
             <button class="collapsible" type="button" onclick="collapseFilter('merch_filter')">
@@ -36,17 +35,22 @@
             </button>
 
             <div id="merch_filter" class="filter_content">
-                <button type="button" onclick="getMerch('')">Show All</button>
-                <button type="button" onclick="getMerch('clothing')">Clothing</button>
-                <button type="button" onclick="getMerch('accessoires')">Accessoires</button>
-                <button type="button" onclick="getMerch('householdItem')">household Items</button>
-                <button type="button" onclick="getMerch('stationery')">Stationery</button>
-                <button type="button" onclick="getMerch('other')">Other</button>
+                <button class="button-secondary" type="button" onclick="getMerch('clothing')">Clothing</button>
+                <button class="button-secondary" type="button" onclick="getMerch('accessoires')">Accessoires</button>
+                <button class="button-secondary" type="button" onclick="getMerch('householdItem')">household Items</button>
+                <button class="button-secondary" type="button" onclick="getMerch('stationery')">Stationery</button>
+                <button class="button-secondary" type="button" onclick="getMerch('other')">Other</button>
             </div>
 
             <button class="collapsible" type="button" onclick="collapseFilter('ticket_filter')">
                 <h4>Tickets</h4>
             </button>
+
+            <div id="ticket_filter" class="filter_content">
+                <button class="button-secondary" type="button" onclick="getTicket('day')">Day</button>
+                <button class="button-secondary" type="button" onclick="getTicket('month')">Month</button>
+                <button class="button-secondary" type="button" onclick="getTicket('year')">Year</button>
+            </div>
 
         </div>
 
@@ -55,14 +59,7 @@
         </div>
 
         <div class="products">
-            <!-- <div class="product_card">
-                <img class="product_image" src="../static/images/popcorn_bold.svg" alt="Produktbild">
-                <label class="product_name" for=""></label>
-                <div>
-                    <label class="product_price" for="">€</label>
-                    <button>Add to Cart</button>
-                </div>
-            </div> -->
+
         </div>
 
         <div id="cart_button">
