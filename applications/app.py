@@ -153,7 +153,10 @@ def check_data(data):
 
 
     for shoppingItem in shoppingCartItems:
-        if int(shoppingItem[0])%2==0:
+        itemName=str(shoppingItem[1])
+        if "Ticket" in itemName:
+            available.append(True)
+        elif int(shoppingItem[0])%2==0:
             for databaseItem in itemNumSnack:
                 if int(databaseItem[0])==int(shoppingItem[0]):
                     if databaseItem[3]==None:
@@ -172,7 +175,6 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-
     return available
 
 OrderNum=0
