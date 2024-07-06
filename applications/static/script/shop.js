@@ -475,11 +475,12 @@ function processTickets(data) {
         if (!tempHTML.includes(ticket.STUFE)) {
             tempHTML += `
                 <div class="product_card">
+                    <img class="product_image" src="${ticket.IMAGE_PATH}" alt="${ticket.STUFE} Bild" width="150" height="150">
                     <label class="product_name" for="">${ticket.STUFE}</label>
                     <div>
                         <label class="product_price" for="">${ticket.PREIS} €</label>
                     </div>
-                    <button type="button" onclick="add('${ticket.STUFE}', '${ticket.ZEITRAUM}', '', '', '${ticket.PREIS}', document.getElementById('size_${ticket.STUFE}').value, '${ticket.PREIS}', 1), ''">Add To Cart</button>
+                    <button type="button" onclick="add('${ticket.STUFE}', '${ticket.ZEITRAUM}', '', '', '${ticket.PREIS}', document.getElementById('size_${ticket.STUFE}').value, '${ticket.PREIS}', 1), '${ticket.IMAGE_PATH}'">Add To Cart</button>
                 </div>`;
         }
     });
