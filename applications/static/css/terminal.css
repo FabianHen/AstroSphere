@@ -13,7 +13,6 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 98vh;
 }
 
 header{
@@ -38,7 +37,7 @@ button:hover {
 .container {
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
+    height: 79.5vh;
     align-items: center;
     justify-content: space-evenly;
 }
@@ -73,5 +72,4 @@ footer {
     font-weight: bold;
     min-height: 15px;
     max-height: 15px;
-    align-content: end;
 }
