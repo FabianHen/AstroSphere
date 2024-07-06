@@ -28,15 +28,15 @@ def get_snacks():
 
 @app.route('/terminal/shop/snacks/drinks', methods=['GET'])
 def get_drinks():
-    query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse FROM SNACK WHERE bezeichnung LIKE '%Coke%' OR bezeichnung LIKE '%IceTea%' OR bezeichnung LIKE '%Beer%' OR bezeichnung LIKE '%Sprite%'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM GET_SNACK_DRINKS")
     return jsonify(query_result)
 @app.route('/terminal/shop/snacks/sweet', methods=['GET'])
 def get_sweet():
-    query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse FROM SNACK WHERE bezeichnung LIKE '%Sugar%' OR bezeichnung LIKE '%Gummi%' OR bezeichnung LIKE '%Sweet%' OR beschreibung LIKE '%süß%' OR beschreibung LIKE '%Zucker%'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM GET_SNACK_SWEET")
     return jsonify(query_result)
 @app.route('/terminal/shop/snacks/salty', methods=['GET'])
 def get_salty():
-    query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse FROM SNACK WHERE beschreibung LIKE '%chips%' OR beschreibung LIKE '%salz%' OR beschreibung LIKE '%würzig%'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM GET_SNACK_SALTY")
     return jsonify(query_result)
 
 
@@ -58,27 +58,27 @@ def get_merch():
 
 @app.route('/terminal/shop/merch/clothing', methods=['GET'])
 def get_clothing():
-    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE bezeichnung LIKE '%Hoodie%' OR bezeichnung LIKE '%Shirt%' OR bezeichnung LIKE '%Sock%' OR bezeichnung LIKE '%Vest%'")
+    query_result= execute_sql_query_list_of_dicts("SELECT * FROM GET_MERCH_CLOTHING")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/merch/accessoires', methods=['GET'])
 def get_accessoires():
-    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%brille%' OR beschreibung LIKE '%Magnet%' OR beschreibung LIKE '%Stick%'")
+    query_result= execute_sql_query_list_of_dicts("SELECT * FROM GET_MERCH_ACCESSOIRES")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/merch/householdItem', methods=['GET'])
 def get_householdItem():
-    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%tasse%' OR beschreibung LIKE '%vase%' OR beschreibung LIKE '%set%'")
+    query_result= execute_sql_query_list_of_dicts("SELECT * FROM GET_MERCH_HOUSEHOLDITEM")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/merch/stationery', methods=['GET'])
 def get_stationery():
-    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%Skizze%'")
+    query_result= execute_sql_query_list_of_dicts("SELECT * FROM GET_MERCH_STATIONERY")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/merch/other', methods=['GET'])
 def get_other():
-    query_result= execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse FROM MERCHARTIKEL WHERE beschreibung LIKE '%schirm%'")
+    query_result= execute_sql_query_list_of_dicts("SELECT * FROM GET_MERCH_OTHER")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/tickets', methods=['GET'])
