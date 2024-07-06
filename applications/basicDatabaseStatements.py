@@ -893,6 +893,53 @@ LEFT JOIN BESTELLUNG ON MERCHARTIKEL.id = BESTELLUNG.MERCHARTIKEL_ID
 LEFT JOIN VERKAUF_MERCH ON MERCHARTIKEL.id = VERKAUF_MERCH.merchartikel_id
 GROUP BY MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.groesse
 ORDER BY MERCHARTIKEL.id;
+
+
+
+CREATE VIEW GET_MERCH_CLOTHING AS
+SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse 
+FROM MERCHARTIKEL 
+WHERE bezeichnung LIKE '%Hoodie%' OR bezeichnung LIKE '%Shirt%' OR bezeichnung LIKE '%Sock%' OR bezeichnung LIKE '%Vest%';
+
+CREATE VIEW GET_MERCH_ACCESSOIRES AS
+SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse 
+FROM MERCHARTIKEL 
+WHERE beschreibung LIKE '%brille%' OR beschreibung LIKE '%Magnet%' OR beschreibung LIKE '%Stick%';
+
+CREATE VIEW GET_MERCH_HOUSEHOLDITEM AS
+SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse 
+FROM MERCHARTIKEL 
+WHERE beschreibung LIKE '%tasse%' OR beschreibung LIKE '%vase%' OR beschreibung LIKE '%set%';
+
+CREATE VIEW GET_MERCH_STATIONERY AS
+SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse 
+FROM MERCHARTIKEL 
+WHERE beschreibung LIKE '%Skizze%';
+
+CREATE VIEW GET_MERCH_OTHER AS
+SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse 
+FROM MERCHARTIKEL 
+WHERE beschreibung LIKE '%schirm%';
+
+
+
+CREATE VIEW GET_SNACK_DRINKS AS
+SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse 
+FROM SNACK 
+WHERE bezeichnung LIKE '%Coke%' OR bezeichnung LIKE '%IceTea%' OR bezeichnung LIKE '%Beer%' OR bezeichnung LIKE '%Sprite%';
+
+CREATE VIEW GET_SNACK_SWEET AS
+SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse 
+FROM SNACK 
+WHERE bezeichnung LIKE '%Sugar%' OR bezeichnung LIKE '%Gummi%' OR bezeichnung LIKE '%Sweet%' OR beschreibung LIKE '%süß%' OR beschreibung LIKE '%Zucker%';
+
+CREATE VIEW GET_SNACK_SALTY AS
+SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse 
+FROM SNACK 
+WHERE beschreibung LIKE '%chips%' OR beschreibung LIKE '%salz%' OR beschreibung LIKE '%würzig%';
+
+
+
 """
 
 sql_create_storedProcedure="""

@@ -125,5 +125,3 @@ def execute_procedure(procedure_name, params):
 #procedure = "VERKAUFEN_MERCH"
 #params = [1,4]
 #execute_procedure(procedure, params)
-
-print(execute_sql_query("select stufe from ticketstufe"))
