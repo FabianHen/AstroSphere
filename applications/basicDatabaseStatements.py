@@ -614,6 +614,7 @@ create table TICKETSTUFE (
    STUFE                CHAR(20)              default 'Tag' check (STUFE in ('Tag','Monat','Jahr')) not null,
    ZEITRAUM             NUMBER(3)             default 1 check (ZEITRAUM between 1 and 365 and ZEITRAUM in (1,30,365)) not null,
    PREIS                NUMBER(5,2)           not null,
+   IMAGE_PATH           VARCHAR(100)          not null,
    constraint PK_TICKETSTUFE primary key (STUFE),
    constraint MATCHING_STUFE_ZEITRAUM check((STUFE = 'Tag' AND ZEITRAUM = 1) OR (STUFE = 'Monat' AND ZEITRAUM = 30) OR (STUFE = 'Jahr' AND ZEITRAUM = 365))
 );
@@ -1360,12 +1361,12 @@ INSERT INTO ASTROSPHERE.TELESKOP(BEZEICHNUNG, TYP, TAGES_MIET_PREIS, BESCHREIBUN
 --
 -- Inserting data into table ASTROSPHERE.TICKETSTUFE
 --
-INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE)  VALUES
+INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE_PATH) VALUES
 ('Tag', 1, 25.00, '../static/images/tickets/tagesticket.png');
-INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE) VALUES
-('Monat', 30, 75.00, 'monatsticket.png');
-INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE) VALUES
-('Jahr', 365, 110.00, 'jahresticket.png');
+INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE_PATH) VALUES
+('Monat', 30, 75.00, '../static/images/tickets/monatsticket.png');
+INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE_PATH) VALUES
+('Jahr', 365, 110.00, '../static/images/tickets/jahresticket.png');
 
 
 --
