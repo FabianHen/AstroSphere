@@ -91,7 +91,7 @@ button:hover {
     gap: 10px;
     justify-items: center;
     flex: 1 1 auto;
-    height: 82.5vh;
+    height: 80vh;
     overflow-y: auto;
 }
 
@@ -355,7 +355,6 @@ footer {
     font-weight: bold;
     min-height: 15px;
     max-height: 15px;
-    align-content: end;
 }
 
 
