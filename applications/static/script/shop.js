@@ -115,6 +115,9 @@ function createItems() {
         newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>" + shoppingCart[i].type + "</h3>\n";
         newHTMLItem += "\t\t<div class='line'></div>\n";
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].beschreibung + "</p>\n";
+        if(shoppingCart[i].größe!=""){
+            newHTMLItem += "\t\t<p class='groesse' id='item_" + i + "Gr'>Größe: " + shoppingCart[i].größe + "</p>\n";
+        }
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: " + shoppingCart[i].preis + "</p>\n";
         newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
         newHTMLItem += "\t\t<img src='../static/images/trashcan_bold.svg' alt='delete' class='delete' onclick='deleteItem(" + i + ")' width='25' height='25'>\n"
