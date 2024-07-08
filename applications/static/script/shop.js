@@ -265,11 +265,21 @@ function cancel_Order() {
     shoppingCart = [];
     updateShoppingCart();
     document.getElementById('shoppingCart').style.display = "none";
+    document.getElementById('payment-form').reset();
+    document.getElementById('personalInfoForm').reset();
+}
+
+
+
+function cancelUserInput(){
+    document.getElementById('personalInformation').style.display = "none";
+    document.getElementById('personalInfoForm').reset();
 }
 
 
 let isOrderPending = false;
 var newKunde=null;
+var stop=false;
 
 function handleUserData(event) {
     event.preventDefault();
@@ -321,6 +331,8 @@ async function continueOrder() {
         document.getElementById('purchaseS').style.display = "flex";
         showOrder();
         document.getElementById('bestellNr').innerHTML = "Ihre Bestellung: " + result.success[0][1];
+        document.getElementById('payment-form').reset();
+        document.getElementById('personalInfoForm').reset();
     } else {
         document.getElementById('purchaseN').style.display = "flex";
     }
