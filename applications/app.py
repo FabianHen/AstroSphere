@@ -189,7 +189,6 @@ def buyShoppingCart(data):
         if OrderNum>9999:
             OrderNum=0
         for aktItem in data['shoppingCart']:
-            print(aktItem)
             params=[int(aktItem['id']), int(aktItem['anzahl'])]
             if "Ticket" in aktItem['type']:
                 print("update Database with ticket")

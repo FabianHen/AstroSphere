@@ -216,6 +216,18 @@ function cancel_Order() {
 
 
 async function buy_Order() {
+
+    const paymentMethod = document.getElementById('payment-method').value;
+    if (paymentMethod===""){
+        document.getElementById('purchaseN').innerHTML="<h1>Sie haben noch keine Zahlungsmethode ausgewählt!</h1>";
+        document.getElementById('purchaseN').style.display = "flex";
+        setTimeout(function(){            
+            document.getElementById('purchaseN').style.display = "none";
+            document.getElementById('purchaseN').innerHTML="<h1>Fehler: Bestellvorgang wurde abgebrochen!</h1>";
+        }, 2500);
+        return;
+    }
+
     var result = await buyOrCheck("buyShoppingCart", { shoppingCart });
     if (result.success[0][0]) {
         document.getElementById('purchaseS').style.display = "flex";
