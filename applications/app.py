@@ -83,22 +83,22 @@ def get_other():
 
 @app.route('/terminal/shop/tickets', methods=['GET'])
 def get_tickets():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/tickets/day', methods=['GET'])
 def get_ticket_day():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Tag'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Tag'")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/tickets/month', methods=['GET'])
 def get_ticket_month():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Monat'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Monat'")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/tickets/year', methods=['GET'])
 def get_ticket_year():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Jahr'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Jahr'")
     return jsonify(query_result)
 
 
@@ -190,7 +190,10 @@ def buyShoppingCart(data):
             OrderNum=0
         for aktItem in data['shoppingCart']:
             params=[int(aktItem['id']), int(aktItem['anzahl'])]
-            if int(aktItem['id'])%2==0:
+            if "Ticket" in aktItem['type']:
+                print("update Database with ticket")
+                #execute_procedure("VERKAUFEN_TICKET", params)
+            elif int(aktItem['id'])%2==0:
                 print("update Database with snack")
                 #execute_procedure("VERKAUFEN_SNACK", params)
             else:

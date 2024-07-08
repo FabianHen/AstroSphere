@@ -104,7 +104,6 @@ button:hover {
 .products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    /* gap: 10px; */
     justify-items: center;
     flex: 1 1 auto;
     height: 80vh;
@@ -160,6 +159,14 @@ button:hover {
     bottom: 72%;
     left: 27%;
     width: 35%;
+}
+
+.item .groesse {
+    position: relative;
+    color: white;
+    bottom: 70%;
+    left: 27%;
+    font-style: italic;
 }
 
 .item .line {
@@ -267,6 +274,16 @@ button:hover {
 #shoppingCart button:hover {
     opacity: 60%;
 }
+
+#shoppingCart #payment-form {
+    position: absolute;
+    bottom: 0.65%;
+    right: 10%;
+    font-size: 120%;
+    color: white;
+}
+
+
 
 #gesKosten {
     position: absolute;

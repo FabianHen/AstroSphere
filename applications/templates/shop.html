@@ -80,6 +80,19 @@
         </div>
         <button type="button" id="cancel" onclick="cancel_Order()">Cancel</button>
         <button type="button" id="buy" onclick="buy_Order()">Buy now</button>
+
+        <form id="payment-form">
+            <label for="payment-method">Zahlungsmethode:</label>
+            <select id="payment-method" name="payment-method">
+                <option value="">--Bitte wählen--</option>
+                <option value="credit-card">Kreditdkarte</option>
+                <option value="paypal">PayPal</option>
+                <option value="applePay">Apple-Pay</option>
+                <option value="bank-transfer">Banküberweisung</option>
+                <option value="bar">Bar</option>
+            </select>
+        </form>
+
     </div>
 
     <div id="purchaseS" class="purchaseInfo">
