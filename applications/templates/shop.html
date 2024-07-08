@@ -37,7 +37,8 @@
             <div id="merch_filter" class="filter_content">
                 <button class="button-secondary" type="button" onclick="getMerch('clothing')">Clothing</button>
                 <button class="button-secondary" type="button" onclick="getMerch('accessoires')">Accessoires</button>
-                <button class="button-secondary" type="button" onclick="getMerch('householdItem')">household Items</button>
+                <button class="button-secondary" type="button" onclick="getMerch('householdItem')">household
+                    Items</button>
                 <button class="button-secondary" type="button" onclick="getMerch('stationery')">Stationery</button>
                 <button class="button-secondary" type="button" onclick="getMerch('other')">Other</button>
             </div>
@@ -69,18 +70,8 @@
             </button>
         </div>
     </main>
-
-
-
-
-
-
-
-
     <div id="shoppingCart">
         <h1>Warenkorb</h1>
-
-
         <div id="itemList">
             <!--shopping List items-->
         </div>
@@ -142,13 +133,24 @@
         <h1 id="bestellNr">Bestell-Nr.: 0000</h1>
         <h2>Ihre Bestellung:</h2>
         <div id="listboughtItems">
-                
-                <div id='boughtItemPrice'>
+
+            <div id='boughtItemPrice'>
                 <p>gesamt Preis: 59.94€</p>
             </div>
         </div>
     </div>
-
+    <div id="sleepTimer">
+        <div id="sleepTimerBackground"></div>
+        <div id="sleepTimerMain">
+            <div id="sleepTimerHeader">
+                Hallo?...Ist da jemand?
+            </div>
+            <img src="../static/images/sleepy.png" alt="Sleepy Astronaut" height="300" width="300">
+            <div id="timer">
+                10
+            </div>
+        </div>
+    </div>
     <footer>
         <p>AstroSphere © 2024</p>
     </footer>

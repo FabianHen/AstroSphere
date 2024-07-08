@@ -40,7 +40,7 @@ button:hover {
     cursor: pointer;
 }
 
-.button-secondary{
+.button-secondary {
     background: white;
     border-radius: 3px;
     border: none;
@@ -160,7 +160,8 @@ button:hover {
     left: 27%;
     width: 35%;
 }
-.item .groesse{
+
+.item .groesse {
     position: relative;
     color: white;
     bottom: 70%;
@@ -274,7 +275,7 @@ button:hover {
     opacity: 60%;
 }
 
-#shoppingCart #payment-form{
+#shoppingCart #payment-form {
     position: absolute;
     bottom: 0.65%;
     right: 10%;
@@ -393,7 +394,7 @@ footer {
 }
 
 
-#putItemInCard{
+#putItemInCard {
     display: none;
     position: absolute;
     bottom: 5px;
@@ -408,10 +409,18 @@ footer {
     padding-right: 10px;
     background-color: rgb(17, 197, 92);
 }
-#putItemInCard h1{
+
+#putItemInCard h1 {
     font-size: 90%;
 }
 
+#sleepTimerbackground {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: var(--astrosphere-light-grey);
+    opacity: 0.8;
+}
 
 #personalInformation {
     display: none;
@@ -465,3 +474,42 @@ footer {
     transition: background-color 0.3s;
 }
 
+#sleepTimerMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 80%;
+    border-radius: 10px;
+}
+
+#sleepTimer {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#sleepTimerHeader {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background: linear-gradient(to left, var(--astrosphere-pink), var(--astrosphere-blue));
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+    color: white;
+    font-size: 50px;
+}
+
+#timer {
+    color: var(--astrosphere-blue);
+    font-size: 140px;
+}
