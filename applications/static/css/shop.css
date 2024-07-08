@@ -120,7 +120,11 @@ button:hover {
     border-radius: 10px;
 }
 
-.product_image,
+.product_image {
+    background-color: #c9c1c1;
+    margin: 2px 2px;
+}
+
 .product_name,
 .product_price,
 .product_size {
