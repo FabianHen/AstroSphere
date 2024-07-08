@@ -109,6 +109,14 @@ class Artikel {
         this.image = imagePath;
     }
 }
+class Kunde {
+    constructor(vorname, nachname, email, telefonnummer){
+        this.vorname=vorname;
+        this.nachname=nachname;
+        this.email=email;
+        this.telefonnummer=telefonnummer;
+    }
+}
 
 function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath) {
     aktItem = new Artikel(id, type, beschreibung, größe, preis, anzahl, imagePath);
@@ -260,26 +268,60 @@ function cancel_Order() {
 }
 
 
-async function buy_Order() {
+let isOrderPending = false;
+var newKunde=null;
 
+function handleUserData(event) {
+    event.preventDefault();
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    newKunde = new Kunde(firstName, lastName, email, phone);
+
+    document.getElementById('personalInformation').style.display = "none";
+
+    if (isOrderPending) {
+        continueOrder();
+        isOrderPending = false;
+    }
+}
+
+
+
+async function buy_Order() {
     const paymentMethod = document.getElementById('payment-method').value;
-    if (paymentMethod===""){
-        document.getElementById('purchaseN').innerHTML="<h1>Sie haben noch keine Zahlungsmethode ausgewählt!</h1>";
+    if (paymentMethod === "") {
+        document.getElementById('purchaseN').innerHTML = "<h1>Sie haben noch keine Zahlungsmethode ausgewählt!</h1>";
         document.getElementById('purchaseN').style.display = "flex";
-        setTimeout(function(){            
+        setTimeout(function () {
             document.getElementById('purchaseN').style.display = "none";
-            document.getElementById('purchaseN').innerHTML="<h1>Fehler: Bestellvorgang wurde abgebrochen!</h1>";
+            document.getElementById('purchaseN').innerHTML = "<h1>Fehler: Bestellvorgang wurde abgebrochen!</h1>";
         }, 2500);
         return;
     }
 
-    var result = await buyOrCheck("buyShoppingCart", { shoppingCart });
+    for (var i = 0; i < shoppingCart.length; i++) {
+        if (shoppingCart[i]['type'].includes("Ticket") && !shoppingCart[i]['type'].includes('Tag')) {
+            document.getElementById('personalInformation').style.display = "block";
+            isOrderPending = true;
+            return;
+        }
+    }
+    newKunde=null;
+    continueOrder();
+}
+
+
+
+async function continueOrder() {
+    
+    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, newKunde);
     if (result.success[0][0]) {
         document.getElementById('purchaseS').style.display = "flex";
         showOrder();
         document.getElementById('bestellNr').innerHTML = "Ihre Bestellung: " + result.success[0][1];
-    }
-    else {
+    } else {
         document.getElementById('purchaseN').style.display = "flex";
     }
     setTimeout(function () {
@@ -293,8 +335,9 @@ async function buy_Order() {
 }
 
 
+
 async function checkIfAvailable() {
-    var result = await buyOrCheck("checkAvailableItems", { shoppingCart });
+    var result = await buyOrCheck("checkAvailableItems", { shoppingCart }, null);
     var boolArray = result.success;
     var everythingIsAvailable = true
 
@@ -316,14 +359,14 @@ async function checkIfAvailable() {
 
 
 
-async function buyOrCheck(action, data) {
+async function buyOrCheck(action, data, kunde) {
     try {
         const response = await fetch('/shop/buyOrCheck', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ action: action, data: data })
+            body: JSON.stringify({ action: action, data: data , kunde: kunde})
         });
 
         if (response.ok) {
@@ -532,7 +575,6 @@ function processTickets(data) {
     products.innerHTML = '';
 
     data.forEach(ticket => {
-        console.log(ticket);
         if (!tempHTML.includes(ticket.STUFE)) {
             tempHTML += `
                 <div class="product_card">

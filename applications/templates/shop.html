@@ -93,6 +93,29 @@
             </select>
         </form>
 
+        <div id="personalInformation">
+            <h2>Persönliche Informationen</h2>
+            <form id="personalInfoForm" onsubmit="return handleUserData(event);">
+                <div class="form-group">
+                    <label for="firstName">Vorname</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Nachname</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefonnummer</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <button type="submit" class="submit-btn">Absenden</button>
+            </form>
+        </div>
+
     </div>
 
     <div id="purchaseS" class="purchaseInfo">

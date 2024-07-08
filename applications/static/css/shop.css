@@ -422,6 +422,58 @@ footer {
     opacity: 0.8;
 }
 
+#personalInformation {
+    display: none;
+    position: absolute;
+    margin-left: 25%;
+    margin-top: 5%;
+    width: 50%;
+    height: auto;
+    background-color: #fefefd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #1b1b1b;
+    overflow: auto;
+}
+
+#personalInformation h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgb(128, 126, 126);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 #sleepTimerMain {
     display: flex;
     flex-direction: column;
