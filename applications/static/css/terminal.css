@@ -35,7 +35,7 @@ header {
 #adImage {
     height: 98%;
     object-fit: contain;
-    animation: dynamic 5s infinite ;
+    animation: dynamic 7s infinite ;
 }
 
 #startText {

@@ -26,14 +26,15 @@ document.addEventListener("DOMContentLoaded", function() {
         intervalId = setInterval(function() {
             showNextImage();
             advertisement.style.display="flex";
-        }, 5000);
+        }, 7000);
     }
 
-    document.addEventListener("click", function() {
+    document.addEventListener("click", reset);
+    function reset(){
         advertisement.style.display="none";
         clearInterval(intervalId);
         setTimeout(startInterval, 15000);
-    });
+    }
 
-    startInterval();
+    reset();
 });
