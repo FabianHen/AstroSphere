@@ -1,3 +1,9 @@
+// SLEEPTIMER + DISPLAYTIMER = Gesamtzeit bis reset
+const IDLETIMER = 50000;
+const SLEEPTIMER = 10000;
+const STARTCOLOR = { r: 66, g: 4, b: 176 };
+const ENDCOLOR = { r: 211, g: 13, b: 164 };
+
 function goBack() {
     window.location.href = window.location.href.split('/', window.location.href.split('/').length - 1).join('/');
 }
@@ -31,11 +37,50 @@ function collapseFilter(filter) {
     }
 }
 
-let shop_timeout;
+let idle_timeout;
+let sleep_timeout;
+function resetTimers() {
+    let sleepDiv = document.getElementById("sleepTimer")
+    if (sleepDiv && sleepDiv.style.display == "flex") {
+        sleepDiv.style.display = "none";
+        clearTimeout(sleep_timeout);
+        document.getElementById("timer").innerHTML = 10
+    }
+    clearTimeout(idle_timeout);
+    idle_timeout = setTimeout(sleepTimer, IDLETIMER);
+}
 
-function resetTimer() {
-    clearTimeout(shop_timeout);
-    shop_timeout = setTimeout(goBack, 30000);
+function sleepTimer() {
+    clearTimeout(idle_timeout);
+    let rounds_total = SLEEPTIMER / 1000;
+    let current_round = rounds_total;
+    document.getElementById("sleepTimer").style.display = "flex";
+    sleep_timeout = setInterval(function () {
+        current_round--;
+        const factor = 1 - (current_round / rounds_total);
+        const interpolatedColor = interpolateColor(STARTCOLOR, ENDCOLOR, factor);
+        console.log(interpolatedColor)
+        document.getElementById("timer").style.color = rgbToHex(interpolatedColor.r, interpolatedColor.g, interpolatedColor.b);
+        document.getElementById("timer").innerHTML = current_round
+        if (current_round < 0) {
+            clearInterval(sleep_timeout);
+            document.getElementById("sleepTimer").style.display = "none";
+            goBack()
+        }
+    }, 1000);
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+}
+
+function interpolateColor(color1, color2, factor) {
+    const result = {
+        r: Math.round(color1.r + factor * (color2.r - color1.r)),
+        g: Math.round(color1.g + factor * (color2.g - color1.g)),
+        b: Math.round(color1.b + factor * (color2.b - color1.b))
+    };
+    return result;
 }
 
 window.addEventListener("load", function (e) {
@@ -44,9 +89,9 @@ window.addEventListener("load", function (e) {
     if (selected) {
         collapseFilter(selected);
     }
-    document.addEventListener('mousemove', resetTimer);
-    document.addEventListener('click', resetTimer);
-    resetTimer();
+    document.addEventListener('mousemove', resetTimers);
+    document.addEventListener('click', resetTimers);
+    resetTimers();
 });
 
 
@@ -62,6 +107,14 @@ class Artikel {
         this.preis = preis;
         this.anzahl = anzahl;
         this.image = imagePath;
+    }
+}
+class Kunde {
+    constructor(vorname, nachname, email, telefonnummer){
+        this.vorname=vorname;
+        this.nachname=nachname;
+        this.email=email;
+        this.telefonnummer=telefonnummer;
     }
 }
 
@@ -212,17 +265,75 @@ function cancel_Order() {
     shoppingCart = [];
     updateShoppingCart();
     document.getElementById('shoppingCart').style.display = "none";
+    document.getElementById('payment-form').reset();
+    document.getElementById('personalInfoForm').reset();
 }
 
 
+
+function cancelUserInput(){
+    document.getElementById('personalInformation').style.display = "none";
+    document.getElementById('personalInfoForm').reset();
+}
+
+
+let isOrderPending = false;
+var newKunde=null;
+var stop=false;
+
+function handleUserData(event) {
+    event.preventDefault();
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    newKunde = new Kunde(firstName, lastName, email, phone);
+
+    document.getElementById('personalInformation').style.display = "none";
+
+    if (isOrderPending) {
+        continueOrder();
+        isOrderPending = false;
+    }
+}
+
+
+
 async function buy_Order() {
-    var result = await buyOrCheck("buyShoppingCart", { shoppingCart });
+    const paymentMethod = document.getElementById('payment-method').value;
+    if (paymentMethod === "") {
+        document.getElementById('purchaseN').innerHTML = "<h1>Sie haben noch keine Zahlungsmethode ausgewählt!</h1>";
+        document.getElementById('purchaseN').style.display = "flex";
+        setTimeout(function () {
+            document.getElementById('purchaseN').style.display = "none";
+            document.getElementById('purchaseN').innerHTML = "<h1>Fehler: Bestellvorgang wurde abgebrochen!</h1>";
+        }, 2500);
+        return;
+    }
+
+    for (var i = 0; i < shoppingCart.length; i++) {
+        if (shoppingCart[i]['type'].includes("Ticket") && !shoppingCart[i]['type'].includes('Tag')) {
+            document.getElementById('personalInformation').style.display = "block";
+            isOrderPending = true;
+            return;
+        }
+    }
+    newKunde=null;
+    continueOrder();
+}
+
+
+
+async function continueOrder() {
+    
+    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, newKunde);
     if (result.success[0][0]) {
         document.getElementById('purchaseS').style.display = "flex";
         showOrder();
         document.getElementById('bestellNr').innerHTML = "Ihre Bestellung: " + result.success[0][1];
-    }
-    else {
+        document.getElementById('payment-form').reset();
+        document.getElementById('personalInfoForm').reset();
+    } else {
         document.getElementById('purchaseN').style.display = "flex";
     }
     setTimeout(function () {
@@ -236,8 +347,9 @@ async function buy_Order() {
 }
 
 
+
 async function checkIfAvailable() {
-    var result = await buyOrCheck("checkAvailableItems", { shoppingCart });
+    var result = await buyOrCheck("checkAvailableItems", { shoppingCart }, null);
     var boolArray = result.success;
     var everythingIsAvailable = true
 
@@ -259,14 +371,14 @@ async function checkIfAvailable() {
 
 
 
-async function buyOrCheck(action, data) {
+async function buyOrCheck(action, data, kunde) {
     try {
         const response = await fetch('/shop/buyOrCheck', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ action: action, data: data })
+            body: JSON.stringify({ action: action, data: data , kunde: kunde})
         });
 
         if (response.ok) {
@@ -475,7 +587,6 @@ function processTickets(data) {
     products.innerHTML = '';
 
     data.forEach(ticket => {
-        console.log(ticket);
         if (!tempHTML.includes(ticket.STUFE)) {
             tempHTML += `
                 <div class="product_card">

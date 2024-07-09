@@ -127,6 +127,7 @@ def buyOrCheck():
     try:
         action = request.json.get('action')
         data = request.json.get('data')
+        newKunde = request.json.get('kunde')
 
         result = False
 
@@ -134,6 +135,9 @@ def buyOrCheck():
             result=check_data(data)
         elif action == "buyShoppingCart":
             result=[buyShoppingCart(data)]
+            if newKunde!=None:
+                params=[newKunde['vorname'], newKunde['nachname'], newKunde['email'], newKunde['telefonnummer']]
+                #execute_procedure("NEUER_KUNDE", params)
 
         return jsonify(success=result)
     except Exception as e:
@@ -189,7 +193,6 @@ def buyShoppingCart(data):
         if OrderNum>9999:
             OrderNum=0
         for aktItem in data['shoppingCart']:
-            print(aktItem)
             params=[int(aktItem['id']), int(aktItem['anzahl'])]
             if "Ticket" in aktItem['type']:
                 print("update Database with ticket")
