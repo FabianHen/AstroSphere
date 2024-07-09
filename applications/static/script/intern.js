@@ -246,16 +246,40 @@ function toggleMenu(menuId, link) {
     }
 }
 
-function openContent(option) {
-    switch (option) {
-        case 'planeten':
-            // Planeten anzeigen
-            break;
-        case 'sternenbilder':
-            // Sternenbilder anzeigen
-            break;
-        case 'kometen':
-            // Kometen anzeigen
-            break;
+async function getPlanets() {
+    try {
+        response = await fetch("/intern/planets/planetlist");
+        if (response.ok) {
+            const data = await response.json();
+            processPlanets(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
     }
 }
+
+function processPlanets(data) {
+    var table = document.getElementById("planetTable");
+    var tempHTML = `<tr>
+                        <th class="roomName">Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                    </tr>`;
+
+    data.forEach(planet => {
+        tempHTML += `
+                <tr>
+                    <td class="roomName">${planet.BEZEICHNUNG}</td>
+                    <td>${planet.ID}</td>
+                    <td>${planet.INFORMATIONEN}</td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+

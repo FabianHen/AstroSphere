@@ -22,11 +22,11 @@
                 <li>
                     <a href="#" onclick="toggleMenu('planetensystemeSubmenu', this, 'kometenSubmenu')">Planetensysteme</a>
                     <ul id="planetensystemeSubmenu" class="submenu hidden">
-                        <li><a href="#" onclick="openContent(planeten)">Planeten</a></li>
-                        <li><a href="#"onclick="openContent(sternenbilder)">Sternenbilder</a></li>
+                        <li><a href="#" onclick="filter(event, 'planeten'), getPlanets()">Planeten</a></li>
+                        <li><a href="#"onclick="filter(event, 'sternenbilder')">Sternenbilder</a></li>
                     </ul>
                 </li>
-                <li><a href="#" onclick="openContent(kometen)">Kometen</a></li>
+                <li><a href="#" onclick="filter(event, 'kometen')">Kometen</a></li>
             </ul>
         </div>
 
@@ -38,20 +38,26 @@
                 <a href="#" onclick="goToTelescopes()">Teleskope</a>
             </nav>
 
-            <div id="mainContent">
-                <p>Wählen Sie eine Option aus der linken Menüleiste aus.</p>
+            <div id="planeten" class="mainContent active">
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <button type="button" onclick="">Planet hinzufügen</button>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="planetTable">
+                        <tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Name</th>
+                            <th>Informationen</th>
+                        </tr>
+                    </table>
+                </div>
+                
             </div>
-            <div id="kometenContent" class="hidden">
-                <h2>Kometen</h2>
-                <p>Informationen zu den Kometen...</p>
+            <div id="sternenbilder" class="mainContent">
+                
             </div>
-            <div id="planetenContent" class="hidden">
-                <h2>Planeten</h2>
-                <p>Informationen zu den Planeten...</p>
-            </div>
-            <div id="sternenbilderContent" class="hidden">
-                <h2>Sternenbilder</h2>
-                <p>Informationen zu den Sternenbildern...</p>
+            <div id="kometen" class="mainContent">
+                
             </div>
             
             <!-- <div id="raeume" class="mainContent active">
