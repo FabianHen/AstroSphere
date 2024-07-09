@@ -146,11 +146,8 @@ def get_room_by_bezeichnung():
 @app.route('/intern/rooms/search_free_rooms', methods=['POST'])
 def get_room_by_date():
     try:
-        print(request)
         date = request.json.get('date')
-        print(f"{date}")
         procedure_result = execute_procedure_list_of_dicts("GET_FREIE_RAUME_DATUM", date)
-        print(procedure_result)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")

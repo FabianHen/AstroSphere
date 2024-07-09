@@ -304,10 +304,9 @@ async function searchForFreeRooms(){
             },
             body: JSON.stringify({ date: formattedDate }) // Formatiertes Datum hier verwenden
         });
-        console.log(response);
+        
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             processRooms(result, true);
             return result;
         } else {
