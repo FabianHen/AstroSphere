@@ -114,11 +114,14 @@ async function getRooms() {
         if (response.ok) {
             const data = await response.json();
             processRooms(data)
+            return data
         } else {
             console.error('Server error:', response.status);
+            return null
         }
     } catch (error) {
         console.error('Error:', error);
+        return null
     }
 }
 
@@ -132,11 +135,6 @@ function processRooms(data) {
                         <th>Status</th>
                     </tr>`;
 
-    var rowCount = table.rows.length;
-    for (var i = rowCount - 1; i > 0; i--) {
-        table.deleteRow(i);
-    }
-    console.log("delete rows");
     data.forEach(raum => {
         let status = "frei";
         if (raum.PREIS === null) {
@@ -162,7 +160,7 @@ async function searchRaumByBezeichnung(){
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ bezeichnung: number})
+            body: JSON.stringify({ bezeichnung: bezeichnung})
         });
 
         if (response.ok) {
@@ -187,7 +185,7 @@ async function searchRaumByCapacity(){
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ capacity: number})
+            body: JSON.stringify({ capacity: Number(capacity)})
         });
 
         if (response.ok) {
