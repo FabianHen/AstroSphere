@@ -133,6 +133,15 @@ def get_room_by_bezeichnung():
     except Exception as e:
         print(f"Fehler: {e}")
 
+@app.route('/intern/rooms/search_free_rooms', methods=['POST'])
+def get_room_by_bezeichnung():
+    try:
+        date =request.json.get('date')
+        execute_procedure("GET_FREIE_RAUME", date)
+        query_result = execute_sql_query_list_of_dicts("SELECT * FROM GET_FREIE_RAUME_NACH_DATUM")
+    except Exception as e:
+        print(f"Fehler: {e}")
+
 @app.route('/intern/planets')
 def intern_planets():
     return render_template('intern_planets.html')

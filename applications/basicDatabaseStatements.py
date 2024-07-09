@@ -1022,6 +1022,24 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
 END SUCHE_RAUM_BEZEICHNUNG;
 /
+
+CREATE OR REPLACE PROCEDURE GET_FREIE_RAUME (
+   p_datum IN VERMIETUNG_RAUM_preis%TYPE
+) AS 
+BEGIN
+   CREATE VIEW GET_FREIE_RAUME_NACH_DATUM 
+   AS
+   SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
+   FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
+   WHERE RAUM.miet_preis IS NOT NULL AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < p_datum
+   GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
+   ORDER BY RAUM.id;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'freier Raum nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END GET_FREIE_RAUME;
 """
 
 sql_configuration="""
