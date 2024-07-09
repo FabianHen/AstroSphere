@@ -28,9 +28,58 @@
                 <a href="#" onclick="goToTelescopes()">Teleskope</a>
             </nav>
 
-            <div id="raeume" class="mainContent active">
+            <div id="raeume" class="mainContent active" style="padding: 15px">
                 <h2>Räume</h2>
-                <p>Informationen zu den Räumen...</p>
+                <div style="display: flex; padding: 5px; justify-content: space-around">
+                    <form onsubmit="alert()">
+                    <label style="font-size: 10px">Suche Räume nach Bezeichnung
+                        <br/>
+                        <input type="text"></input>
+                    </label>
+                        <button onclick="onsubmit()">Suchen</button>
+                    </form>
+                    <form onsubmit="" >
+                        <label style="font-size: 10px">Suche Räume nach Kapazität
+                            <br/>
+                            <input type="number"></input>
+                        </label>
+                        <button onclick="onsubmit()">Suchen</button>
+                    </form>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                <table width="90%">
+                    <tr>
+                        <th class="roomName">Bezeichnung</th>
+                        <th>Id</th>
+                        <th>Kapazität</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td class="bezeichnung">Mondraum</td>
+                        <td>1</td>
+                        <td>120</td>
+                        <td class="free">frei</td>
+                    </tr>
+                    <tr>
+                        <td>Mondraum</td>
+                        <td>1</td>
+                        <td>120</td>
+                        <td class="free">frei</td>
+                    </tr>
+                    <tr>
+                        <td>Mondraum</td>
+                        <td>1</td>
+                        <td>120</td>
+                        <td class="free">frei</td>
+                    </tr>
+                    <tr>
+                        <td>Mondraum</td>
+                        <td>1</td>
+                        <td>120</td>
+                        <td class="blocked">besetzt</td>
+                    </tr>
+                </table>
+                </div>
             </div>
         </div>
     </div>

@@ -3,6 +3,8 @@
     --purple: #4204b0;
     --darkGrey: #2e2e2e;
     --lightGrey: #5e5e5e;
+    --lighterGrey: #828282;
+    --inputPink: #ECE6F0;
     --textFont: Arial, Helvetica, sans-serif;
 }
 
@@ -230,6 +232,7 @@ header {
     font-weight: bold;
 }
 
+
 #dateInput {
     display: flex;
     flex-direction: row;
@@ -238,4 +241,40 @@ header {
 
 #dateInput label{
     margin: 10px;
+
+button {
+    background-color: var(--pink);
+    color: white;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+input {
+    border-color: var(--inputPink);
+    background-color: var(--inputPink);
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+    margin-right: -4px;
+}
+
+th {
+    color: var(--lighterGrey);
+    border-bottom: 1px solid var(--lighterGrey);
+    text-align:center;
+    font-weight: lighter;
+    font-size: 14px;
+}
+
+
+td {
+    color: var(--darkGrey);
+    padding: 5px;
+    border-bottom: 1px solid var(--lighterGrey);
+    &.free{
+        color: lightgreen;
+    }
+    &.blocked{
+        color: darkred;
+    }
+
 }
