@@ -203,3 +203,28 @@ async function searchRaumByCapacity(){
         return null;
     }
 }
+
+async function searchForFreeRooms(){
+    try {
+        const date = document.getElementById('').value;
+        const response = await fetch('/intern/rooms/search_free_rooms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ date: Date})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processRooms(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
