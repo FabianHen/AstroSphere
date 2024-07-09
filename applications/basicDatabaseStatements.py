@@ -1952,95 +1952,220 @@ INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_I
 -- Inserting data into table ASTROSPHERE.VERANSTALTUNG
 --
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Sternenreise durch die Galaxie', '02/05/2024 09:00:00', 'Erleben Sie eine faszinierende Reise durch unser Universum, angefangen von den nahen Planeten bis zu den entferntesten Galaxien.');
+(6, 'Sternenreise durch die Galaxie', '07/05/2024 09:00:00', 'Erleben Sie eine faszinierende Reise durch unser Universum, angefangen von den nahen Planeten bis zu den entferntesten Galaxien.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Mondnacht im Planetarium', '02/05/2024 15:00:00', 'Eine romantische Nacht unter den Sternen, mit besonderem Fokus auf dem Mond und seinen mystischen Geheimnissen.');
+(6, 'Mondnacht im Planetarium', '07/05/2024 15:00:00', 'Eine romantische Nacht unter den Sternen, mit besonderem Fokus auf dem Mond und seinen mystischen Geheimnissen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(8, 'Kosmische Kollisionen', '02/06/2024 09:00:00', 'Tauchen Sie ein in die Welt der Asteroiden, Kometen und planetaren Kollisionen und erfahren Sie mehr über die beeindruckende Geschichte unseres Sonnensystems.');
+(8, 'Kosmische Kollisionen', '07/06/2024 09:00:00', 'Tauchen Sie ein in die Welt der Asteroiden, Kometen und planetaren Kollisionen und erfahren Sie mehr über die beeindruckende Geschichte unseres Sonnensystems.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Die Geheimnisse der Schwarzen Löcher', '02/06/2024 15:00:00', 'Eine tiefgehende Erkundung der faszinierenden Phänomene der Schwarzen Löcher und ihrer Auswirkungen auf Raum und Zeit.');
+(7, 'Die Geheimnisse der Schwarzen Löcher', '07/06/2024 15:00:00', 'Eine tiefgehende Erkundung der faszinierenden Phänomene der Schwarzen Löcher und ihrer Auswirkungen auf Raum und Zeit.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Kinderplanetarium', '02/07/2024 09:00:00', 'Ein interaktives Erlebnis für die jüngsten Entdecker, um spielerisch die Wunder des Weltraums zu erforschen.');
+(11, 'Kinderplanetarium', '07/07/2024 09:00:00', 'Ein interaktives Erlebnis für die jüngsten Entdecker, um spielerisch die Wunder des Weltraums zu erforschen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(9, 'Exoplaneten-Expedition', '02/07/2024 15:00:00', 'Begleiten Sie uns auf eine Reise zu den fernen Welten außerhalb unseres Sonnensystems und entdecken Sie potenziell bewohnbare Exoplaneten.');
+(9, 'Exoplaneten-Expedition', '07/07/2024 15:00:00', 'Begleiten Sie uns auf eine Reise zu den fernen Welten außerhalb unseres Sonnensystems und entdecken Sie potenziell bewohnbare Exoplaneten.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(10, 'Astronomie für Einsteiger', '02/08/2024 09:00:00', 'Eine Einführung in die Grundlagen der Astronomie für Neulinge, die mehr über Sterne, Planeten und den Himmel erfahren möchten.');
+(10, 'Astronomie für Einsteiger', '07/08/2024 09:00:00', 'Eine Einführung in die Grundlagen der Astronomie für Neulinge, die mehr über Sterne, Planeten und den Himmel erfahren möchten.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(10, 'Kunst im Kosmos', '02/08/2024 15:00:00', 'Eine kreative Fusion von Astronomie und Kunst, die die Schönheit des Universums durch visuelle Darstellungen und Projektionen erkundet.');
+(10, 'Kunst im Kosmos', '07/08/2024 15:00:00', 'Eine kreative Fusion von Astronomie und Kunst, die die Schönheit des Universums durch visuelle Darstellungen und Projektionen erkundet.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Die Geschichte der Raumfahrt', '02/09/2024 09:00:00', 'Eine chronologische Reise durch die Meilensteine der Raumfahrt, von den ersten Satelliten bis zu den aktuellen Marsmissionen.');
+(6, 'Die Geschichte der Raumfahrt', '07/09/2024 09:00:00', 'Eine chronologische Reise durch die Meilensteine der Raumfahrt, von den ersten Satelliten bis zu den aktuellen Marsmissionen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(8, 'Himmelskonzert', '02/09/2024 15:00:00', 'Genießen Sie eine audiovisuelle Vorführung, bei der Sternbilder und Himmelskörper mit passender Musik harmonisch kombiniert werden.');
+(8, 'Himmelskonzert', '07/09/2024 15:00:00', 'Genießen Sie eine audiovisuelle Vorführung, bei der Sternbilder und Himmelskörper mit passender Musik harmonisch kombiniert werden.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Astronomische R tselrallye', '02/10/2024 09:00:00', 'Ein interaktiver Abend, bei dem die Teilnehmer knifflige astronomische Rätsel lösen und dabei mehr über den Weltraum erfahren.');
+(6, 'Astronomische R tselrallye', '07/10/2024 09:00:00', 'Ein interaktiver Abend, bei dem die Teilnehmer knifflige astronomische Rätsel lösen und dabei mehr über den Weltraum erfahren.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Die Farben des Kosmos', '02/10/2024 15:00:00', 'Eine visuelle Reise, die die verschiedenen Farben im Universum erkundet und erklärt, von leuchtenden Gaswolken bis zu bunten Nebeln.');
+(7, 'Die Farben des Kosmos', '07/10/2024 15:00:00', 'Eine visuelle Reise, die die verschiedenen Farben im Universum erkundet und erklärt, von leuchtenden Gaswolken bis zu bunten Nebeln.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Mars-Expedition live', '02/10/2024 19:00:00', 'Begleiten Sie uns auf eine virtuelle Reise zum Mars und erleben Sie, wie Raumfahrttechnologie diesen fernen Planeten erkundet.');
+(7, 'Mars-Expedition live', '07/10/2024 19:00:00', 'Begleiten Sie uns auf eine virtuelle Reise zum Mars und erleben Sie, wie Raumfahrttechnologie diesen fernen Planeten erkundet.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Astrofotografie-Workshop', '02/11/2024 09:00:00', 'Lernen Sie die Grundlagen der Astrofotografie und nehmen Sie an einem praktischen Workshop teil, um beeindruckende Himmelsaufnahmen zu erstellen.');
+(11, 'Astrofotografie-Workshop', '07/11/2024 09:00:00', 'Lernen Sie die Grundlagen der Astrofotografie und nehmen Sie an einem praktischen Workshop teil, um beeindruckende Himmelsaufnahmen zu erstellen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Die Zukunft der Raumfahrt', '02/11/2024 15:00:00', 'Eine Diskussionsveranstaltung über zukünftige Entwicklungen in der Raumfahrt, von bemannten Marsmissionen bis zu bahnbrechenden Technologien.');
+(11, 'Die Zukunft der Raumfahrt', '07/11/2024 15:00:00', 'Eine Diskussionsveranstaltung über zukünftige Entwicklungen in der Raumfahrt, von bemannten Marsmissionen bis zu bahnbrechenden Technologien.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Sternenreise durch die Galaxie', '02/12/2024 09:00:00', 'Erleben Sie eine faszinierende Reise durch unser Universum, angefangen von den nahen Planeten bis zu den entferntesten Galaxien.');
+(6, 'Sternenreise durch die Galaxie', '07/12/2024 09:00:00', 'Erleben Sie eine faszinierende Reise durch unser Universum, angefangen von den nahen Planeten bis zu den entferntesten Galaxien.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Mondnacht im Planetarium', '02/12/2024 15:00:00', 'Eine romantische Nacht unter den Sternen, mit besonderem Fokus auf dem Mond und seinen mystischen Geheimnissen.');
+(6, 'Mondnacht im Planetarium', '07/12/2024 15:00:00', 'Eine romantische Nacht unter den Sternen, mit besonderem Fokus auf dem Mond und seinen mystischen Geheimnissen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(8, 'Kosmische Kollisionen', '02/13/2024 09:00:00', 'Tauchen Sie ein in die Welt der Asteroiden, Kometen und planetaren Kollisionen und erfahren Sie mehr über die beeindruckende Geschichte unseres Sonnensystems.');
+(8, 'Kosmische Kollisionen', '07/13/2024 09:00:00', 'Tauchen Sie ein in die Welt der Asteroiden, Kometen und planetaren Kollisionen und erfahren Sie mehr über die beeindruckende Geschichte unseres Sonnensystems.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Die Geheimnisse der Schwarzen Löcher', '02/13/2024 15:00:00', 'Eine tiefgehende Erkundung der faszinierenden Phänomene der Schwarzen Löcher und ihrer Auswirkungen auf Raum und Zeit.');
+(7, 'Die Geheimnisse der Schwarzen Löcher', '07/13/2024 15:00:00', 'Eine tiefgehende Erkundung der faszinierenden Phänomene der Schwarzen Löcher und ihrer Auswirkungen auf Raum und Zeit.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Kinderplanetarium', '02/14/2024 09:00:00', 'Ein interaktives Erlebnis für die jüngsten Entdecker, um spielerisch die Wunder des Weltraums zu erforschen.');
+(11, 'Kinderplanetarium', '07/14/2024 09:00:00', 'Ein interaktives Erlebnis für die jüngsten Entdecker, um spielerisch die Wunder des Weltraums zu erforschen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(9, 'Exoplaneten-Expedition', '02/14/2024 15:00:00', 'Begleiten Sie uns auf eine Reise zu den fernen Welten außerhalb unseres Sonnensystems und entdecken Sie potenziell bewohnbare Exoplaneten.');
+(9, 'Exoplaneten-Expedition', '07/14/2024 15:00:00', 'Begleiten Sie uns auf eine Reise zu den fernen Welten außerhalb unseres Sonnensystems und entdecken Sie potenziell bewohnbare Exoplaneten.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(10, 'Astronomie für Einsteiger', '02/15/2024 09:00:00', 'Eine Einführung in die Grundlagen der Astronomie für Neulinge, die mehr über Sterne, Planeten und den Himmel erfahren möchten.');
+(10, 'Astronomie für Einsteiger', '07/15/2024 09:00:00', 'Eine Einführung in die Grundlagen der Astronomie für Neulinge, die mehr über Sterne, Planeten und den Himmel erfahren möchten.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(10, 'Kunst im Kosmos', '02/15/2024 15:00:00', 'Eine kreative Fusion von Astronomie und Kunst, die die Schönheit des Universums durch visuelle Darstellungen und Projektionen erkundet.');
+(10, 'Kunst im Kosmos', '07/15/2024 15:00:00', 'Eine kreative Fusion von Astronomie und Kunst, die die Schönheit des Universums durch visuelle Darstellungen und Projektionen erkundet.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Die Geschichte der Raumfahrt', '02/16/2024 09:00:00', 'Eine chronologische Reise durch die Meilensteine der Raumfahrt, von den ersten Satelliten bis zu den aktuellen Marsmissionen.');
+(6, 'Die Geschichte der Raumfahrt', '07/16/2024 09:00:00', 'Eine chronologische Reise durch die Meilensteine der Raumfahrt, von den ersten Satelliten bis zu den aktuellen Marsmissionen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(8, 'Himmelskonzert', '02/16/2024 15:00:00', 'Genießen Sie eine audiovisuelle Vorführung, bei der Sternbilder und Himmelskörper mit passender Musik harmonisch kombiniert werden.');
+(8, 'Himmelskonzert', '07/16/2024 15:00:00', 'Genießen Sie eine audiovisuelle Vorführung, bei der Sternbilder und Himmelskörper mit passender Musik harmonisch kombiniert werden.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Astronomische R tselrallye', '02/17/2024 09:00:00', 'Ein interaktiver Abend, bei dem die Teilnehmer knifflige astronomische Rätsel lösen und dabei mehr über den Weltraum erfahren.');
+(6, 'Astronomische R tselrallye', '07/17/2024 09:00:00', 'Ein interaktiver Abend, bei dem die Teilnehmer knifflige astronomische Rätsel lösen und dabei mehr über den Weltraum erfahren.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Die Farben des Kosmos', '02/17/2024 15:00:00', 'Eine visuelle Reise, die die verschiedenen Farben im Universum erkundet und erklärt, von leuchtenden Gaswolken bis zu bunten Nebeln.');
+(7, 'Die Farben des Kosmos', '07/17/2024 15:00:00', 'Eine visuelle Reise, die die verschiedenen Farben im Universum erkundet und erklärt, von leuchtenden Gaswolken bis zu bunten Nebeln.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Mars-Expedition live', '02/17/2024 19:00:00', 'Begleiten Sie uns auf eine virtuelle Reise zum Mars und erleben Sie, wie Raumfahrttechnologie diesen fernen Planeten erkundet.');
+(7, 'Mars-Expedition live', '07/17/2024 19:00:00', 'Begleiten Sie uns auf eine virtuelle Reise zum Mars und erleben Sie, wie Raumfahrttechnologie diesen fernen Planeten erkundet.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Astrofotografie-Workshop', '02/18/2024 09:00:00', 'Lernen Sie die Grundlagen der Astrofotografie und nehmen Sie an einem praktischen Workshop teil, um beeindruckende Himmelsaufnahmen zu erstellen.');
+(11, 'Astrofotografie-Workshop', '07/18/2024 09:00:00', 'Lernen Sie die Grundlagen der Astrofotografie und nehmen Sie an einem praktischen Workshop teil, um beeindruckende Himmelsaufnahmen zu erstellen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Die Zukunft der Raumfahrt', '02/18/2024 15:00:00', 'Eine Diskussionsveranstaltung über zukünftige Entwicklungen in der Raumfahrt, von bemannten Marsmissionen bis zu bahnbrechenden Technologien.');
+(11, 'Die Zukunft der Raumfahrt', '07/18/2024 15:00:00', 'Eine Diskussionsveranstaltung über zukünftige Entwicklungen in der Raumfahrt, von bemannten Marsmissionen bis zu bahnbrechenden Technologien.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Sternenreise durch die Galaxie', '02/19/2024 09:00:00', 'Erleben Sie eine faszinierende Reise durch unser Universum, angefangen von den nahen Planeten bis zu den entferntesten Galaxien.');
+(6, 'Sternenreise durch die Galaxie', '07/19/2024 09:00:00', 'Erleben Sie eine faszinierende Reise durch unser Universum, angefangen von den nahen Planeten bis zu den entferntesten Galaxien.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Mondnacht im Planetarium', '02/19/2024 15:00:00', 'Eine romantische Nacht unter den Sternen, mit besonderem Fokus auf dem Mond und seinen mystischen Geheimnissen.');
+(6, 'Mondnacht im Planetarium', '07/19/2024 15:00:00', 'Eine romantische Nacht unter den Sternen, mit besonderem Fokus auf dem Mond und seinen mystischen Geheimnissen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(8, 'Kosmische Kollisionen', '02/20/2024 09:00:00', 'Tauchen Sie ein in die Welt der Asteroiden, Kometen und planetaren Kollisionen und erfahren Sie mehr über die beeindruckende Geschichte unseres Sonnensystems.');
+(8, 'Kosmische Kollisionen', '07/20/2024 09:00:00', 'Tauchen Sie ein in die Welt der Asteroiden, Kometen und planetaren Kollisionen und erfahren Sie mehr über die beeindruckende Geschichte unseres Sonnensystems.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Die Geheimnisse der Schwarzen Löcher', '02/20/2024 15:00:00', 'Eine tiefgehende Erkundung der faszinierenden Phänomene der Schwarzen Löcher und ihrer Auswirkungen auf Raum und Zeit.');
+(7, 'Die Geheimnisse der Schwarzen Löcher', '07/20/2024 15:00:00', 'Eine tiefgehende Erkundung der faszinierenden Phänomene der Schwarzen Löcher und ihrer Auswirkungen auf Raum und Zeit.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Kinderplanetarium', '02/21/2024 09:00:00', 'Ein interaktives Erlebnis für die jüngsten Entdecker, um spielerisch die Wunder des Weltraums zu erforschen.');
+(11, 'Kinderplanetarium', '07/21/2024 09:00:00', 'Ein interaktives Erlebnis für die jüngsten Entdecker, um spielerisch die Wunder des Weltraums zu erforschen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(9, 'Exoplaneten-Expedition', '02/21/2024 15:00:00', 'Begleiten Sie uns auf eine Reise zu den fernen Welten außerhalb unseres Sonnensystems und entdecken Sie potenziell bewohnbare Exoplaneten.');
+(9, 'Exoplaneten-Expedition', '07/21/2024 15:00:00', 'Begleiten Sie uns auf eine Reise zu den fernen Welten außerhalb unseres Sonnensystems und entdecken Sie potenziell bewohnbare Exoplaneten.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(10, 'Astronomie für Einsteiger', '02/22/2024 09:00:00', 'Eine Einführung in die Grundlagen der Astronomie für Neulinge, die mehr über Sterne, Planeten und den Himmel erfahren möchten.');
+(10, 'Astronomie für Einsteiger', '07/22/2024 09:00:00', 'Eine Einführung in die Grundlagen der Astronomie für Neulinge, die mehr über Sterne, Planeten und den Himmel erfahren möchten.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(10, 'Kunst im Kosmos', '02/22/2024 15:00:00', 'Eine kreative Fusion von Astronomie und Kunst, die die Schönheit des Universums durch visuelle Darstellungen und Projektionen erkundet.');
+(10, 'Kunst im Kosmos', '07/22/2024 15:00:00', 'Eine kreative Fusion von Astronomie und Kunst, die die Schönheit des Universums durch visuelle Darstellungen und Projektionen erkundet.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Die Geschichte der Raumfahrt', '02/23/2024 09:00:00', 'Eine chronologische Reise durch die Meilensteine der Raumfahrt, von den ersten Satelliten bis zu den aktuellen Marsmissionen.');
+(6, 'Die Geschichte der Raumfahrt', '07/23/2024 09:00:00', 'Eine chronologische Reise durch die Meilensteine der Raumfahrt, von den ersten Satelliten bis zu den aktuellen Marsmissionen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(8, 'Himmelskonzert', '02/23/2024 15:00:00', 'Genießen Sie eine audiovisuelle Vorführung, bei der Sternbilder und Himmelskörper mit passender Musik harmonisch kombiniert werden.');
+(8, 'Himmelskonzert', '07/23/2024 15:00:00', 'Genießen Sie eine audiovisuelle Vorführung, bei der Sternbilder und Himmelskörper mit passender Musik harmonisch kombiniert werden.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(6, 'Astronomische R tselrallye', '02/24/2024 09:00:00', 'Ein interaktiver Abend, bei dem die Teilnehmer knifflige astronomische Rätsel lösen und dabei mehr über den Weltraum erfahren.');
+(6, 'Astronomische R tselrallye', '07/24/2024 09:00:00', 'Ein interaktiver Abend, bei dem die Teilnehmer knifflige astronomische Rätsel lösen und dabei mehr über den Weltraum erfahren.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Die Farben des Kosmos', '02/24/2024 15:00:00', 'Eine visuelle Reise, die die verschiedenen Farben im Universum erkundet und erklärt, von leuchtenden Gaswolken bis zu bunten Nebeln.');
+(7, 'Die Farben des Kosmos', '07/24/2024 15:00:00', 'Eine visuelle Reise, die die verschiedenen Farben im Universum erkundet und erklärt, von leuchtenden Gaswolken bis zu bunten Nebeln.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(7, 'Mars-Expedition live', '02/24/2024 19:00:00', 'Begleiten Sie uns auf eine virtuelle Reise zum Mars und erleben Sie, wie Raumfahrttechnologie diesen fernen Planeten erkundet.');
+(7, 'Mars-Expedition live', '07/24/2024 19:00:00', 'Begleiten Sie uns auf eine virtuelle Reise zum Mars und erleben Sie, wie Raumfahrttechnologie diesen fernen Planeten erkundet.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Astrofotografie-Workshop', '02/25/2024 09:00:00', 'Lernen Sie die Grundlagen der Astrofotografie und nehmen Sie an einem praktischen Workshop teil, um beeindruckende Himmelsaufnahmen zu erstellen.');
+(11, 'Astrofotografie-Workshop', '07/25/2024 09:00:00', 'Lernen Sie die Grundlagen der Astrofotografie und nehmen Sie an einem praktischen Workshop teil, um beeindruckende Himmelsaufnahmen zu erstellen.');
 INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-(11, 'Die Zukunft der Raumfahrt', '02/25/2024 15:00:00', 'Eine Diskussionsveranstaltung über zukünftige Entwicklungen in der Raumfahrt, von bemannten Marsmissionen bis zu bahnbrechenden Technologien.');
+(11, 'Die Zukunft der Raumfahrt', '07/25/2024 15:00:00', 'Eine Diskussionsveranstaltung über zukünftige Entwicklungen in der Raumfahrt, von bemannten Marsmissionen bis zu bahnbrechenden Technologien.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Reise durch das Sonnensystem', '08/01/2024 10:00:00', 'Begleiten Sie uns auf eine spannende Reise durch unser Sonnensystem und entdecken Sie die faszinierenden Planeten und ihre Monde.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Faszination der Sterne', '08/01/2024 14:00:00', 'Erleben Sie die Schönheit und die Geheimnisse der Sterne, von ihrer Geburt bis zu ihrem spektakulären Ende.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Ringe des Saturn', '08/02/2024 09:00:00', 'Eine detaillierte Betrachtung des beeindruckenden Ringsystems des Saturn und seiner Bedeutung für die Astronomie.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Asteroiden und Meteoriten', '08/02/2024 13:00:00', 'Erfahren Sie mehr über die Herkunft, Zusammensetzung und den Einfluss von Asteroiden und Meteoriten auf die Erde.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Die Magie des Polarlichts', '08/03/2024 11:00:00', 'Lassen Sie sich von den atemberaubenden Farben und Formen des Polarlichts verzaubern und lernen Sie die wissenschaftlichen Hintergründe kennen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Die Milchstraße entdecken', '08/03/2024 15:00:00', 'Eine Entdeckungsreise durch unsere Heimatgalaxie, die Milchstraße, und ihre zahlreichen Geheimnisse und Wunder.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Die Geheimnisse des Mars', '08/04/2024 09:00:00', 'Erforschen Sie den Roten Planeten, seine Landschaften, Atmosphäre und die neuesten Erkenntnisse über die Möglichkeit von Leben auf dem Mars.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Sterne und Planeten für Kinder', '08/04/2024 14:00:00', 'Eine kindgerechte Einführung in die Welt der Astronomie, speziell für unsere jungen Besucher.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Geheimnisse der Dunklen Materie', '08/05/2024 10:00:00', 'Tauchen Sie ein in die mysteriöse Welt der Dunklen Materie und ihre Auswirkungen auf das Universum.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Der Tanz der Galaxien', '08/05/2024 16:00:00', 'Erleben Sie die faszinierenden Wechselwirkungen zwischen Galaxien und die daraus resultierenden kosmischen Phänomene.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Sonneneruptionen und ihre Auswirkungen', '08/06/2024 11:00:00', 'Erfahren Sie mehr über die gewaltigen Eruptionen auf der Sonne und ihre Auswirkungen auf das Leben auf der Erde.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Planeten in fremden Sonnensystemen', '08/06/2024 14:00:00', 'Eine spannende Erkundung der Exoplaneten und der Möglichkeit von Leben in anderen Teilen der Galaxie.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Die Geburt und der Tod der Sterne', '08/07/2024 09:00:00', 'Verfolgen Sie den Lebenszyklus der Sterne von ihrer Entstehung in Nebeln bis zu ihrem spektakulären Ende als Supernova oder Schwarzes Loch.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Der Mond und seine Mysterien', '08/07/2024 15:00:00', 'Eine ausführliche Betrachtung unseres nächsten Nachbarn im All und die vielen Mythen und wissenschaftlichen Erkenntnisse über den Mond.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Reise eines Photons', '08/08/2024 10:00:00', 'Verfolgen Sie die unglaubliche Reise eines Lichtteilchens von der Oberfläche der Sonne bis zu seinem Eintreffen auf der Erde.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Kosmische Nebel', '08/08/2024 13:00:00', 'Entdecken Sie die prächtigen und geheimnisvollen Nebel im Universum und ihre Rolle in der Sternentstehung.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Einstein und die Relativitätstheorie', '08/09/2024 11:00:00', 'Eine Einführung in die revolutionären Ideen von Albert Einstein und ihre Bedeutung für unser Verständnis des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Schwarze Löcher und Wurmlöcher', '08/09/2024 15:00:00', 'Erkunden Sie die faszinierenden Konzepte von Schwarzen Löchern und Wurmlöchern und ihre möglichen Auswirkungen auf Raum und Zeit.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Unsere kosmische Nachbarschaft', '08/10/2024 09:00:00', 'Lernen Sie die Sterne und Planeten in unserer unmittelbaren Nachbarschaft kennen und verstehen Sie ihre Bedeutung für die Astronomie.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Galaktische Supernovae', '08/10/2024 14:00:00', 'Erleben Sie die gewaltigen Explosionen von Supernovae und ihre Rolle in der Verbreitung von schweren Elementen im Universum.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Entstehung des Universums', '08/11/2024 10:00:00', 'Eine Reise zurück in die Zeit zu den Anfängen des Universums und die Theorien über den Urknall und die Evolution des Kosmos.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Sterne und ihre Konstellationen', '08/11/2024 13:00:00', 'Lernen Sie die wichtigsten Sternbilder am Nachthimmel kennen und die Mythen und Geschichten, die sich um sie ranken.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Die Suche nach extraterrestrischem Leben', '08/12/2024 11:00:00', 'Erfahren Sie mehr über die wissenschaftlichen Bemühungen, außerirdisches Leben zu finden und die neuesten Entdeckungen in diesem aufregenden Forschungsfeld.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Kosmische Hintergrundstrahlung', '08/12/2024 15:00:00', 'Eine tiefgehende Untersuchung der kosmischen Hintergrundstrahlung und ihrer Bedeutung für unser Verständnis des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Der Einfluss der Sonne auf die Erde', '08/13/2024 09:00:00', 'Entdecken Sie die vielfältigen Wege, wie die Sonne das Leben auf der Erde beeinflusst und prägt.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Galaxien und ihre Geheimnisse', '08/13/2024 14:00:00', 'Eine spannende Erkundung der verschiedenen Arten von Galaxien und der faszinierenden Phänomene, die sie enthalten.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Zukunft des Universums', '08/14/2024 10:00:00', 'Spekulieren Sie über die Zukunft des Universums und die möglichen Szenarien, die auf uns zukommen könnten.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Wunder des tiefen Weltraums', '08/14/2024 13:00:00', 'Tauchen Sie ein in die Wunder des tiefen Weltraums und entdecken Sie die faszinierenden Objekte und Phänomene jenseits unseres Sonnensystems.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Astronomie für Anfänger', '08/15/2024 11:00:00', 'Einsteigerkurs in die Astronomie, der die Grundlagen und die wichtigsten Konzepte und Beobachtungstechniken erklärt.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Die Physik der schwarzen Löcher', '08/15/2024 15:00:00', 'Eine tiefgehende Erkundung der Physik und Mathematik hinter den faszinierenden Phänomenen der schwarzen Löcher.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Der Mars-Rover und seine Missionen', '08/16/2024 09:00:00', 'Erfahren Sie mehr über die spannenden Missionen der Mars-Rover und die erstaunlichen Entdeckungen, die sie gemacht haben.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Das Rätsel der Dunklen Energie', '08/16/2024 14:00:00', 'Tauchen Sie ein in das größte Rätsel der modernen Astronomie - die Dunkle Energie und ihre Auswirkungen auf das Universum.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Der Nachthimmel im Sommer', '08/17/2024 10:00:00', 'Eine Einführung in die schönsten und interessantesten Objekte, die Sie im Sommer am Nachthimmel beobachten können.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Astronomische Instrumente', '08/17/2024 13:00:00', 'Lernen Sie die verschiedenen Instrumente kennen, die Astronomen verwenden, um den Himmel zu erforschen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Der große Wagen und seine Geheimnisse', '08/18/2024 11:00:00', 'Entdecken Sie die Geheimnisse des berühmten Sternbildes Großer Wagen und seine Bedeutung in verschiedenen Kulturen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Die Entdeckung der Exoplaneten', '08/18/2024 15:00:00', 'Erfahren Sie mehr über die aufregenden Entdeckungen von Planeten außerhalb unseres Sonnensystems und ihre Bedeutung für die Astronomie.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Der Kuipergürtel und seine Bewohner', '08/19/2024 09:00:00', 'Eine spannende Erkundung des Kuipergürtels und der faszinierenden Objekte, die in dieser fernen Region unseres Sonnensystems liegen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Sternschnuppen und Meteorströme', '08/19/2024 14:00:00', 'Erleben Sie die magischen Nächte der Sternschnuppen und erfahren Sie mehr über ihre Herkunft und Bedeutung.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Geheimnisse der Andromeda-Galaxie', '08/20/2024 10:00:00', 'Eine faszinierende Reise zur Andromeda-Galaxie, unserer nächsten großen Nachbargalaxie, und ihre spannenden Geheimnisse.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Der Einfluss des Mondes auf die Erde', '08/20/2024 13:00:00', 'Erfahren Sie mehr über die vielfältigen Einflüsse des Mondes auf das Leben auf der Erde, von den Gezeiten bis zu den biologischen Rhythmen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Supernovae und ihre Überreste', '08/21/2024 11:00:00', 'Erleben Sie die gewaltigen Explosionen von Supernovae und die faszinierenden Überreste, die sie hinterlassen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Das Leben eines Sterns', '08/21/2024 15:00:00', 'Verfolgen Sie die erstaunliche Lebensgeschichte eines Sterns von seiner Geburt in einem Nebel bis zu seinem Ende.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Die Milchstraße und ihre Struktur', '08/22/2024 09:00:00', 'Eine tiefgehende Untersuchung der Struktur und der verschiedenen Bestandteile unserer Heimatgalaxie, der Milchstraße.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Die großen Teleskope der Welt', '08/22/2024 14:00:00', 'Erfahren Sie mehr über die beeindruckenden Teleskope auf der ganzen Welt und die Entdeckungen, die sie ermöglicht haben.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Entstehung der Planeten', '08/23/2024 10:00:00', 'Eine detaillierte Betrachtung der Prozesse, die zur Entstehung der Planeten in unserem Sonnensystem geführt haben.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Die faszinierende Welt der Kometen', '08/23/2024 13:00:00', 'Erleben Sie die spektakulären Erscheinungen der Kometen und ihre Rolle in der Geschichte und Wissenschaft.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Der Einfluss der Dunklen Materie', '08/24/2024 11:00:00', 'Tauchen Sie ein in die Geheimnisse der Dunklen Materie und ihre Auswirkungen auf die Struktur und Entwicklung des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Das Universum und die Quantenmechanik', '08/24/2024 15:00:00', 'Eine Einführung in die erstaunliche Welt der Quantenmechanik und ihre Bedeutung für das Verständnis des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Die kosmische Hintergrundstrahlung', '08/25/2024 09:00:00', 'Erfahren Sie mehr über die Entdeckung und Bedeutung der kosmischen Hintergrundstrahlung und ihre Rolle in der Kosmologie.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Die Astronomie der alten Kulturen', '08/25/2024 14:00:00', 'Eine Reise durch die Astronomie der alten Kulturen und ihre beeindruckenden Kenntnisse und Beobachtungen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Suche nach Leben im All', '08/26/2024 10:00:00', 'Erfahren Sie mehr über die aktuellen Bemühungen und Technologien, die eingesetzt werden, um außerirdisches Leben zu finden.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Der Lebenszyklus der Sterne', '08/26/2024 13:00:00', 'Verfolgen Sie den Lebenszyklus der Sterne von ihrer Entstehung bis zu ihrem Ende als Neutronenstern oder Schwarzes Loch.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Kosmische Kollisionen', '08/27/2024 11:00:00', 'Erleben Sie die dramatischen Kollisionen zwischen Himmelskörpern und ihre Auswirkungen auf das Universum.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Die Rolle der Gravitation', '08/27/2024 15:00:00', 'Erfahren Sie mehr über die zentrale Rolle der Gravitation in der Struktur und Entwicklung des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Sterne beobachten für Anfänger', '08/28/2024 09:00:00', 'Ein praktischer Workshop für Anfänger, um die Sterne und Sternbilder am Nachthimmel zu erkennen und zu beobachten.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Die Wunder des Weltalls', '08/28/2024 14:00:00', 'Eine faszinierende Reise durch die Wunder des Weltalls und die neuesten Entdeckungen der Astronomie.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(8, 'Die Entstehung der Galaxien', '08/29/2024 10:00:00', 'Erfahren Sie mehr über die Entstehung und Entwicklung der Galaxien und die faszinierenden Prozesse, die dabei ablaufen.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(9, 'Das kosmische Netz', '08/29/2024 13:00:00', 'Eine Erkundung des kosmischen Netzes und der großräumigen Struktur des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(10, 'Die Rolle der Dunklen Energie', '08/30/2024 11:00:00', 'Erfahren Sie mehr über die geheimnisvolle Dunkle Energie und ihre Auswirkungen auf die Expansion des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(11, 'Der Einfluss des Jupiter auf das Sonnensystem', '08/30/2024 15:00:00', 'Eine Untersuchung der Rolle des Jupiter in unserem Sonnensystem und seine Einflüsse auf andere Planeten und Asteroiden.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(6, 'Das Universum und die Relativitätstheorie', '08/31/2024 09:00:00', 'Eine Einführung in die Relativitätstheorie und ihre Auswirkungen auf unser Verständnis des Universums.');
+INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+(7, 'Die Erforschung der Venus', '08/31/2024 14:00:00', 'Erfahren Sie mehr über die geheimnisvolle Venus, ihre Atmosphäre und die spannenden Missionen, die sie erforscht haben.');
+
 
 
 --
