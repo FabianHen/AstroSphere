@@ -15,37 +15,37 @@ function showSection(sectionId) {
 document.addEventListener('DOMContentLoaded', function() {
     const mediaItem = document.getElementById('mediaGrid');
     if (mediaItem) {
-        loadMedia(mediaItem);
+        getMedium(mediaItem);
     }
 });
 
-function loadMedia(elem) {
+function loadMedia(elem, medien) {
     // Datenbank lesen
-    let medien = getMedium();
-    
+    console.log(medien);
     medien.forEach(medium => {
+        console.log(medium);
         var htmlElem =  "<a href='#' class='media-item' onclick='mediaPressed(this)'>"
-        htmlElem += "<img src=" + medium.IMAGE_PATH + " alt='Media 1'>"
-        if(medium.GALAXIE.NAME) {
-            htmlElem += "<h3>" + medium.GALAXIE.NAME + "</h3>"
+        htmlElem += `<img src="${medium.IMAGE_PATH}" alt='Media 1'>`
+        if(medium.GALAXIE_NAME) {
+            htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>"
         }
-        if(medium.PLANET.NAME) {
-            htmlElem += "<h3>" + medium.PLANET.NAME + "</h3>"
+        if(medium.PLANET_NAME) {
+            htmlElem += "<h3>" + medium.PLANET_NAME + "</h3>"
         }
-        if(medium.STERN.NAME) {
-            htmlElem += "<h3>" + medium.STERN.NAME + "</h3>"
+        if(medium.STERN_NAME) {
+            htmlElem += "<h3>" + medium.STERN_NAME + "</h3>"
         }
-        if(medium.NEBEL.NAME) {
-            htmlElem += "<h3>" + medium.NEBEL.NAME + "</h3>"
+        if(medium.NEBEL_NAME) {
+            htmlElem += "<h3>" + medium.NEBEL_NAME + "</h3>"
         }
-        if(medium.STERNENBILD.NAME) {
-            htmlElem += "<h3>" + medium.STERNENBILD.NAME + "</h3>"
+        if(medium.STERNENBILD_NAME) {
+            htmlElem += "<h3>" + medium.STERNENBILD_NAME + "</h3>"
         }
-        if(medium.PLANETENSYSTEM.NAME) {
-            htmlElem += "<h3>" + medium.PLANETENSYSTEM.NAME + "</h3>"
+        if(medium.PLANETENSYSTEM_NAME) {
+            htmlElem += "<h3>" + medium.PLANETENSYSTEM_NAME + "</h3>"
         }
-        if(medium.KOMET.NAME) {
-            htmlElem += "<h3>" + medium.KOMET.NAME + "</h3>"
+        if(medium.KOMET_NAME) {
+            htmlElem += "<h3>" + medium.KOMET_NAME + "</h3>"
         }
 
         htmlElem += "<p>" + medium.FORMAT + "</p>"
@@ -70,15 +70,17 @@ function filter(event, sectionId) {
     showSection(sectionId);
 }
 
-async function getMedium() {
+async function getMedium(mediaItem) {
     try {
-        const response = await fetch('/intern/events/medien');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        var response = await fetch('/intern/events/medien');
+        if (response.ok) {
+            const data = await response.json();
+            loadMedia(mediaItem, data);
+            return data;
         }
-        const data = await response.json();
-  
-        return data;
+        else {
+            throw new Error('Network response was not ok');
+        }
       } catch (error) {
         throw new Error('Fehler beim Laden der Daten:', error);
       }
