@@ -1,3 +1,4 @@
+
 function showSection(sectionId) {
     // Alle Inhaltsbereiche ausblenden
     var sections = document.querySelectorAll('.mainContent');
@@ -14,42 +15,44 @@ function showSection(sectionId) {
 document.addEventListener('DOMContentLoaded', function() {
     const mediaItem = document.getElementById('mediaGrid');
     if (mediaItem) {
-        loadMedia(mediaItem);
+        getMedium(mediaItem);
     }
 });
 
-function loadMedia(elem) {
+function loadMedia(elem, medien) {
     // Datenbank lesen
-    let testMedia = [['Mond', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Erde', '*.png', '../static/images/pictureNotFound.png'],
-                     ['Mars', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Jupiter', '*.jpg', '../static/images/pictureNotFound.png'],
-                     ['Saturn', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Venus', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Merkur', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Test', '*.svg', '../static/images/pictureNotFound.png']]
-    
-    for (var i = 0; i < testMedia.length; i++) {
+    console.log(medien);
+    medien.forEach(medium => {
+        console.log(medium);
         var htmlElem =  "<a href='#' class='media-item' onclick='mediaPressed(this)'>"
-        htmlElem += "<img src=" + testMedia[i][2] + " alt='Media 1'>"
-        htmlElem += "<h3>" + testMedia[i][0] + "</h3>"
-        htmlElem += "<p>" + testMedia[i][1] + "</p>"
+        htmlElem += `<img src="${medium.IMAGE_PATH}" alt='Media 1'>`
+        if(medium.GALAXIE_NAME) {
+            htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>"
+        }
+        if(medium.PLANET_NAME) {
+            htmlElem += "<h3>" + medium.PLANET_NAME + "</h3>"
+        }
+        if(medium.STERN_NAME) {
+            htmlElem += "<h3>" + medium.STERN_NAME + "</h3>"
+        }
+        if(medium.NEBEL_NAME) {
+            htmlElem += "<h3>" + medium.NEBEL_NAME + "</h3>"
+        }
+        if(medium.STERNENBILD_NAME) {
+            htmlElem += "<h3>" + medium.STERNENBILD_NAME + "</h3>"
+        }
+        if(medium.PLANETENSYSTEM_NAME) {
+            htmlElem += "<h3>" + medium.PLANETENSYSTEM_NAME + "</h3>"
+        }
+        if(medium.KOMET_NAME) {
+            htmlElem += "<h3>" + medium.KOMET_NAME + "</h3>"
+        }
+
+        htmlElem += "<p>" + medium.FORMAT + "</p>"
         htmlElem += "</a>"
 
         elem.innerHTML += htmlElem;
-    }
+    });
 }
 
 function filter(event, sectionId) {
@@ -67,6 +70,22 @@ function filter(event, sectionId) {
     showSection(sectionId);
 }
 
+async function getMedium(mediaItem) {
+    try {
+        var response = await fetch('/intern/events/medien');
+        if (response.ok) {
+            const data = await response.json();
+            loadMedia(mediaItem, data);
+            return data;
+        }
+        else {
+            throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        throw new Error('Fehler beim Laden der Daten:', error);
+      }
+}
+
 function mediaPressed(elem){
     elem.classList.toggle('active');
 }
@@ -75,7 +94,7 @@ function goToEvents() {
     window.location.href = '/intern/events';
 }
 
-function goToRooms() {
+async function goToRooms() {
     window.location.href = '/intern/rooms';
 }
 
@@ -89,6 +108,125 @@ function goToTelescopes() {
 
 function goBackHome() {
     window.location.href = '/';
+}
+
+async function getRooms() {
+    try {
+        response = await fetch("/intern/rooms/roomlist");
+        if (response.ok) {
+            const data = await response.json();
+            processRooms(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+
+function processRooms(data) {
+    var table = document.getElementById("roomTable");
+    var tempHTML = `<tr>
+                        <th class="roomName">Bezeichnung</th>
+                        <th>Id</th>
+                        <th>Kapazität</th>
+                        <th>Status</th>
+                    </tr>`;
+
+    data.forEach(raum => {
+        let status = "frei";
+        if (raum.PREIS === null) {
+            status = "Abteilungsraum";
+        }
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITAT}</td>
+                    <td class="${status}">${status}</td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function searchRaumByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchRaumBezeichnungInput').value;
+        const response = await fetch('/intern/rooms/search_room_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processRooms(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function searchRaumByCapacity(){
+    try {
+        const capacity = document.getElementById('searchRaumCapacityInput').value;
+        const response = await fetch('/intern/rooms/search_room_capacity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ capacity: Number(capacity)})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processRooms(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function searchForFreeRooms(){
+    try {
+        const date = document.getElementById('').value;
+        const response = await fetch('/intern/rooms/search_free_rooms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ date: Date})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processRooms(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 function toggleMenu(menuId, link) {

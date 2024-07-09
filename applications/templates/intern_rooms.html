@@ -28,9 +28,35 @@
                 <a href="#" onclick="goToTelescopes()">Teleskope</a>
             </nav>
 
-            <div id="raeume" class="mainContent active">
+            <div id="raeume" class="mainContent active" style="padding: 15px">
                 <h2>Räume</h2>
-                <p>Informationen zu den Räumen...</p>
+                <div style="display: flex; padding: 5px; justify-content: space-around">
+                    <button onclick="getRooms()">Räume anzeigen</button>
+                    <form>
+                    <label style="font-size: 10px">Suche Räume nach Bezeichnung
+                        <br/>
+                        <input type="text" id="searchRaumBezeichnungInput" name="searchRaumBezeichnungInput"></input>
+                    </label>
+                        <button type="button" onclick="searchRoomsByBezeichnung()">Suchen</button>
+                    </form>
+                    <form>
+                        <label style="font-size: 10px">Suche Räume nach Kapazität
+                            <br/>
+                            <input type="number" min="0" name="searchRaumCapacityInput" id="searchRaumCapacityInput"></input>
+                        </label>
+                        <button type="button" onclick="searchRaumByCapacity()">Suchen</button>
+                    </form>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                <table width="90%" id="roomTable">
+                    <tr>
+                        <th class="roomName">Bezeichnung</th>
+                        <th>Id</th>
+                        <th>Kapazität</th>
+                        <th>Status</th>
+                    </tr>
+                </table>
+                </div>
             </div>
         </div>
     </div>

@@ -44,6 +44,8 @@ def get_salty():
 
 
 
+
+
     
 @app.route('/terminal/shop/merch', methods=['GET'])
 def get_merch():
@@ -83,22 +85,22 @@ def get_other():
 
 @app.route('/terminal/shop/tickets', methods=['GET'])
 def get_tickets():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/tickets/day', methods=['GET'])
 def get_ticket_day():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Tag'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Tag'")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/tickets/month', methods=['GET'])
 def get_ticket_month():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Monat'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Monat'")
     return jsonify(query_result)
 
 @app.route('/terminal/shop/tickets/year', methods=['GET'])
 def get_ticket_year():
-    query_result = execute_sql_query_list_of_dicts("SELECT TICKETSTUFE.stufe, TICKETSTUFE.zeitraum, TICKETSTUFE.preis, TICKETSTUFE.IMAGE_PATH FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Jahr'")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Jahr'")
     return jsonify(query_result)
 
 
@@ -106,9 +108,49 @@ def get_ticket_year():
 def intern_events():
     return render_template('intern_events.html')
 
+@app.route('/intern/events/medien', methods=['GET'])
+def get_medien():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM MEDIUM_VIEW")
+    return jsonify(query_result)
+
 @app.route('/intern/rooms')
 def intern_rooms():
     return render_template('intern_rooms.html')
+
+@app.route('/intern/rooms/roomlist', methods=['GET'])
+def intern_roomlist():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM FREIE_RAEUME")
+    return jsonify(query_result)
+
+@app.route('/intern/rooms/search_room_capacity', methods=['POST'])
+def get_room_by_capacity():
+    try:
+        capacity = request.json.get('capacity')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_RAUM_KAPAZITAET", capacity)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+   
+
+@app.route('/intern/rooms/search_room_bezeichnung', methods=['POST'])
+def get_room_by_bezeichnung():
+    try:
+        bezecihnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_RAUM_BEZEICHNUNG", bezecihnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
+@app.route('/intern/rooms/search_free_rooms', methods=['POST'])
+def get_room_by_date():
+    try:
+        date = request.json.get('date')
+        procedure_result = execute_procedure_list_of_dicts("GET_FREIE_RAUME_DATUM", date)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
 
 @app.route('/intern/planets')
 def intern_planets():
@@ -127,6 +169,7 @@ def buyOrCheck():
     try:
         action = request.json.get('action')
         data = request.json.get('data')
+        newKunde = request.json.get('kunde')
 
         result = False
 
@@ -134,6 +177,9 @@ def buyOrCheck():
             result=check_data(data)
         elif action == "buyShoppingCart":
             result=[buyShoppingCart(data)]
+            if newKunde!=None:
+                params=[newKunde['vorname'], newKunde['nachname'], newKunde['email'], newKunde['telefonnummer']]
+                #execute_procedure("NEUER_KUNDE", params)
 
         return jsonify(success=result)
     except Exception as e:
@@ -190,7 +236,10 @@ def buyShoppingCart(data):
             OrderNum=0
         for aktItem in data['shoppingCart']:
             params=[int(aktItem['id']), int(aktItem['anzahl'])]
-            if int(aktItem['id'])%2==0:
+            if "Ticket" in aktItem['type']:
+                print("update Database with ticket")
+                #execute_procedure("VERKAUFEN_TICKET", params)
+            elif int(aktItem['id'])%2==0:
                 print("update Database with snack")
                 #execute_procedure("VERKAUFEN_SNACK", params)
             else:

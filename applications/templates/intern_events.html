@@ -57,12 +57,20 @@
                 </div>
             </div>
             <div id="date" class="mainContent">
-                <h2>Datum & Uhrzeit</h2>
-                <p>Informationen zum Datum und Uhrzeit...</p>
+                <div id="dateInput"> 
+                    <label for="eventTime">Wann soll die Veranstaltung stattfinden:</label>
+                    <input type="datetime-local" id="eventTime">
+                    <input type="submit">
+                </div>
             </div>
             <div id="room" class="mainContent">
-                <h2>Veranstaltungsraum</h2>
-                <p>Informationen zum Veranstaltungsraum...</p>
+                <div class="mediaHeader">
+                    <div>
+                        <h2>Räume</h2>
+                        <p>Wähle einen der Verfügbaren Räume aus:</p>
+                    </div>
+                    <button id="speichern">Speichern</button>
+                </div>
             </div>
         </div>
     </div>
