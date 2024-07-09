@@ -216,7 +216,12 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-        
+                    if int(databaseItem[3])<10:
+                        print("Nachbestellen von: ", databaseItem[1])
+                        #nachbestellen vom aktuellen Snack
+                        params=[int(databaseItem[3]), 10]
+                        #execute_procedure("ORDER_SNACK", params)
+
         else:
             for databaseItem in itemNumMerch:
                 if int(databaseItem[0])==int(shoppingItem[0]):
@@ -226,6 +231,11 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
+                    if int(databaseItem[3])<10:
+                        print("Nachbestellen von: ", databaseItem[1])
+                        #nachbestellen von Merch
+                        params=[int(databaseItem[3]), 10]
+                        #execute_procedure("ORDER_MERCH", params)
     return available
 
 OrderNum=0
