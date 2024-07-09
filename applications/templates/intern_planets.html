@@ -18,6 +18,16 @@
     <div class= "main">
         <div class= "leftComponent">
             <h2>Planeten Daten</h2>
+            <ul class="menu">
+                <li>
+                    <a href="#" onclick="toggleMenu('planetensystemeSubmenu', this, 'kometenSubmenu')">Planetensysteme</a>
+                    <ul id="planetensystemeSubmenu" class="submenu hidden">
+                        <li><a href="#" onclick="openContent(planeten)">Planeten</a></li>
+                        <li><a href="#"onclick="openContent(sternenbilder)">Sternenbilder</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" onclick="openContent(kometen)">Kometen</a></li>
+            </ul>
         </div>
 
         <div class= "rightComponent">
@@ -27,10 +37,27 @@
                 <a href="#" class="active" onclick="goToPlanets()">Planeten</a>
                 <a href="#" onclick="goToTelescopes()">Teleskope</a>
             </nav>
-            <div id="raeume" class="mainContent active">
+
+            <div id="mainContent">
+                <p>Wählen Sie eine Option aus der linken Menüleiste aus.</p>
+            </div>
+            <div id="kometenContent" class="hidden">
+                <h2>Kometen</h2>
+                <p>Informationen zu den Kometen...</p>
+            </div>
+            <div id="planetenContent" class="hidden">
                 <h2>Planeten</h2>
                 <p>Informationen zu den Planeten...</p>
             </div>
+            <div id="sternenbilderContent" class="hidden">
+                <h2>Sternenbilder</h2>
+                <p>Informationen zu den Sternenbildern...</p>
+            </div>
+            
+            <!-- <div id="raeume" class="mainContent active">
+                <h2>Planeten</h2>
+                <p>Informationen zu den Planeten...</p>
+            </div> -->
         </div>
     </div>
 </body>

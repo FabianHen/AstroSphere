@@ -90,3 +90,34 @@ function goToTelescopes() {
 function goBackHome() {
     window.location.href = '/';
 }
+
+function toggleMenu(menuId, link) {
+    var submenu = document.getElementById(menuId);
+    var allLinks = document.querySelectorAll('.menu a');
+
+    allLinks.forEach(function(link) {
+        link.classList.remove('selected');
+    });
+
+    if (submenu.classList.contains('hidden')) {
+        submenu.classList.remove('hidden');
+        link.classList.add('selected');
+    } else {
+        submenu.classList.add('hidden');
+        link.classList.remove('selected');
+    }
+}
+
+function openContent(option) {
+    switch (option) {
+        case 'planeten':
+            // Planeten anzeigen
+            break;
+        case 'sternenbilder':
+            // Sternenbilder anzeigen
+            break;
+        case 'kometen':
+            // Kometen anzeigen
+            break;
+    }
+}
