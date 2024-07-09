@@ -15,89 +15,108 @@
     </header>
 
     <div>
-        <button onclick="goBack()">Back</button>
+        <button type="button" onclick="goBack()">Back</button>
     </div>
+
     <main>
         <div class="filter">
-            <button class="collapsible" type="button" onclick="collapseFilter('snack_filter')"><h4>Snacks</h4></button>
+            <button class="collapsible" type="button" onclick="collapseFilter('snack_filter')">
+                <h4>Snacks</h4>
+            </button>
 
             <div id="snack_filter" class="filter_content">
-                <div>Alles Anzeigen</div>
-                <div>Getränke</div>
-                <div>Süß</div>
-                <div>Salzig</div>
+                <button class="button-secondary" type="button" onclick="getSnacks('drinks')">Drinks</button>
+                <button class="button-secondary" type="button" onclick="getSnacks('sweet')">Sweet</button>
+                <button class="button-secondary" type="button" onclick="getSnacks('salty')">Salty</button>
             </div>
 
-            <button class="collapsible" type="button" onclick="collapseFilter('merch_filter')"><h4>Merch</h4></button>
+            <button class="collapsible" type="button" onclick="collapseFilter('merch_filter')">
+                <h4>Merch</h4>
+            </button>
 
             <div id="merch_filter" class="filter_content">
-                <div>Alles Anzeigen</div>
-                <div>Hoodies</div>
-                <div>T-Shirts</div>
-                <div>Sonstiges</div>
+                <button class="button-secondary" type="button" onclick="getMerch('clothing')">Clothing</button>
+                <button class="button-secondary" type="button" onclick="getMerch('accessoires')">Accessoires</button>
+                <button class="button-secondary" type="button" onclick="getMerch('householdItem')">household
+                    Items</button>
+                <button class="button-secondary" type="button" onclick="getMerch('stationery')">Stationery</button>
+                <button class="button-secondary" type="button" onclick="getMerch('other')">Other</button>
             </div>
 
-            <button class="collapsible" type="button"><h4>Tickets</h4></button>
+            <button class="collapsible" type="button" onclick="collapseFilter('ticket_filter')">
+                <h4>Tickets</h4>
+            </button>
 
+            <div id="ticket_filter" class="filter_content">
+                <button class="button-secondary" type="button" onclick="getTicket('day')">Day</button>
+                <button class="button-secondary" type="button" onclick="getTicket('month')">Month</button>
+                <button class="button-secondary" type="button" onclick="getTicket('year')">Year</button>
+            </div>
+
+        </div>
+
+        <div id="putItemInCard">
+            <h1>Item wurde in den Warenkorb hinzugefügt.</h1>
         </div>
 
         <div class="products">
-            <div class="product_card">
-                <img class="product_image" src="../static/images/popcorn_bold.svg" alt="Produktbild">
-                <label class="product_name" for=""></label>
-                <div>
-                    <label class="product_price" for="">€</label>
-                    <button>Add to Cart</button>
-                </div>
-            </div>
+
         </div>
 
         <div id="cart_button">
-            <button onclick="goTo_shoppingCart()">
-                <img src="../static/images/cart_bold.svg" alt="Warenkorb" width="25" height="25">
+            <button type="button" onclick="goTo_shoppingCart()">
+                <img src="../static/images/cart_bold.svg" alt="Warenkorb" width="30" height="30">
+                <span class="cart_badge"></span>
             </button>
         </div>
     </main>
-
-
-
-
-
-
-
-
     <div id="shoppingCart">
         <h1>Warenkorb</h1>
-
-
         <div id="itemList">
-
-            <div class="item" id="item_1">
-                <div style="height: 100%; width: 100%;">
-                    <img src="../static/images/pictureNotFound.png" alt="item image" id="item_1Img" width="100"
-                        height="100">
-                    <h3 id="item_1Name">Item Name</h3>
-                    <div class="line"></div>
-
-                    <p class="beschreibung" id="item_1Desc"><b>Beschreibung</b><br>Lorem ipsum dolor sit amet,
-                        consetetur sadipscing elitr, </p>
-
-                    <p class="preis" id="item_1Preis">Preis: 00.00€</p>
-
-                    <input type="number" min="0" max="7" class="numberOfItems" placeholder="Menge: 1" id="item_1Num" onchange="updateShoppingCart()">
-                    <p class="Lager" id="item_1L">Auf Lager</p>
-                    <p class="nLager" id="item_1nL" style="display: none;">Nicht Auf Lager</p>
-
-                </div>
-            </div>
-
-
+            <!--shopping List items-->
         </div>
         <div id="gesKosten">
             <h3 id="gesKostenNum">00.00€</h3>
         </div>
-        <button id="cancel" onclick="cancel_Order()">Cancel</button>
-        <button id="buy" onclick="buy_Order()">Buy now</button>
+        <button type="button" id="cancel" onclick="cancel_Order()">Cancel</button>
+        <button type="button" id="buy" onclick="buy_Order()">Buy now</button>
+
+        <form id="payment-form">
+            <label for="payment-method">Zahlungsmethode:</label>
+            <select id="payment-method" name="payment-method">
+                <option value="">--Bitte wählen--</option>
+                <option value="credit-card">Kreditdkarte</option>
+                <option value="paypal">PayPal</option>
+                <option value="applePay">Apple-Pay</option>
+                <option value="bank-transfer">Banküberweisung</option>
+                <option value="bar">Bar</option>
+            </select>
+        </form>
+
+        <div id="personalInformation">
+            <button id="closeBtn" onclick="cancelUserInput()">X</button>
+            <h2>Persönliche Informationen</h2>
+            <form id="personalInfoForm" onsubmit="return handleUserData(event);">
+                <div class="form-group">
+                    <label for="firstName">Vorname</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Nachname</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefonnummer</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <button type="submit" class="submit-btn">Absenden</button>
+            </form>
+        </div>
+
     </div>
 
     <div id="purchaseS" class="purchaseInfo">
@@ -110,9 +129,32 @@
             Fehler: Bestellvorgang wurde abgebrochen!
         </h1>
     </div>
-    
 
+    <div id="buyItems">
+        <h1 id="bestellNr">Bestell-Nr.: 0000</h1>
+        <h2>Ihre Bestellung:</h2>
+        <div id="listboughtItems">
 
+            <div id='boughtItemPrice'>
+                <p>gesamt Preis: 59.94€</p>
+            </div>
+        </div>
+    </div>
+    <div id="sleepTimer">
+        <div id="sleepTimerBackground"></div>
+        <div id="sleepTimerMain">
+            <div id="sleepTimerHeader">
+                Hallo?...Ist da jemand?
+            </div>
+            <img src="../static/images/sleepy.png" alt="Sleepy Astronaut" height="300" width="300">
+            <div id="timer">
+                10
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>AstroSphere © 2024</p>
+    </footer>
 </body>
 
 </html>

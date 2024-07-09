@@ -12,7 +12,39 @@ user = "AstroSphere"
 password = "astrosphere"
 
 
+def execute_sql_query_list_of_dicts(sql_query: str) -> list:
+    global dsn, user, password
 
+    connection = None
+    cursor = None
+
+    #print("User: ", user, "; Password: ", password, "; DSN: ", dsn)
+    try:
+        connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
+        cursor = connection.cursor()
+
+        cursor.execute(sql_query)
+        
+       # Spaltennamen aus cursor.description extrahieren
+        columns = [col[0] for col in cursor.description]
+
+        # Daten als Liste von Dictionaries speichern
+        result = []
+        for row in cursor:
+            result.append(dict(zip(columns, row)))
+
+        return result
+    
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print("Datenbankfehler:", error.message)
+    except Exception as e:
+        print("Allgemeiner Fehler:", str(e))
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
 
 def execute_sql_query(sql_query):
@@ -21,7 +53,7 @@ def execute_sql_query(sql_query):
     connection = None
     cursor = None
 
-    print("User: ", user, "; Password: ", password, "; DSN: ", dsn)
+    #print("User: ", user, "; Password: ", password, "; DSN: ", dsn)
     try:
         connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
         cursor = connection.cursor()
@@ -37,7 +69,7 @@ def execute_sql_query(sql_query):
                     processedRow.append(col.read())
                 else:
                     processedRow.append(col)
-            print(processedRow)
+            #print(processedRow)
         
         return results
     
@@ -52,10 +84,44 @@ def execute_sql_query(sql_query):
         if connection:
             connection.close()
 
+
+#method to execute a stored Procedure
+# params: procedure_name = "Name of stored Procedure", params = [x, ...] Array of Values
+def execute_procedure(procedure_name, params):
+    connection = None
+    cursor = None
+    try:
+        connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
+        cursor = connection.cursor()
+
+        cursor.callproc(procedure_name, params)
+        
+        return True
+    
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print("Datenbankfehler:", error.message)
+        return False
+    except Exception as e:
+        print("Allgemeiner Fehler:", str(e))
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
+
 #check if cx_Oracle works
-print(cx_Oracle.clientversion())
+#print(cx_Oracle.clientversion())
 
-#sql-example
-sql_query = "SELECT * FROM ABTEILUNG"
 
-execute_sql_query(sql_query)
+#example of sql Query
+#sql_query = "SELECT * FROM SNACK"
+#print(execute_sql_query(sql_query))
+
+#example of stored Procedure
+#procedure = "VERKAUFEN_MERCH"
+#params = [1,4]
+#execute_procedure(procedure, params)

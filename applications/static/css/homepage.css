@@ -19,7 +19,7 @@ body{
 
 #Titel{
     color: transparent;
-    background-image: linear-gradient(to right, var(--darkGrey), var(--pink), var(--purple), var(--lightGrey));
+    background-image: linear-gradient(to right, var(--pink), var(--purple));
     -webkit-background-clip: text;
     background-clip: text;
     position: absolute;
@@ -243,7 +243,9 @@ body{
 }
 
 .student {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    /* justify-content: flex-start; */
     align-items: center;
     margin-bottom: 20px;
     padding: 10px;
@@ -256,20 +258,20 @@ body{
     border-radius: 50%;
     width: 80px;
     height: 80px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
 
 .student h2 {
     font-size: 24px;
     color: #333;
     margin: 0;
-    margin-right: 5%;
+    /* margin-right: 5%; */
 }
 
 .student p {
     margin: 5px 0;
     color: #555;
-    margin-right: 3%;
+    /* margin-right: 3%; */
 }
 
 .institution {

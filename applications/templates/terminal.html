@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../static/images/AstroSphere_Logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../static/css/terminal.css">
     <script src="../static/script/terminal.js"></script>
     <title>Terminal</title>
@@ -15,28 +16,33 @@
     </header>
 
     <div>
-        <button class="back_button" onclick="goBackHome()">Back</button>
+        <button type="button" class="back_button" onclick="goBackHome()">Back</button>
+    </div>
+
+    <div id="advertisement">
+        <img id="adImage" src="../static/images/advertisement_1.png" alt="advertisement image">
+        <div id="startText">click to start</div>
     </div>
 
     <div class="container">
-        <button class="menu_buttons" id="snacks" onclick="goToShop(document.getElementById('snacks'))">
+        <button class="menu_buttons" id="snacks" onclick="goToShop('snack_filter')">
             <img class="menu_icons" src="../static/images/fast-food_thin.svg" alt="Snack-Shop" height="250" width="250">
             <label for="">Snacks</label>
         </button>
 
-        <button class="menu_buttons" id="merch" onclick="goToShop(document.getElementById('merch'))">
+        <button class="menu_buttons" id="merch" onclick="goToShop('merch_filter')">
             <img class="menu_icons" src="../static/images/t-shirt_thin.svg" alt="Merch-Shop" height="250" width="250">
             <label for="">Merch</label>
         </button>
 
-        <button class="menu_buttons" id="ticket" onclick="goToShop(document.getElementById('ticket'))">
+        <button class="menu_buttons" id="ticket" onclick="goToShop('ticket_filter')">
             <img class="menu_icons" src="../static/images/tickets_thin.svg" alt="Ticket-Shop" height="250" width="250">
             <label for="">Tickets</label>
         </button>
     </div>
 
     <footer>
-        <h6>AstroSphere © 2024</h6>
+        <p>AstroSphere © 2024</p>
     </footer>
 </body>
 
