@@ -32,19 +32,19 @@
                 <h2>Räume</h2>
                 <div style="display: flex; padding: 5px; justify-content: space-around">
                     <button onclick="getRooms()">Räume anzeigen</button>
-                    <form onsubmit="searchRoomsByBezeichnung()">
+                    <form>
                     <label style="font-size: 10px">Suche Räume nach Bezeichnung
                         <br/>
                         <input type="text" id="searchRaumBezeichnungInput" name="searchRaumBezeichnungInput"></input>
                     </label>
-                        <button onclick="onsubmit()" >Suchen</button>
+                        <button type="button" onclick="searchRoomsByBezeichnung()">Suchen</button>
                     </form>
-                    <form onsubmit="searchRaumByCapacity()" >
+                    <form>
                         <label style="font-size: 10px">Suche Räume nach Kapazität
                             <br/>
                             <input type="number" min="0" name="searchRaumCapacityInput" id="searchRaumCapacityInput"></input>
                         </label>
-                        <button onclick="onsubmit()">Suchen</button>
+                        <button type="button" onclick="searchRaumByCapacity()">Suchen</button>
                     </form>
                 </div>
                 <div style="display: flex; justify-content: center; margin-top: 30px">
