@@ -971,6 +971,22 @@ WHERE beschreibung LIKE '%chips%' OR beschreibung LIKE '%salz%' OR beschreibung 
 
 
 
+CREATE VIEW VERANSTALTUNG_TAG AS
+SELECT id, raum_id, name, datum, beschreibung
+FROM veranstaltung
+WHERE datum = CURRENT_DATE;
+
+CREATE VIEW VERANSTALTUNG_MONAT AS
+SELECT id, raum_id, name, datum, beschreibung
+FROM veranstaltung
+WHERE datum BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '30' DAY;
+
+CREATE VIEW VERANSTALTUNG_JAHR AS
+SELECT id, raum_id, name, datum, beschreibung
+FROM VERANSTALTUNG
+WHERE datum BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '1' YEAR;
+
+
 """
 
 sql_create_storedProcedure="""
