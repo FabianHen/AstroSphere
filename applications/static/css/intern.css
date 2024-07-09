@@ -94,7 +94,7 @@ header {
     align-items: center;
     padding: 10px;
     text-decoration: none;
-    color: #bbb;
+    color: gray;
     margin-bottom: 10px;
 }
 
@@ -106,6 +106,14 @@ header {
     background-color: #ddd;
     color: #000;
     font-weight: bold;
+}
+
+/* Stil für deaktivierte Links */
+.leftComponent a.disabled {
+    color: #bbb;
+    pointer-events: none;
+    cursor: not-allowed;
+    text-decoration: none;
 }
 
 /* Navigation Bar + Main Content */
@@ -225,6 +233,13 @@ header {
     padding: 10px;
     font-size: 12px;
     margin: auto;
+}
+
+/* Stil für den deaktivierten Button */
+.save-btn:disabled {
+    background-color: grey;
+    color: darkgray;
+    cursor: not-allowed;
 }
 
 /* Class for active text elements  */

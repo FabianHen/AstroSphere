@@ -17,6 +17,61 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mediaItem) {
         getMedium(mediaItem);
     }
+
+    const name = document.getElementById('name');
+    const description = document.getElementById('description');
+    const continue_thema = document.getElementById('continue-thema');
+    const save_media = document.getElementById('save-media');
+
+    const nav_thema = document.getElementById('nav-thema');
+    const nav_media = document.getElementById('nav-media');
+    const nav_date = document.getElementById('nav-date');
+    const nav_room = document.getElementById('nav-room');
+
+    // Datum vom Eingabefeld abrufen
+    const dateInput = document.getElementById('eventTime');
+    const date_btn = document.getElementById('date-btn');
+
+    function checkInputs() {
+        // Überprüfe, ob beide Eingabefelder Inhalt haben
+        if (name.value.trim() !== '' && description.value.trim() !== '') {
+            continue_thema.disabled = false;
+            nav_media.classList.remove('disabled');
+
+        } else {
+            continue_thema.disabled = true;
+            nav_media.classList.add('disabled');
+            nav_date.classList.add('disabled');
+            nav_room.classList.add('disabled');
+        }
+    }
+
+    function checkDate() {
+        // Überprüfe, ob beide Eingabefelder Inhalt haben
+        if (dateInput.value.trim() !== '') {
+            date_btn.disabled = false;
+            nav_room.classList.remove('disabled');
+
+        } else {
+            continue_thema.disabled = true;
+            nav_room.classList.add('disabled');
+        }
+    }
+
+    save_media.addEventListener('click', () => {
+        nav_date.classList.remove('disabled');
+        filter('nav-date', 'date')
+    });
+
+    date_btn.addEventListener('click', () => {
+        filter('nav-room', 'room')
+        searchForFreeRooms();
+    });
+
+    // Event-Listener für Änderungen in den Eingabefeldern hinzufügen
+    name.addEventListener('input', checkInputs);
+    description.addEventListener('input', checkInputs);
+    dateInput.addEventListener('input', checkDate);
 });
 
 function loadMedia(elem, medien) {
@@ -53,17 +108,22 @@ function loadMedia(elem, medien) {
     });
 }
 
-function filter(event, sectionId) {
-    event.preventDefault();
+function filter(linkId, sectionId) {
+    // event.preventDefault();
 
     // Alle Navigationslinks deaktivieren
     var navLinks = document.querySelectorAll('.leftComponent a');
     navLinks.forEach(function(link) {
-        link.classList.remove('active');
+        if (link.id !== linkId){
+            link.classList.remove('active');
+        }
+        else {
+            link.classList.add('active');
+        }
     });
 
     // Den geklickten Navigationslink aktivieren
-    event.target.classList.add('active');
+    // event.target.classList.add('active');
 
     showSection(sectionId);
 }
@@ -126,20 +186,41 @@ async function getRooms() {
 }
 
 
-function processRooms(data) {
+function processRooms(data, button) {
     var table = document.getElementById("roomTable");
-    var tempHTML = `<tr>
-                        <th class="roomName">Bezeichnung</th>
-                        <th>Id</th>
-                        <th>Kapazität</th>
-                        <th>Status</th>
-                    </tr>`;
+
+    if(button) {
+        var tempHTML = `<tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Id</th>
+                            <th>Kapazität</th>
+                            <th>Status</th>
+                            <th>Auswahl</th>
+                        </tr>`;
+    } else {
+        var tempHTML = `<tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Id</th>
+                            <th>Kapazität</th>
+                            <th>Status</th>
+                        </tr>`;
+    }
 
     data.forEach(raum => {
         let status = "frei";
         if (raum.PREIS === null) {
             status = "Abteilungsraum";
         }
+        if(button) {
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITAT}</td>
+                    <td class="${status}">${status}</td>
+                    <td><button class"save-btn" onclick="saveEvent()">Wälen</button></td>
+                </tr>`;
+        } else {
             tempHTML += `
                 <tr>
                     <td class="roomName">${raum.BEZEICHNUNG}</td>
@@ -148,7 +229,7 @@ function processRooms(data) {
                     <td class="${status}">${status}</td>
                 </tr>`;
         }
-    );
+    });
     table.innerHTML = tempHTML;
 }
 
@@ -204,18 +285,30 @@ async function searchRaumByCapacity(){
 
 async function searchForFreeRooms(){
     try {
-        const date = document.getElementById('eventTime').value;
-        const response = await fetch('/intern/rooms/search_free_rooms', {
+        // Datum vom Eingabefeld abrufen
+        const dateInput = document.getElementById('eventTime').value;
+
+        // Eingabedatum in ein Date-Objekt konvertieren
+        const date = new Date(dateInput);
+
+        // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
+        const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+            ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+            date.getFullYear();
+
+        // POST-Anfrage mit dem formatierten Datum senden
+        var response = await fetch('/intern/rooms/search_free_rooms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: date.value
+            body: JSON.stringify({ date: formattedDate }) // Formatiertes Datum hier verwenden
         });
-
+        console.log(response);
         if (response.ok) {
             const result = await response.json();
-            processRooms(result);
+            console.log(result);
+            processRooms(result, true);
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -225,4 +318,8 @@ async function searchForFreeRooms(){
         console.error('Error:', error);
         return null;
     }
+}
+
+function saveEvent() {
+    console.log("Not implemented")
 }
