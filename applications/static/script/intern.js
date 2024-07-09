@@ -320,6 +320,62 @@ async function searchForFreeRooms(){
     }
 }
 
+function toggleMenu(menuId, link) {
+    var submenu = document.getElementById(menuId);
+    var allLinks = document.querySelectorAll('.menu a');
+
+    allLinks.forEach(function(link) {
+        link.classList.remove('selected');
+    });
+
+    if (submenu.classList.contains('hidden')) {
+        submenu.classList.remove('hidden');
+        link.classList.add('selected');
+    } else {
+        submenu.classList.add('hidden');
+        link.classList.remove('selected');
+    }
+}
+
+async function getPlanets() {
+    try {
+        response = await fetch("/intern/planets/planetlist");
+        if (response.ok) {
+            const data = await response.json();
+            processPlanets(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processPlanets(data) {
+    var table = document.getElementById("planetTable");
+    var tempHTML = `<tr>
+                        <th class="roomName">Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                    </tr>`;
+
+    data.forEach(planet => {
+        tempHTML += `
+                <tr>
+                    <td class="roomName">${planet.BEZEICHNUNG}</td>
+                    <td>${planet.ID}</td>
+                    <td>${planet.INFORMATIONEN}</td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+
+
 function saveEvent() {
     console.log("Not implemented")
 }
