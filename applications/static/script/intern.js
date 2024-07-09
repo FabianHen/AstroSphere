@@ -1,6 +1,3 @@
-document.addEventListener("DOMContentLoaded", function(){
-    getRooms();
-});
 
 function showSection(sectionId) {
     // Alle Inhaltsbereiche ausblenden
@@ -38,7 +35,7 @@ function goToEvents() {
     window.location.href = '/intern/events';
 }
 
-function goToRooms() {
+async function goToRooms() {
     window.location.href = '/intern/rooms';
 }
 
@@ -56,33 +53,32 @@ function goBackHome() {
 
 async function getRooms() {
     try {
-            response = await fetch("/intern/rooms/roomlist");
-
+        response = await fetch("/intern/rooms/roomlist");
         if (response.ok) {
             const data = await response.json();
             processRooms(data)
-            return data;
         } else {
             console.error('Server error:', response.status);
-            return null;
         }
     } catch (error) {
         console.error('Error:', error);
-        return null;
     }
 }
 
 
 function processRooms(data) {
-    var products = document.getElementById('roomTable');
-    var tempHTML = '';
+    var table = document.getElementById("roomTable");
+    var tempHTML = "";
 
-    products.innerHTML = '';
-
+    var rowCount = table.rows.length;
+    for (var i = rowCount - 1; i > 0; i--) {
+        table.deleteRow(i);
+    }
+    console.log("delete rows");
     data.forEach(raum => {
         let status = "frei";
-        if(raum.PREIS== NULL){
-            status == "Abteilungsraum";
+        if (raum.PREIS === null) {
+            status = "Abteilungsraum";
         }
             tempHTML += `
                 <tr>
@@ -94,7 +90,6 @@ function processRooms(data) {
         }
     );
 
-    products.innerHTML = tempHTML;
 }
 
 async function searchRoomsByBezeichnung(){
