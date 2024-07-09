@@ -31,10 +31,10 @@
             <div id="raeume" class="mainContent active" style="padding: 15px">
                 <h2>Räume</h2>
                 <div style="display: flex; padding: 5px; justify-content: space-around">
-                    <form onsubmit="alert()">
+                    <form onsubmit="searchRoomsByBezeichnung()">
                     <label style="font-size: 10px">Suche Räume nach Bezeichnung
                         <br/>
-                        <input type="text"></input>
+                        <input type="text" id="searchRaumBezeichnungInput" name="searchRaumBezeichnungInput"></input>
                     </label>
                         <button onclick="onsubmit()">Suchen</button>
                     </form>

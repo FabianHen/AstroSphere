@@ -241,6 +241,7 @@ header {
 
 #dateInput label{
     margin: 10px;
+}
 
 button {
     background-color: var(--pink);

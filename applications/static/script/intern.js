@@ -96,3 +96,27 @@ function processRooms(data) {
 
     products.innerHTML = tempHTML;
 }
+
+async function searchRoomsByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchRaumBezeichnungInput').value;
+        const response = await fetch('/intern/rooms/search_room_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: string})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
