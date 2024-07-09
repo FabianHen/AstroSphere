@@ -84,7 +84,7 @@ function processRooms(data) {
                 <tr>
                     <td class="roomName">${raum.BEZEICHNUNG}</td>
                     <td>${raum.ID}</td>
-                    <td>${raum.KAPAZITÄT}</td>
+                    <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
                 </tr>`;
         }
@@ -92,15 +92,15 @@ function processRooms(data) {
 
 }
 
-async function searchRoomsByBezeichnung(){
+async function searchRaumByCapacity(){
     try {
-        const bezeichnung = document.getElementById('searchRaumBezeichnungInput').value;
-        const response = await fetch('/intern/rooms/search_room_bezeichnung', {
+        const capacity = document.getElementById('searchRaumCapacityInput').value;
+        const response = await fetch('/intern/rooms/search_room_capacity', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ bezeichnung: string})
+            body: JSON.stringify({ capacity: number})
         });
 
         if (response.ok) {
