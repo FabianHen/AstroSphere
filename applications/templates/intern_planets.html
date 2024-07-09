@@ -39,8 +39,11 @@
             </nav>
 
             <div id="planeten" class="mainContent active">
-                <div style="display: flex; justify-content: center; margin-top: 30px">
+                <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
                     <button type="button" onclick="">Planet hinzufügen</button>
+                    <input type="text" id="searchPlanetBezeichnungInput" name="searchPlanetBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
+                    <button type="button" onclick="">Planet suchen</button>
+                    
                 </div>
                 <div style="display: flex; justify-content: center; margin-top: 30px">
                     <table width="90%" id="planetTable">
@@ -51,13 +54,38 @@
                         </tr>
                     </table>
                 </div>
-                
             </div>
             <div id="sternenbilder" class="mainContent">
-                
+                <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
+                    <button type="button" onclick="">Sternenbild hinzufügen</button>
+                    <input type="text" id="searchSternenbildBezeichnungInput" name="searchSternenbildBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
+                    <button type="button" onclick="">Sternenbild suchen</button>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="starTable">
+                        <tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Name</th>
+                            <th>Informationen</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div id="kometen" class="mainContent">
-                
+                <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
+                    <button type="button" onclick="">Komet hinzufügen</button>
+                    <input type="text" id="searchKometBezeichnungInput" name="searchKometBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
+                    <button type="button" onclick="">Komet suchen</button>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="cometTable">
+                        <tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Name</th>
+                            <th>Informationen</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
             
             <!-- <div id="raeume" class="mainContent active">
