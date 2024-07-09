@@ -162,7 +162,7 @@ async function searchRaumByBezeichnung(){
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ bezeichnung: number})
+            body: JSON.stringify({ bezeichnung: bezeichnung})
         });
 
         if (response.ok) {
@@ -191,7 +191,6 @@ async function searchRaumByCapacity(){
         });
 
         if (response.ok) {
-            console.log('ok')
             const result = await response.json();
             processRooms(result);
             return result;

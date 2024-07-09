@@ -147,7 +147,7 @@ def get_room_by_bezeichnung():
 def get_room_by_date():
     try:
         date = request.json.get('date')
-        procedure_result = execute_sql_query_list_of_dicts("SELECT * FROM GET_FREIE_RAUME_NACH_DATUM", date)
+        procedure_result = execute_procedure_list_of_dicts("GET_FREIE_RAUME_DATUM", date)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
