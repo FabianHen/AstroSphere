@@ -41,13 +41,13 @@
                     <form onsubmit="" >
                         <label style="font-size: 10px">Suche Räume nach Kapazität
                             <br/>
-                            <input type="number"></input>
+                            <input type="number" min="0"></input>
                         </label>
                         <button onclick="onsubmit()">Suchen</button>
                     </form>
                 </div>
                 <div style="display: flex; justify-content: center; margin-top: 30px">
-                <table width="90%">
+                <table width="90%" id="roomTable">
                     <tr>
                         <th class="roomName">Bezeichnung</th>
                         <th>Id</th>
@@ -55,28 +55,22 @@
                         <th>Status</th>
                     </tr>
                     <tr>
-                        <td class="bezeichnung">Mondraum</td>
-                        <td>1</td>
+                        <td class="roomName">Mondraum</td>
+                        <td >1</td>
                         <td>120</td>
-                        <td class="free">frei</td>
+                        <td class="Abteilungsraum">Abteilungsraum</td>
                     </tr>
                     <tr>
-                        <td>Mondraum</td>
+                        <td class="roomName">Mondraum</td>
                         <td>1</td>
                         <td>120</td>
-                        <td class="free">frei</td>
+                        <td class="frei">frei</td>
                     </tr>
                     <tr>
-                        <td>Mondraum</td>
+                        <td class="roomName">Mondraum</td>
                         <td>1</td>
                         <td>120</td>
-                        <td class="free">frei</td>
-                    </tr>
-                    <tr>
-                        <td>Mondraum</td>
-                        <td>1</td>
-                        <td>120</td>
-                        <td class="blocked">besetzt</td>
+                        <td class="besetzt">besetzt</td>
                     </tr>
                 </table>
                 </div>

@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function(){
+    getRooms();
+});
+
 function showSection(sectionId) {
     // Alle Inhaltsbereiche ausblenden
     var sections = document.querySelectorAll('.mainContent');
@@ -48,4 +52,47 @@ function goToTelescopes() {
 
 function goBackHome() {
     window.location.href = '/';
+}
+
+async function getRooms() {
+    try {
+            response = await fetch("/intern/rooms/roomlist");
+
+        if (response.ok) {
+            const data = await response.json();
+            processRooms(data)
+            return data;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+
+function processRooms(data) {
+    var products = document.getElementById('roomTable');
+    var tempHTML = '';
+
+    products.innerHTML = '';
+
+    data.forEach(raum => {
+        let status = "frei";
+        if(raum.PREIS== NULL){
+            status == "Abteilungsraum";
+        }
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITÄT}</td>
+                    <td class="${status}">${status}</td>
+                </tr>`;
+        }
+    );
+
+    products.innerHTML = tempHTML;
 }

@@ -260,10 +260,20 @@ td {
     color: var(--darkGrey);
     padding: 5px;
     border-bottom: 1px solid var(--lighterGrey);
-    &.free{
+    text-align: center;
+    &.frei{
         color: lightgreen;
+        text-align: right;
     }
-    &.blocked{
+    &.besetzt{
         color: darkred;
+        text-align: right;
+    }
+    &.roomName{
+        text-align: left;
+    }
+    &.Abteilungsraum{
+        color: var(--pink);
+        text-align: right;
     }
 }

@@ -44,6 +44,8 @@ def get_salty():
 
 
 
+
+
     
 @app.route('/terminal/shop/merch', methods=['GET'])
 def get_merch():
@@ -109,6 +111,11 @@ def intern_events():
 @app.route('/intern/rooms')
 def intern_rooms():
     return render_template('intern_rooms.html')
+
+@app.route('/intern/rooms/roomlist')
+def intern_roomlist():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM RAUM")
+    return jsonify(query_result)
 
 @app.route('/intern/planets')
 def intern_planets():
