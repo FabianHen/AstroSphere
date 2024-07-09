@@ -473,6 +473,7 @@ create table MEDIUM (
    KOMET_ID             NUMBER(8),
    FORMAT               CHAR(6)               not null,
    TYP                  CHAR(10)              check (TYP in ('Video','Bild','Audio','3D-Modell','Dokument')) not null,
+   IMAGE_PATH           VARCHAR(100)             not null,
    constraint PK_MEDIUM primary key (ID),
    constraint FK_MEDIUM_MEDIUM____STERNENB foreign key (STERN_ID)
          references STERNENBILD (ID),
@@ -1825,33 +1826,33 @@ INSERT INTO ASTROSPHERE.VERKAUF_TICKETSTUFE(VERKAUF_ID, STUFE, ANZAHL) VALUES
 -- Inserting data into table ASTROSPHERE.MEDIUM
 --
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(NULL, NULL, NULL, 5, 3, NULL, 1, 'gif', 'Video');
+(NULL, NULL, NULL, 5, 3, NULL, 1, 'gif', 'Video', '..static/images/planets/carinanebel.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, NULL, 3, NULL, NULL, 2, NULL, 'mp3', 'Audio');
+(1, NULL, 3, NULL, NULL, 2, NULL, 'mp3', 'Audio', '..static/images/planets/milchstrasse.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(2, NULL, NULL, 5, NULL, 2, 1, 'pdf', 'Dokument');
+(2, NULL, NULL, 5, NULL, 2, 1, 'pdf', 'Dokument', '..static/images/planets/andromeda_galaxy.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, NULL, NULL, NULL, NULL, 2, 2, 'jpeg', 'Bild');
+(1, NULL, NULL, NULL, NULL, 2, 2, 'jpeg', 'Bild', '..static/images/planets/alpha_centauri_a.png.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(2, 3, NULL, 5, NULL, 3, 3, 'png', 'Bild');
+(2, 3, NULL, 5, NULL, 3, 3, 'png', 'Bild', '..static/images/planets/erde.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(2, 10, NULL, 4, 1, 1, 3, 'gif', 'Video');
+(2, 10, NULL, 4, 1, 1, 3, 'gif', 'Video', '..static/images/planets/proxima_b.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, 4, NULL, 4, 1, 2, 3, 'obj', '3D-Modell');
+(1, 4, NULL, 4, 1, 2, 3, 'obj', '3D-Modell', '..static/images/planets/mars.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, 6, NULL, 4, NULL, 3, 3, 'jpeg', 'Bild');
+(1, 6, NULL, 4, NULL, 3, 3, 'jpeg', 'Bild', '..static/images/planets/saturn.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, 2, NULL, 2, NULL, 2, 2, 'png', 'Bild');
+(1, 2, NULL, 2, NULL, 2, 2, 'png', 'Bild', '..static/images/planets/venus.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, NULL, NULL, 2, 1, 3, 1, 'mp3', 'Audio');
+(1, NULL, NULL, 2, 1, 3, 1, 'mp3', 'Audio', '..static/images/planets/sonne.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(2, 7, NULL, 5, 3, 3, 1, 'mp4', 'Video');
+(2, 7, NULL, 5, 3, 3, 1, 'mp4', 'Video', '..static/images/planets/uranus.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, 6, NULL, 1, 2, 2, 3, 'mp4', 'Video');
+(1, 6, NULL, 1, 2, 2, 3, 'mp4', 'Video', '..static/images/planets/saturn.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(1, 8, NULL, 5, 5, 1, 3, 'png', 'Bild');
+(1, 8, NULL, 5, 5, 1, 3, 'png', 'Bild', '..static/images/planets/neptun.png');
 INSERT INTO ASTROSPHERE.MEDIUM(GALAXIE_ID, PLANET_ID, PLANETENSYSTEM_ID, NEBEL_ID, STERN_ID, STERNENBILD_ID, KOMET_ID, FORMAT, TYP) VALUES
-(2, 9, NULL, 1, 6, 1, 1, 'gif', 'Video');
+(2, 9, NULL, 1, 6, 1, 1, 'gif', 'Video', '..static/images/planets/proxima_b.png');
 
 
 --
