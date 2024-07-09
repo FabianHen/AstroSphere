@@ -627,7 +627,7 @@ create table VERANSTALTUNG (
    ID                   NUMBER(8)            GENERATED ALWAYS AS IDENTITY not null,
    RAUM_ID              NUMBER(8)             not null,
    NAME                 VARCHAR2(100)         not null,
-   DATUM                DATE                  not null,
+   DATUM                TIMESTAMP                  not null,
    BESCHREIBUNG         CLOB,
    constraint PK_VERANSTALTUNG primary key (ID),
    constraint FK_VERANSTA_RAUM___VE_RAUM foreign key (RAUM_ID)
