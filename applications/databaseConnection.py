@@ -112,6 +112,45 @@ def execute_procedure(procedure_name, params):
             connection.close()
 
 
+#method to execute a stored Procedure
+# params: procedure_name = "Name of stored Procedure", params = [x, ...] Array of Values
+def execute_procedure_list_of_dicts(procedure_name: str, params):
+    connection = None
+    cursor = None
+    try:
+        connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
+        cursor = connection.cursor()
+
+        out = cursor.var(cx_Oracle.CURSOR)
+        cursor.callproc(procedure_name, [params, out])
+
+        # Ergebnisse abrufen
+        result_cursor = out.getvalue()
+        
+        # Spaltennamen aus cursor.description extrahieren
+        columns = [col[0] for col in result_cursor.description]
+
+        # Daten abrufen und in eine Liste von Dictionaries schreiben
+        result = []
+        for row in result_cursor:
+            row_dict = dict(zip(columns, row))
+            result.append(row_dict)
+
+        return result
+    
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print("Datenbankfehler:", error.message)
+        return False
+    except Exception as e:
+        print("Allgemeiner Fehler:", str(e))
+        return False
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
 
 #check if cx_Oracle works
 #print(cx_Oracle.clientversion())
