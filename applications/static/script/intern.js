@@ -80,16 +80,38 @@ function processRooms(data) {
         if (raum.PREIS === null) {
             status = "Abteilungsraum";
         }
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITAT}</td>
+                    <td class="${status}">${status}</td>
+                </tr>`;
+        }
+    );
 
-        tempHTML += `
-            <tr>
-                <td class="roomName">${raum.BEZEICHNUNG}</td>
-                <td>${raum.ID}</td>
-                <td>${raum.KAPAZITÄT}</td>
-                <td class="${status}">${status}</td>
-            </tr>`;
-    });
+}
 
-    table.insertAdjacentHTML('beforeend', tempHTML);
+async function searchRaumByCapacity(){
+    try {
+        const capacity = document.getElementById('searchRaumCapacityInput').value;
+        const response = await fetch('/intern/rooms/search_room_capacity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ capacity: number})
+        });
 
+        if (response.ok) {
+            const result = await response.json();
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }

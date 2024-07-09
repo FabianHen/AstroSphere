@@ -117,6 +117,14 @@ def intern_roomlist():
     query_result = execute_sql_query_list_of_dicts("SELECT * FROM FREIE_RAEUME")
     return jsonify(query_result)
 
+@app.route('/intern/rooms/search_room_capacity', methods=['POST'])
+def get_room_by_bezeichnung():
+    try:
+        capacity =request.json.get('capacity')
+        execute_procedure("SUCHE_RAUM_KAPAZITAET", capacity)
+    except Exception as e:
+        print(f"Fehler: {e}")
+
 @app.route('/intern/planets')
 def intern_planets():
     return render_template('intern_planets.html')

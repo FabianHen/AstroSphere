@@ -993,6 +993,35 @@ EXCEPTION
 END VERKAUFEN_SNACK;
 /
 
+-- Stored Procedure zur Suche von Räumen nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_RAUM_BEZEICHNUNG (
+    p_raum_bezeichnung IN RAUM.bezeichnung%TYPE
+) 
+BEGIN
+   SELECT * FROM RAUM WHERE LIKE %p_raum_bezeichnung%;
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Raum Bezeichnung nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_RAUM_BEZEICHNUNG;
+/
+
+-- Stored Procedure zur Suche von Räumen nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_RAUM_KAPAZITAET (
+    p_raum_kapazitat IN RAUM.kapazitat%TYPE
+) 
+BEGIN
+   SELECT * FROM RAUM WHERE RAUM.kapazitat >= p_raum_kapazitat;
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Raum mit ausreichender Kapazitaet nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_RAUM_BEZEICHNUNG;
+/
 """
 
 sql_configuration="""
