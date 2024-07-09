@@ -114,7 +114,7 @@ def intern_rooms():
 
 @app.route('/intern/rooms/roomlist')
 def intern_roomlist():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM RAUM")
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM FREIE_RAEUME")
     return jsonify(query_result)
 
 @app.route('/intern/planets')
