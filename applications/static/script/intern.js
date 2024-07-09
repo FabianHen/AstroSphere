@@ -125,7 +125,12 @@ async function getRooms() {
 
 function processRooms(data) {
     var table = document.getElementById("roomTable");
-    var tempHTML = "";
+    var tempHTML = `<tr>
+                        <th class="roomName">Bezeichnung</th>
+                        <th>Id</th>
+                        <th>Kapazität</th>
+                        <th>Status</th>
+                    </tr>`;
 
     var rowCount = table.rows.length;
     for (var i = rowCount - 1; i > 0; i--) {
