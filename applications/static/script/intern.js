@@ -21,11 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadMedia(elem, medien) {
     // Datenbank lesen
-    console.log(medien);
     medien.forEach(medium => {
-        console.log(medium);
         var htmlElem =  "<a href='#' class='media-item' onclick='mediaPressed(this)'>"
-        htmlElem += `<img src="${medium.IMAGE_PATH}" alt='Media 1'>`
+        htmlElem += `<img src="${medium.IMAGE_PATH}" alt="Media 1" width="150" height="150">`
         if(medium.GALAXIE_NAME) {
             htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>"
         }
@@ -208,13 +206,13 @@ async function searchRaumByCapacity(){
 
 async function searchForFreeRooms(){
     try {
-        const date = document.getElementById('').value;
+        const date = document.getElementById('eventTime').value;
         const response = await fetch('/intern/rooms/search_free_rooms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ date: Date})
+            body: date.value
         });
 
         if (response.ok) {

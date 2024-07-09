@@ -141,9 +141,10 @@ def intern_roomlist():
 @app.route('/intern/rooms/search_free_rooms', methods=['POST'])
 def get_room_by_bezeichnung():
     try:
-        date =request.json.get('date')
+        date = request.json.get('date')
         execute_procedure("GET_FREIE_RAUME", date)
         query_result = execute_sql_query_list_of_dicts("SELECT * FROM GET_FREIE_RAUME_NACH_DATUM")
+        print(query_result)
     except Exception as e:
         print(f"Fehler: {e}")
 

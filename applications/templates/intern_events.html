@@ -50,7 +50,7 @@
                         <h2>Medien</h2>
                         <p>Wähle die Medien aus, die du für deinen Vortrag benötigst</p>
                     </div>
-                    <button id="speichern">Speichern</button>
+                    <button class="save-btn" id="speichern">Speichern</button>
                 </div>
                 <div id="mediaGrid" class="media-grid">
                     
@@ -69,7 +69,17 @@
                         <h2>Räume</h2>
                         <p>Wähle einen der Verfügbaren Räume aus:</p>
                     </div>
-                    <button id="speichern">Speichern</button>
+                    <button class="save-btn" id="save_rooms" onclick="searchForFreeRooms()">Speichern</button>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="roomTable">
+                        <tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Id</th>
+                            <th>Kapazität</th>
+                            <th>Status</th>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

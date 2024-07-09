@@ -218,7 +218,7 @@ header {
     margin: 0;
 }
 
-#speichern {
+.save-btn {
     border-radius: 5px;
     background: linear-gradient(to right, var(--pink), var(--purple));
     color: white;
