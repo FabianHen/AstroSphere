@@ -20,36 +20,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadMedia(elem) {
     // Datenbank lesen
-    let testMedia = [['Mond', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Erde', '*.png', '../static/images/pictureNotFound.png'],
-                     ['Mars', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Jupiter', '*.jpg', '../static/images/pictureNotFound.png'],
-                     ['Saturn', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Venus', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Merkur', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Neptun', '*.svg', '../static/images/pictureNotFound.png'],
-                     ['Test', '*.svg', '../static/images/pictureNotFound.png']]
+    let medien = getMedium();
     
-    for (var i = 0; i < testMedia.length; i++) {
+    medien.forEach(medium => {
         var htmlElem =  "<a href='#' class='media-item' onclick='mediaPressed(this)'>"
-        htmlElem += "<img src=" + testMedia[i][2] + " alt='Media 1'>"
-        htmlElem += "<h3>" + testMedia[i][0] + "</h3>"
-        htmlElem += "<p>" + testMedia[i][1] + "</p>"
+        htmlElem += "<img src=" + medium.IMAGE_PATH + " alt='Media 1'>"
+        if(medium.GALAXIE.NAME) {
+            htmlElem += "<h3>" + medium.GALAXIE.NAME + "</h3>"
+        }
+        if(medium.PLANET.NAME) {
+            htmlElem += "<h3>" + medium.PLANET.NAME + "</h3>"
+        }
+        if(medium.STERN.NAME) {
+            htmlElem += "<h3>" + medium.STERN.NAME + "</h3>"
+        }
+        if(medium.NEBEL.NAME) {
+            htmlElem += "<h3>" + medium.NEBEL.NAME + "</h3>"
+        }
+        if(medium.STERNENBILD.NAME) {
+            htmlElem += "<h3>" + medium.STERNENBILD.NAME + "</h3>"
+        }
+        if(medium.PLANETENSYSTEM.NAME) {
+            htmlElem += "<h3>" + medium.PLANETENSYSTEM.NAME + "</h3>"
+        }
+        if(medium.KOMET.NAME) {
+            htmlElem += "<h3>" + medium.KOMET.NAME + "</h3>"
+        }
+
+        htmlElem += "<p>" + medium.FORMAT + "</p>"
         htmlElem += "</a>"
 
         elem.innerHTML += htmlElem;
-    }
+    });
 }
 
 function filter(event, sectionId) {
@@ -65,6 +67,20 @@ function filter(event, sectionId) {
     event.target.classList.add('active');
 
     showSection(sectionId);
+}
+
+async function getMedium() {
+    try {
+        const response = await fetch('/intern/events/medien');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+  
+        return data;
+      } catch (error) {
+        throw new Error('Fehler beim Laden der Daten:', error);
+      }
 }
 
 function mediaPressed(elem){

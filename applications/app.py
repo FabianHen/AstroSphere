@@ -106,6 +106,11 @@ def get_ticket_year():
 def intern_events():
     return render_template('intern_events.html')
 
+@app.route('/intern/events/medien', methods=['GET'])
+def get_medien():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM MEDIUM_VIEW")
+    return jsonify(query_result)
+
 @app.route('/intern/rooms')
 def intern_rooms():
     return render_template('intern_rooms.html')
