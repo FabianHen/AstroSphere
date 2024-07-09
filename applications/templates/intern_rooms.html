@@ -31,23 +31,24 @@
             <div id="raeume" class="mainContent active" style="padding: 15px">
                 <h2>Räume</h2>
                 <div style="display: flex; padding: 5px; justify-content: space-around">
-                    <form onsubmit="alert()">
+                    <button onclick="getRooms()">Räume anzeigen</button>
+                    <form onsubmit="searchRoomsByBezeichnung()">
                     <label style="font-size: 10px">Suche Räume nach Bezeichnung
                         <br/>
-                        <input type="text"></input>
+                        <input type="text" id="searchRaumBezeichnungInput" name="searchRaumBezeichnungInput"></input>
                     </label>
-                        <button onclick="onsubmit()">Suchen</button>
+                        <button onclick="onsubmit()" >Suchen</button>
                     </form>
-                    <form onsubmit="" >
+                    <form onsubmit="searchRaumByCapacity()" >
                         <label style="font-size: 10px">Suche Räume nach Kapazität
                             <br/>
-                            <input type="number"></input>
+                            <input type="number" min="0" name="searchRaumCapacityInput" id="searchRaumCapacityInput"></input>
                         </label>
                         <button onclick="onsubmit()">Suchen</button>
                     </form>
                 </div>
                 <div style="display: flex; justify-content: center; margin-top: 30px">
-                <table width="90%">
+                <table width="90%" id="roomTable">
                     <tr>
                         <th class="roomName">Bezeichnung</th>
                         <th>Id</th>
@@ -55,28 +56,7 @@
                         <th>Status</th>
                     </tr>
                     <tr>
-                        <td class="bezeichnung">Mondraum</td>
-                        <td>1</td>
-                        <td>120</td>
-                        <td class="free">frei</td>
-                    </tr>
-                    <tr>
-                        <td>Mondraum</td>
-                        <td>1</td>
-                        <td>120</td>
-                        <td class="free">frei</td>
-                    </tr>
-                    <tr>
-                        <td>Mondraum</td>
-                        <td>1</td>
-                        <td>120</td>
-                        <td class="free">frei</td>
-                    </tr>
-                    <tr>
-                        <td>Mondraum</td>
-                        <td>1</td>
-                        <td>120</td>
-                        <td class="blocked">besetzt</td>
+                        <td>test</th>
                     </tr>
                 </table>
                 </div>
