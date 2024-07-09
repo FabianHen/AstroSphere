@@ -89,7 +89,32 @@ function processRooms(data) {
                 </tr>`;
         }
     );
+    table.innerHTML = tempHTML;
+}
 
+async function searchRaumByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchRaumBezeichnungInput').value;
+        const response = await fetch('/intern/rooms/search_room_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: number})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processRooms(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function searchRaumByCapacity(){
@@ -105,6 +130,7 @@ async function searchRaumByCapacity(){
 
         if (response.ok) {
             const result = await response.json();
+            processRooms(result);
             return result;
         } else {
             console.error('Server error:', response.status);

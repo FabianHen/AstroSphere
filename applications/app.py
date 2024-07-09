@@ -125,6 +125,14 @@ def get_room_by_bezeichnung():
     except Exception as e:
         print(f"Fehler: {e}")
 
+@app.route('/intern/rooms/search_room_bezeichnung', methods=['POST'])
+def get_room_by_bezeichnung():
+    try:
+        bezeichnung =request.json.get('bezeichnung')
+        execute_procedure("SUCHE_RAUM_BEZEICHNUNG", bezeichnung)
+    except Exception as e:
+        print(f"Fehler: {e}")
+
 @app.route('/intern/planets')
 def intern_planets():
     return render_template('intern_planets.html')
