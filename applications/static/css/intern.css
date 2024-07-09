@@ -232,6 +232,16 @@ header {
     font-weight: bold;
 }
 
+
+#dateInput {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+#dateInput label{
+    margin: 10px;
+
 button {
     background-color: var(--pink);
     color: white;
@@ -266,4 +276,5 @@ td {
     &.blocked{
         color: darkred;
     }
+
 }
