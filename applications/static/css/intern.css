@@ -288,3 +288,35 @@ td {
         text-align: right;
     }
 }
+
+
+.hidden {
+    display: none;
+}
+
+/* Menu*/
+.menu, .submenu {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.menu li {
+    margin: 10px 0;
+}
+
+.submenu {
+    padding-left: 20px;
+}
+
+.submenu li {
+    margin: 5px 0;
+}
+
+.submenu.hidden {
+    display: none;
+}
+
+.selected {
+    color: black;
+    font-weight: bold;
+}

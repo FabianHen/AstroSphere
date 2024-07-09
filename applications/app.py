@@ -156,6 +156,11 @@ def get_room_by_date():
 def intern_planets():
     return render_template('intern_planets.html')
 
+@app.route('/intern/planets/planetlist', methods=['GET'])
+def intern_planetlist():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM PLANETEN")
+    return jsonify(query_result)
+
 @app.route('/intern/telescopes')
 def intern_telescopes():
     return render_template('intern_telescopes.html')
