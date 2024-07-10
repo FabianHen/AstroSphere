@@ -174,7 +174,8 @@ def intern_planets():
 
 @app.route('/intern/planets/planetlist', methods=['GET'])
 def intern_planetlist():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM PLANETEN")
+    query_result=execute_sql_query("Select * from planeten")
+    print(query_result)
     return jsonify(query_result)
 
 @app.route('/intern/telescopes')
