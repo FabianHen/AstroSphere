@@ -12,16 +12,29 @@ function showSection(sectionId) {
 }
 
 // Event-Listener für DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const mediaItem = document.getElementById('mediaGrid');
+    const save_media = document.getElementById('save-media');
     if (mediaItem) {
-        getMedium(mediaItem);
+        await getMedium(mediaItem);
+        let mediaItems = document.querySelectorAll('.media-item');
+        mediaItems.forEach(mediaItem => { 
+            mediaItem.addEventListener('click', function() {
+                if (mediaItem.classList.contains('active')) {
+                    nav_date.classList.remove('disabled');
+                    save_media.disabled = false;
+                }
+                else {
+                    nav_date.classList.add('disabled');
+                    save_media.disabled = true;
+                }
+            });
+        });
     }
 
     const name = document.getElementById('name');
     const description = document.getElementById('description');
     const continue_thema = document.getElementById('continue-thema');
-    const save_media = document.getElementById('save-media');
 
     const nav_thema = document.getElementById('nav-thema');
     const nav_media = document.getElementById('nav-media');
@@ -59,8 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     save_media.addEventListener('click', () => {
-        nav_date.classList.remove('disabled');
-        filter('nav-date', 'date')
+        filter('nav-date', 'date');
+        return;
     });
 
     date_btn.addEventListener('click', () => {
@@ -72,7 +85,62 @@ document.addEventListener('DOMContentLoaded', function() {
     name.addEventListener('input', checkInputs);
     description.addEventListener('input', checkInputs);
     dateInput.addEventListener('input', checkDate);
+
+    generateEventTable(true);
 });
+
+async function getEventDetails(eventId) {
+    try {
+        var response = await fetch('/intern/events/allEvents');
+        if (response.ok) {
+            const data = await response.json();
+            console.log(eventId);
+            const event = 1;
+            data.forEach(event => {
+                console.log(event.ID);
+                if (event.ID === eventId) {
+                    showEventDetails(event);
+                }
+            });
+            console.log(event);
+            // showEventDetails(event);
+            return data;
+        }
+        else {
+            throw new Error('Network response was not ok');
+        }
+    } catch (error) {
+        throw new Error('Fehler beim Laden der Daten:', error);
+    }
+}
+
+function showEventDetails(event) {
+    const mainContent = document.getElementById('event-details');
+
+    mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${event.NAME}</h2>
+                            <div class="text-box">
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                            </div>
+                            <h3 style="margin: 5px auto 0px 30px;">Details:</h3>
+                            <p style="margin: 5px auto 0px 60px;">ID: ${event.ID}</p>
+                            <p style="margin: 5px auto 0px 60px;">Raum: ${event.RAUM_ID}</p>
+                            <p style="margin: 5px auto 0px 60px;">Datum: ${event.DATUM}</p>
+                            <p style="margin: 5px auto 30px 60px;">Angestellter: default</p>
+                            <h3 style="margin: 5px auto 0px 30px;">Medien:</h3>
+                            <div style="display: flex; justify-content: center; margin-top: 30px">
+                                <table width="100%" id="event-table">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Format</th>
+                                        <th>Typ</th>
+                                    </tr>
+                                </table>
+                            </div>`;
+}
 
 function loadMedia(elem, medien) {
     // Datenbank lesen
@@ -126,6 +194,13 @@ function filter(linkId, sectionId) {
     // event.target.classList.add('active');
 
     showSection(sectionId);
+}
+
+function changeLeftComponent() {
+    const nav_create_event = document.getElementById('nav-create-event');
+    const nav_events = document.getElementById('nav-events');
+    nav_create_event.classList.toggle('disabled');
+    nav_events.classList.toggle('disabled');
 }
 
 async function getMedium(mediaItem) {
@@ -183,6 +258,38 @@ async function getRooms() {
         console.error('Error:', error);
         return null
     }
+}
+
+function processEvents(data, all) {
+    var eventTable = document.getElementById('event-table');
+    var tempHTML = `<tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Datum</th>
+                        <th>Raum</th>
+                        <th>Action</th>
+                    </tr>`;
+    data.forEach(event => {
+        if (all) {
+            tempHTML +=   `<tr>
+                                    <td class="roomName" >${event.ID}</td>
+                                    <td>${event.NAME}</td>
+                                    <td>${event.DATUM}</td>
+                                    <td>${event.RAUM_ID}</td>
+                                    <td><button class"save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">Mehr</button></td>
+                                </tr>`;
+        } else {
+            tempHTML += `<tr>
+                                    <td>${event.ID}</td>
+                                    <td>${event.NAME}</td>
+                                    <td>${event.DATUM}</td>
+                                    <td>${event.RAUM_ID}</td>
+                                    <td><button class"save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">Bearbeiten</button></td>
+                                </tr>`;
+        }
+    });
+
+    eventTable.innerHTML = tempHTML;
 }
 
 
@@ -333,6 +440,22 @@ function toggleMenu(menuId, link) {
     } else {
         submenu.classList.add('hidden');
         link.classList.remove('selected');
+    }
+}
+
+async function generateEventTable(all){
+    try {
+        var response = await fetch('/intern/events/allEvents');
+        if (response.ok) {
+            const data = await response.json();
+            processEvents(data, all);
+            return data;
+        }
+        else {
+            throw new Error('Network response was not ok');
+        }
+    } catch (error) {
+        throw new Error('Fehler beim Laden der Daten:', error);
     }
 }
 

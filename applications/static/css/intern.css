@@ -75,6 +75,14 @@ header {
     border-right: 1px solid black;
 }
 
+.leftComponent.disabled {
+    display: none;
+    flex-direction: column;
+    width: 15%;
+    height: 100%;
+    border-right: 1px solid black;
+}
+
 .leftComponent h2 {
     margin-top: 20%;
     margin-left: 5px;
@@ -334,4 +342,16 @@ td {
 .selected {
     color: black;
     font-weight: bold;
+}
+
+.text-box {
+    border: 2px solid black;
+    padding: 20px;
+    width: 60%;
+    margin: 0px auto 0px auto;
+    text-align: center;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
 }
