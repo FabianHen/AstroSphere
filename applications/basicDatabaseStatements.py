@@ -877,6 +877,13 @@ WHERE RAUM.miet_preis IS NOT NULL AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.d
 GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
 ORDER BY RAUM.id;
 
+-- View zur Anzeige der Planeten
+CREATE VIEW PLANETEN AS
+SELECT PLANET.id, PLANET.name, PLANET.informationen
+FROM PLANETEN
+GROUP BY PLANET.id, PLANET.name, PLANET.informationen
+ORDER BY PLANET.id;
+
 -- View zur Anzeige des aktuellen Bestands der Snacks
 CREATE OR REPLACE VIEW BESTAENDE_SNACK AS
 SELECT SNACK.id, SNACK.bezeichnung, SNACK.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_SNACK.anzahl), 0)) AS BESTAND
