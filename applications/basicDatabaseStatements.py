@@ -1212,6 +1212,24 @@ EXCEPTION
 END SUCHE_RAUM_BEZEICHNUNG;
 /
 
+-- Stored Procedure zur Suche von Planetensystemen nach Bezeichnung
+create or replace PROCEDURE SUCHE_PLANETENSYSTEM_BEZEICHNUNG (
+    p_planetensystem_bezeichnung IN PLANETENSYSTEM.bezeichnung%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM PLANETENSYSTEM 
+    WHERE bezeichnung LIKE '%' || p_planetensystem_bezeichnung || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Planetensystem Bezeichnung nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_PLANETENSYSTEM_BEZEICHNUNG;
+/
+
 -- Stored Procedure zur Suche von Teleskopen nach Bezeichnung
 create or replace PROCEDURE SUCHE_TELESKOP_BEZEICHNUNG (
     p_teleskop_bezeichnung IN TELESKOP.bezeichnung%TYPE,

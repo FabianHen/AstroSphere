@@ -544,6 +544,32 @@ function processPlanetsystems(data) {
     table.innerHTML = tempHTML;
 }
 
+async function searchPlanetensystemByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchPlanetensystemBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_planetsystem_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            const freeRooms = await getPlanetsystems();
+            processPlanetsystems(result, freeRooms);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
 async function getPlanets() {
     try {
         response = await fetch("/intern/planets/planetlist");
