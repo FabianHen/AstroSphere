@@ -183,10 +183,10 @@ def intern_telescopes():
 
 @app.route('/intern/telescopes/telescopeList', methods=['GET'])
 def telescope_list():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TELESKOP")
+    query_result = execute_sql_query("SELECT * FROM TELESKOP")
     return jsonify(query_result)
 
-@app.route('/intern/telescopes/search_teescop_by_name', methods=['POST'])
+@app.route('/intern/telescopes/search_telescope_by_name', methods=['POST'])
 def teleskop_by_name():
     try:
         bezeichnung = request.json.get('bezeichnung')

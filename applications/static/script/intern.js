@@ -555,12 +555,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
+var globalDataTelescopes = [];
+
 async function getTelescopes() {
     try {
         response = await fetch("/intern/telescopes/telescopeList");
         if (response.ok) {
             const data = await response.json();
-            processPlanets(data)
+            processTelescopes(data)
             return data
         } else {
             console.error('Server error:', response.status);
@@ -574,31 +576,29 @@ async function getTelescopes() {
 
 function processTelescopes(data) {
     var table = document.getElementById("telescopesTable");
-
+    globalDataTelescopes = data;
         var tempHTML = `<tr>
                             <th class="roomName">Name</th>
-                            <th>Id</th>
                             <th>Typ</th>
-                            <th>Beschreibung</th>
-                            <th>Auswahl</th>
+                            <th>Action</th>
                         </tr>`;
 
-    data.forEach(telescope => {
+    data.forEach((telescope, index) => {
         
             tempHTML += `
                 <tr>
                     <td class="roomName">${telescope.BEZEICHNUNG}</td>
-                    <td>${telescope.ID}</td>
                     <td>${telescope.TYP}</td>
+                    <td><button class"save-btn" onclick="showTelescopeDetails(${index}), filter('', 'teslescope-details')">Mehr</button></td>
                 </tr>`;
-        });
+});
     table.innerHTML = tempHTML;
 }
 
 async function searchTelescopeByName(){
     try {
         const bezeichnung = document.getElementById('searchTelescopeByNameInput').value;
-        const response = await fetch('/intern/telescopes/search_teescop_by_name', {
+        const response = await fetch('/intern/telescopes/search_telescope_by_name', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -618,4 +618,20 @@ async function searchTelescopeByName(){
         console.error('Error:', error);
         return null;
     }
+}
+
+ function showTelescopeDetails(index) {
+    const telescope = globalDataTelescopes[index];
+    console.log(telescope);
+    const mainContent = document.getElementById('teslescope-details');
+
+    mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${telescope.BEZEICHNUNG}</h2>
+                            <div class="text-box">
+                                ${telescope.BESCHREIBUNG}
+                            </div>
+                            <h3 style="margin: 5px auto 0px 30px;">Details:</h3>
+                            <p style="margin: 5px auto 0px 60px;">ID: ${telescope.ID}</p>
+                            <p style="margin: 5px auto 0px 60px;">Typ: ${telescope.TYP}</p>
+                            <p style="margin: 5px auto 0px 60px;">Tagesmietpreis: ${telescope.TAGES_MIET_PREIS}</p>
+                            </div>`;
 }
