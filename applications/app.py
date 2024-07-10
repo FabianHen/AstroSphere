@@ -122,8 +122,7 @@ def get_all_events():
 
 @app.route('/intern/events/details', methods=['POST'])
 def get_event_details():
-    query_result = execute_sql_query_list_of_dicts("SELECT id, raum_id, name, datum FROM VERANSTALTUNG")
-    return jsonify(query_result)
+    return execute_sql_query2("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
 
 @app.route('/intern/rooms')
 def intern_rooms():
