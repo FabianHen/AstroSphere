@@ -29,8 +29,12 @@
 
         <div class= "leftComponent" id="nav-events">
             <h2>Anstehende Veranstaltungen</h2>
-            <a class="active" id="nav-all" href="#" onclick="filter('nav-all', 'events-container'), generateEventTable(true)" >Alle Veranstaltungen</a>
-            <a href="#" id="nav-mine" onclick="filter('nav-mine', 'events-container'), generateEventTable(false)">Deine Veranstaltungen</a>
+            <h3>Veranstaltungen:</h3>
+            <a class="active" id="nav-all-all" href="#" onclick="filter('nav-all-all', 'events-container'), generateEventTable(true, true)" >Alle</a>
+            <a id="nav-all-pending" href="#" onclick="filter('nav-all-pending', 'events-container'), generateEventTable(true, false)" >Anstehend</a>
+            <h3>Deine Veranstaltungen:</h3>
+            <a href="#" id="nav-mine-all" onclick="filter('nav-mine-all', 'events-container'), generateEventTable(false, true)">Alle</a>
+            <a href="#" id="nav-mine-pending" onclick="filter('nav-mine-pending', 'events-container'), generateEventTable(false, false)">Anstehend</a>
             <a href="#" id="nav-create" onclick="filter('nav-thema', 'topic'), changeLeftComponent()">Veranstaltung erstellen</a>
         </div>
 
