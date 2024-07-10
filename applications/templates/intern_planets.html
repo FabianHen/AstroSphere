@@ -20,10 +20,11 @@
             <h2>Planeten Daten</h2>
             <ul class="menu">
                 <li>
-                    <a href="#" onclick="toggleMenu('planetensystemeSubmenu', this, 'kometenSubmenu')">Planetensysteme</a>
+                    <a href="#" onclick="toggleMenu('planetensystemeSubmenu', this, 'kometenSubmenu'), filter(event, 'planetensysteme')">Planetensysteme</a>
                     <ul id="planetensystemeSubmenu" class="submenu hidden">
                         <li><a href="#" onclick="filter(event, 'planeten'), getPlanets()">Planeten</a></li>
                         <li><a href="#"onclick="filter(event, 'sternenbilder')">Sternenbilder</a></li>
+                        <li><a href="#"onclick="filter(event, 'sterne')">Sterne</a></li>
                     </ul>
                 </li>
                 <li><a href="#" onclick="filter(event, 'kometen')">Kometen</a></li>
@@ -37,8 +38,24 @@
                 <a href="#" class="active" onclick="goToPlanets()">Planeten</a>
                 <a href="#" onclick="goToTelescopes()">Teleskope</a>
             </nav>
-
-            <div id="planeten" class="mainContent active">
+            <div id="planetensysteme" class="mainContent active">
+                <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
+                    <button type="button" onclick="">Planetensystem hinzufügen</button>
+                    <input type="text" id="searchPlanetensystemBezeichnungInput" name="searchPlanetensystemBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
+                    <button type="button" onclick="">Planetensystem suchen</button>
+                    
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="planetensystemTable">
+                        <tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Name</th>
+                            <th>Informationen</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="planeten" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
                     <button type="button" onclick="">Planet hinzufügen</button>
                     <input type="text" id="searchPlanetBezeichnungInput" name="searchPlanetBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
@@ -63,6 +80,23 @@
                 </div>
                 <div style="display: flex; justify-content: center; margin-top: 30px">
                     <table width="90%" id="starTable">
+                        <tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Name</th>
+                            <th>Informationen</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="sterne" class="mainContent">
+                <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
+                    <button type="button" onclick="">Stern hinzufügen</button>
+                    <input type="text" id="searchSternBezeichnungInput" name="searchSternBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
+                    <button type="button" onclick="">Stern suchen</button>
+                    
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="sternTable">
                         <tr>
                             <th class="roomName">Bezeichnung</th>
                             <th>Name</th>
