@@ -112,13 +112,38 @@ def get_medien():
 
 @app.route('/intern/events/medium', methods=['POST'])
 def get_medium():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM MEDIUM_VIEW ")
-    return jsonify(query_result)
+    try:
+        data = request.json.get('id')
+        procedure_result = execute_procedure_list_of_dicts("VERANSTALTUNG_MEDIUM_DETAILS", data)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+
+@app.route('/intern/events/book_event', methods=['POST'])
+def book_event():
+    try:
+        data = request.json
+        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", data)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        
+@app.route('/intern/events/book_medium', methods=['POST'])
+def book_event_medium():
+    try:
+        data = request.json
+        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG_MEDIUM", data)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
 
 @app.route('/intern/events/allEvents', methods=['GET'])
 def get_all_events():
-    query_result = execute_sql_query_list_of_dicts("SELECT id, raum_id, name, datum FROM VERANSTALTUNG WHERE datum > current_date")
-    return jsonify(query_result)
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG ORDER BY datum ASC")
+
+@app.route('/intern/events/mineEvents', methods=['GET'])
+def get_mine_events():
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE id IN (SELECT veranstaltung_id FROM VERANSTALTUNG_ANGESTELLTER WHERE angestellter_id = 2) ORDER BY datum ASC")
 
 @app.route('/intern/events/details', methods=['POST'])
 def get_event_details():

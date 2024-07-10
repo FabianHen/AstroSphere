@@ -1276,7 +1276,7 @@ BEGIN
    SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
    FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
    WHERE RAUM.miet_preis IS NOT NULL 
-     AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < p_datum
+     AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < p_veranstaltung_datum
    GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
    ORDER BY RAUM.id;
 EXCEPTION
@@ -1290,7 +1290,7 @@ END GET_FREIE_RAUME_DATUM;
 
 
 
--- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+-- Stored Procedure zum Suchen aller Medien einer Veranstaltung
 CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
     p_veranstaltung_id IN VERANSTALTUNG.id%TYPE;
 ) AS
@@ -1310,27 +1310,44 @@ END VERKAUFEN_MERCH;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
-    p_veranstaltung_datum,
+    p_veranstaltung_datum in VERANSTALTUNG.datum%TYPE,
     p_raum_id in RAUM.id%TYPE,
-    p_name,
-    p_datum,
-    p_beschreibung
+    p_veranstaltung_name in VERANSTALTUNG.name%TYPE,
+    p_veranstaltung_beschreibung in VERANSTALTUNG.beschreibung%TYPE
 ) AS
     veranstaltung_id ASTROSPHERE.VERANSTALTUNG.id%TYPE;
 BEGIN
     -- Veranstaltung verbuchen
     INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-    (p_raum_id, p_name, p_datum, p_beschreibung);
+    (p_raum_id, p_veranstaltung_name, p_veranstaltung_datum, p_veranstaltung_beschreibung);
 
     SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
 
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
-    (veranstaltung_id, 1);
+    (veranstaltung_id, 2);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END VERKAUFEN_MERCH;
+/
+
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
+CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
+    p_veranstaltung_id in VERANSTALTUNG.id%TYPE,
+    p_medium_id in MEDIUM.id%TYPE,
+) AS
+BEGIN
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM(veranstaltung_id, medium_id) VALUES
+    (p_veranstaltung_id, p_medium_id);
+
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
 END VERKAUFEN_MERCH;
