@@ -60,7 +60,7 @@
             </div>
             <div id="planeten" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" class="button round" onclick="">Planet hinzufügen</button>
+                    <button type="button" class="button round" onclick="openModal('addObject')">Planet hinzufügen</button>
                     <input type="text" id="searchPlanetBezeichnungInput" name="searchPlanetBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Planet suchen</button>
                 </div>
@@ -77,7 +77,7 @@
             </div>
             <div id="sternenbilder" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" class="button round" onclick="">Sternenbild hinzufügen</button>
+                    <button type="button" class="button round" onclick="openModal('addObject')">Sternenbild hinzufügen</button>
                     <input type="text" id="searchSternenbildBezeichnungInput" name="searchSternenbildBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Sternenbild suchen</button>
                 </div>
@@ -94,7 +94,7 @@
             </div>
             <div id="sterne" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" class="button round" onclick="">Stern hinzufügen</button>
+                    <button type="button" class="button round" onclick="openModal('addObject')">Stern hinzufügen</button>
                     <input type="text" id="searchSternBezeichnungInput" name="searchSternBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Stern suchen</button>
                 </div>
@@ -111,7 +111,7 @@
             </div>
             <div id="kometen" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" class="button round" onclick="">Komet hinzufügen</button>
+                    <button type="button" class="button round" onclick="openModal('addObject')">Komet hinzufügen</button>
                     <input type="text" id="searchKometBezeichnungInput" name="searchKometBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Komet suchen</button>
                 </div>
@@ -128,7 +128,6 @@
             </div>
         </div>
     </div>
-
     <div id="addObject" class="modal">
         <div class="modal-content">
             <button type="button" class="button round" onclick="closeModal('addObject')">x</button>
@@ -140,7 +139,7 @@
                 <input type="text" id="id" name="id"><br><br>
                 <label for="informationen">Informationen</label>
                 <input type="text" id="informationen" name="informationen"><br><br>
-                <button type="button" class="button round" onclick="">Speichern</button>
+                <button type="button" class="button round" onclick="saveChanges()">Speichern</button>
             </form>
         </div>
     </div>
@@ -155,7 +154,7 @@
                 <input type="text" id="id" name="id"><br><br>
                 <label for="informationen">Informationen</label>
                 <input type="text" id="informationen" name="informationen"><br><br>
-                <button type="button" class="button round" onclick="">Speichern</button>
+                <button type="button" class="button round" onclick="saveChanges()">Speichern</button>
             </form>
         </div>
     </div>
