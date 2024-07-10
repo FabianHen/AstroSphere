@@ -85,6 +85,44 @@ def execute_sql_query(sql_query):
             connection.close()
 
 
+def execute_sql_query2(sql_query):
+    global dsn, user, password
+
+    connection = None
+    cursor = None
+
+    try:
+        connection = cx_Oracle.connect(user=user, password=password, dsn=dsn, encoding="UTF-8")
+        cursor = connection.cursor()
+        cursor.execute(sql_query)
+
+        columns = [col[0] for col in cursor.description]
+        results = []
+
+        for row in cursor.fetchall():
+            processed_row = {}
+            for col_name, col_value in zip(columns, row):
+                if isinstance(col_value, cx_Oracle.LOB):
+                    processed_row[col_name] = col_value.read()  # Read LOB content
+                else:
+                    processed_row[col_name] = col_value
+            results.append(processed_row)
+
+        return results
+
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print("Datenbankfehler:", error.message)
+    except Exception as e:
+        print("Allgemeiner Fehler:", str(e))
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+ 
+
 #method to execute a stored Procedure
 # params: procedure_name = "Name of stored Procedure", params = [x, ...] Array of Values
 def execute_procedure(procedure_name, params):

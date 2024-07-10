@@ -1099,6 +1099,24 @@ END GET_FREIE_RAUME_DATUM;
 /
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
+    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE;
+) AS
+BEGIN
+    SELECT MEDIUM.* 
+    FROM MEDIUM
+    JOIN VERANSTALTUNG_MEDIUM
+    ON MEDIUM.id = VERANSTALTUNG_MEDIUM.medium_id
+    WHERE VERANSTALTUNG_MEDIUM.veranstaltung_id = p_veranstaltung_id;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END VERKAUFEN_MERCH;
+/
+
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
     p_veranstaltung_datum,
     p_raum_id in RAUM.id%TYPE,
