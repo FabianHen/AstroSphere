@@ -1018,6 +1018,47 @@ EXCEPTION
 END VERKAUFEN_MERCH;
 /
 
+
+-- Stored Procedure zum nachbestellen von Merchartikeln
+CREATE OR REPLACE PROCEDURE nachbestellung_merch (
+    p_merchartikel_id IN NUMBER,
+    p_anzahl IN NUMBER
+) AS
+    v_verkauf_preis_stk NUMBER(5,2);
+    v_ankauf_preis NUMBER(5,2);
+    v_lieferant_id NUMBER(8,0);
+BEGIN
+    -- Bestimme den Lieferanten basierend auf der Merch-Artikel-ID
+    v_lieferant_id := CASE 
+        WHEN p_merchartikel_id IN (1, 3, 5, 7, 9, 11, 21, 29, 31, 33, 35, 39) THEN 6  -- Worldwide wearables
+        WHEN p_merchartikel_id IN (13, 15, 17, 37) THEN 5  -- Promohub
+        WHEN p_merchartikel_id IN (19, 27) THEN 3  -- Elemental Electronics
+        WHEN p_merchartikel_id IN (23, 25) THEN 4  -- Pen and Jerrys Paper Inc.
+        ELSE 10  -- Standardlieferant
+    END;
+
+    -- Abrufen des Verkaufspreises aus der Tabelle MERCHARTIKEL
+    SELECT VERKAUF_PREIS_STK 
+    INTO v_verkauf_preis_stk 
+    FROM MERCHARTIKEL
+    WHERE ID = p_merchartikel_id;
+
+    -- Berechnung des Ankaufs-Preises
+    v_ankauf_preis := v_verkauf_preis_stk * p_anzahl;
+
+    -- Einfügen der Nachbestellung in die Tabelle BESTELLUNG
+    INSERT INTO "ASTROSPHERE"."BESTELLUNG" 
+    (SNACK_ID, MERCHARTIKEL_ID, LIEFERANT_ID, ANZAHL, RABATT, ANKAUF_PREIS) 
+    VALUES 
+    (NULL, p_merchartikel_id, v_lieferant_id, p_anzahl, 0, v_ankauf_preis);
+    
+    COMMIT;
+END nachbestellung_merch;
+/
+
+
+
+
 -- Stored Procedure zur Verbuchung von verkauften Snacks
 CREATE OR REPLACE PROCEDURE VERKAUFEN_SNACK (
     p_snack_id IN SNACK.id%TYPE,
@@ -1043,6 +1084,9 @@ EXCEPTION
 END VERKAUFEN_SNACK;
 /
 
+
+
+
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung
 create or replace PROCEDURE SUCHE_RAUM_BEZEICHNUNG (
     p_raum_bezeichnung IN RAUM.bezeichnung%TYPE,
@@ -1060,6 +1104,9 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
 END SUCHE_RAUM_BEZEICHNUNG;
 /
+
+
+
 
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung
 create or replace PROCEDURE SUCHE_RAUM_KAPAZITAET (
@@ -1097,6 +1144,9 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
 END GET_FREIE_RAUME_DATUM;
 /
+
+
+
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
