@@ -917,13 +917,32 @@ GROUP BY SNACK.id, SNACK.bezeichnung, SNACK.groesse
 ORDER BY SNACK.id;
 
 -- View zur Anzeige des aktuellen Bestands der Merchartikel
-CREATE OR REPLACE VIEW BESTAENDE_MERCH AS
-SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_MERCH.anzahl), 0)) AS BESTAND
-FROM MERCHARTIKEL 
-LEFT JOIN VERKAUF_MERCH ON MERCHARTIKEL.id = VERKAUF_MERCH.merchartikel_id
-LEFT JOIN BESTELLUNG ON MERCHARTIKEL.id = BESTELLUNG.MERCHARTIKEL_ID
-GROUP BY MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.groesse
-ORDER BY MERCHARTIKEL.id;
+CREATE OR REPLACE VIEW bestaende_merch AS
+SELECT
+    mi.id AS merchartikel_id,
+    COALESCE(b.bestellt_anzahl, 0) - COALESCE(v.verkauft_anzahl, 0) AS bestand
+FROM
+    (SELECT id FROM merchartikel) mi
+LEFT JOIN (
+    SELECT
+        merchartikel_id,
+        SUM(anzahl) AS bestellt_anzahl
+    FROM
+        Bestellung
+    GROUP BY
+        merchartikel_id
+) b ON mi.id = b.merchartikel_id
+LEFT JOIN (
+    SELECT
+        merchartikel_id,
+        SUM(anzahl) AS verkauft_anzahl
+    FROM
+        Verkauf_merch
+    GROUP BY
+        merchartikel_id
+) v ON mi.id = v.merchartikel_id
+ORDER BY
+    mi.id;
 
 -- View zur Anzeige der Medien 
 CREATE VIEW MEDIUM_VIEW AS
