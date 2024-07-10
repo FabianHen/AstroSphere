@@ -184,6 +184,24 @@ def intern_planetsystemlist():
     print(query_result)
     return jsonify(query_result)
 
+@app.route('/intern/planets/starimagelist', methods=['GET'])
+def intern_starimagelist():
+    query_result=execute_sql_query("Select * from sternenbilder")
+    print(query_result)
+    return jsonify(query_result)
+
+@app.route('/intern/planets/starlist', methods=['GET'])
+def intern_starlist():
+    query_result=execute_sql_query("Select * from sterne")
+    print(query_result)
+    return jsonify(query_result)
+
+@app.route('/intern/planets/cometlist', methods=['GET'])
+def intern_cometlist():
+    query_result=execute_sql_query("Select * from kometen")
+    print(query_result)
+    return jsonify(query_result)
+
 @app.route('/intern/telescopes')
 def intern_telescopes():
     return render_template('intern_telescopes.html')
