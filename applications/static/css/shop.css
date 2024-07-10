@@ -118,6 +118,7 @@ button:hover {
     margin: 20px;
     border: 1px solid gainsboro;
     border-radius: 10px;
+    height: 225px;
 }
 
 .tickets {
