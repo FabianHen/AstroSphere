@@ -1061,14 +1061,82 @@ async function closeModal(id) {
 
 }
 
-async function saveChanges() {
-    const form = document.getElementById('editForm');
-    const formData = new FormData(form);
+async function saveChanges(object) {
+    try {
+        const form = document.getElementById('editForm');
+        const formData = new FormData(form);
 
-    let dataObject = {};
-    formData.forEach((value, key) => {
-        dataObject[key] = value;
-    });
+        let dataObject = {};
+        formData.forEach((value, key) => {
+            dataObject[key] = value;
+        });
 
-    console.log('Gesammelte Daten:', dataObject);
+        response = responseChanges(object);
+
+        if (response.ok) {
+            const result = await response.json();
+            processComets(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function responseChanges(object){
+    let response;
+    switch (object) {
+        case 'Planetensystem':
+            response = await fetch('/intern/planets/save_changes_planetsystem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Planet':
+            response = await fetch('/intern/planets/save_changes_planet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Sternenbild':
+            response = await fetch('/intern/planets/save_changes_starimage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Stern':
+            response = await fetch('/intern/planets/save_changes_star', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Komet':
+            response = await fetch('/intern/planets/save_changes_comet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        default:
+            
+      }
+      return response;
 }

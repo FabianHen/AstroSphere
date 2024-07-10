@@ -276,6 +276,21 @@ def get_comet_by_bezeichnung():
         print(f"Fehler: {e}")
         return jsonify(False), 500
 
+@app.route('/intern/planets/save_changes_planetsystem', methods=['POST'])
+def save_changes():
+    try:
+        data_objects = request.json
+        for data_object in data_objects:
+            id = data_object['ID']
+            galaxie_id = data_object['GALAXIE_ID']
+            name = data_object['NAME']
+            informationen = data_object['INFORMATIONEN']
+            execute_procedure_list_of_dicts("InsertData", id, galaxie_id, name, informationen)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
 @app.route('/intern/telescopes')
 def intern_telescopes():
     return render_template('intern_telescopes.html')
