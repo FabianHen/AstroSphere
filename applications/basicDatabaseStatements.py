@@ -889,6 +889,24 @@ SELECT PLANET.id, PLANET.name, PLANET.informationen
 FROM PLANET
 ORDER BY PLANET.id;
 
+-- View zur Anzeige der Sternenbilder
+CREATE VIEW STERNENBILDER AS
+SELECT STERNENBILD.id, STERNENBILD.name, STERNENBILD.informationen
+FROM STERNENBILD
+ORDER BY STERNENBILD.id;
+
+-- View zur Anzeige der Sterne
+CREATE VIEW STERNE AS
+SELECT STERN.id, STERN.name, STERN.informationen
+FROM STERN
+ORDER BY STERN.id;
+
+-- View zur Anzeige der Kometen
+CREATE VIEW KOMETEN AS
+SELECT KOMET.id, KOMET.name, KOMET.informationen
+FROM KOMET
+ORDER BY KOMET.id;
+
 -- View zur Anzeige des aktuellen Bestands der Snacks
 CREATE OR REPLACE VIEW BESTAENDE_SNACK AS
 SELECT SNACK.id, SNACK.bezeichnung, SNACK.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_SNACK.anzahl), 0)) AS BESTAND
