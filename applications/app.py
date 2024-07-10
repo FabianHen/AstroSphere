@@ -339,7 +339,7 @@ def check_data(data):
             available.append(True)
         elif int(shoppingItem[0])%2==0:
             for databaseItem in itemNumSnack:
-                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                if int(databaseItem['SNACK_ID'])==int(shoppingItem[0]):
                     if databaseItem['BESTAND']==None:
                         available.append(False)
                     elif int(databaseItem['BESTAND']<int(shoppingItem[3])):
@@ -347,12 +347,12 @@ def check_data(data):
                     else:
                         available.append(True)
                     if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['ID']), 7]
+                        params=[int(databaseItem['SNACK_ID']), 7]
                         execute_procedure("nachbestellung_snack", params)
 
         else:
             for databaseItem in itemNumMerch:
-                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                if int(databaseItem['MERCHARTIKEL_ID'])==int(shoppingItem[0]):
                     if databaseItem['BESTAND']==None:
                         available.append(False)
                     elif int(databaseItem['BESTAND'])<int(shoppingItem[3]):
@@ -360,7 +360,7 @@ def check_data(data):
                     else:
                         available.append(True)
                     if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['ID']), 7]
+                        params=[int(databaseItem['MERCHARTIKEL_ID']), 7]
                         execute_procedure("nachbestellen_merch", params)
     return available
 
