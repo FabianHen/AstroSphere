@@ -908,13 +908,32 @@ FROM KOMET
 ORDER BY KOMET.id;
 
 -- View zur Anzeige des aktuellen Bestands der Snacks
-CREATE OR REPLACE VIEW BESTAENDE_SNACK AS
-SELECT SNACK.id, SNACK.bezeichnung, SNACK.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_SNACK.anzahl), 0)) AS BESTAND
-FROM SNACK 
-LEFT JOIN VERKAUF_SNACK ON SNACK.id = VERKAUF_SNACK.snack_id
-LEFT JOIN BESTELLUNG ON SNACK.id = BESTELLUNG.snack_id
-GROUP BY SNACK.id, SNACK.bezeichnung, SNACK.groesse
-ORDER BY SNACK.id;
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "ASTROSPHERE"."BESTAENDE_SNACK" ("SNACK_ID", "BESTAND") AS 
+  SELECT
+    si.id AS snack_id,
+    COALESCE(b.bestellt_anzahl, 0) - COALESCE(v.verkauft_anzahl, 0) AS bestand
+FROM
+    (SELECT id FROM snack) si
+LEFT JOIN (
+    SELECT
+        snack_id,
+        SUM(anzahl) AS bestellt_anzahl
+    FROM
+        Bestellung
+    GROUP BY
+        snack_id
+) b ON si.id = b.snack_id
+LEFT JOIN (
+    SELECT
+        snack_id,
+        SUM(anzahl) AS verkauft_anzahl
+    FROM
+        verkauf_snack
+    GROUP BY
+        snack_id
+) v ON si.id = v.snack_id
+ORDER BY
+    si.id;
 
 -- View zur Anzeige des aktuellen Bestands der Merchartikel
 CREATE OR REPLACE VIEW bestaende_merch AS
