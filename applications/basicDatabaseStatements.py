@@ -980,34 +980,36 @@ ORDER BY
     mi.id;
 
 -- View zur Anzeige der Medien 
-CREATE VIEW MEDIUM_VIEW AS
+CREATE OR REPLACE VIEW MEDIUM_VIEW AS
 SELECT 
-    MEDIUM.id
-    galaxie.name AS galaxie_name, 
-    planet.name AS planet_name, 
-    planetensystem.name AS planetensystem_name, 
-    nebel.name AS nebel_name, 
-    stern.name AS stern_name, 
-    sternenbild.name AS sternenbild_name, 
-    komet.name AS komet_name, 
-    MEDIUM.FORMAT, 
-    MEDIUM.TYP,
+    MEDIUM.id,
+    GALAXIE.name AS galaxie_name, 
+    PLANET.name AS planet_name, 
+    PLANETENSYSTEM.name AS planetensystem_name, 
+    NEBEL.name AS nebel_name, 
+    STERN.name AS stern_name, 
+    STERNENBILD.name AS sternenbild_name, 
+    KOMET.name AS komet_name, 
+    MEDIUM.format, 
+    MEDIUM.typ,
     MEDIUM.image_path
-FROM MEDIUM
-LEFT JOIN GALAXIE 
-ON MEDIUM.GALAXIE_ID = GALAXIE.ID
-LEFT JOIN PLANET 
-ON MEDIUM.PLANET_ID = PLANET.ID
-LEFT JOIN PLANETENSYSTEM 
-ON MEDIUM.PLANETENSYSTEM_ID = PLANETENSYSTEM.ID
-LEFT JOIN NEBEL 
-ON MEDIUM.NEBEL_ID = NEBEL.ID
-LEFT JOIN STERN 
-ON MEDIUM.STERN_ID = STERN.ID
-LEFT JOIN STERNENBILD 
-ON MEDIUM.STERNENBILD_ID = STERNENBILD.ID
-LEFT JOIN KOMET 
-ON MEDIUM.KOMET_ID = KOMET.ID;
+FROM 
+    MEDIUM
+LEFT JOIN 
+    GALAXIE ON MEDIUM.galaxie_id = GALAXIE.id
+LEFT JOIN 
+    PLANET ON MEDIUM.planet_id = PLANET.id
+LEFT JOIN 
+    PLANETENSYSTEM ON MEDIUM.planetensystem_id = PLANETENSYSTEM.id
+LEFT JOIN 
+    NEBEL ON MEDIUM.nebel_id = NEBEL.id
+LEFT JOIN 
+    STERN ON MEDIUM.stern_id = STERN.id
+LEFT JOIN 
+    STERNENBILD ON MEDIUM.sternenbild_id = STERNENBILD.id
+LEFT JOIN 
+    KOMET ON MEDIUM.komet_id = KOMET.id;
+
 
 
 
