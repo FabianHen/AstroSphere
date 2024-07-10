@@ -281,14 +281,20 @@ def buyShoppingCart(data):
         for aktItem in data['shoppingCart']:
             params=[int(aktItem['id']), int(aktItem['anzahl'])]
             if "Ticket" in aktItem['type']:
+                if 'Tag' in aktItem['type']:
+                    params[0]="Tag"
+                elif 'Monat' in aktItem['type']:
+                    params[0]="Monat"
+                else:
+                    params[0]="Jahr"
                 print("update Database with ticket")
-                #execute_procedure("VERKAUFEN_TICKET", params)
+                execute_procedure("VERKAUFEN_TICKET", params)
             elif int(aktItem['id'])%2==0:
                 print("update Database with snack")
-                #execute_procedure("VERKAUFEN_SNACK", params)
+                execute_procedure("VERKAUFEN_SNACK", params)
             else:
                 print("update Database with merch")
-                #execute_procedure("VERKAUFEN_MERCH", params)
+                execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
 
 
