@@ -877,6 +877,12 @@ WHERE RAUM.miet_preis IS NOT NULL AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.d
 GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
 ORDER BY RAUM.id;
 
+-- View zur Anzeige der Planeten
+CREATE VIEW PLANETEN AS
+SELECT PLANET.id, PLANET.name, PLANET.informationen
+FROM PLANET
+ORDER BY PLANET.id;
+
 -- View zur Anzeige des aktuellen Bestands der Snacks
 CREATE OR REPLACE VIEW BESTAENDE_SNACK AS
 SELECT SNACK.id, SNACK.bezeichnung, SNACK.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_SNACK.anzahl), 0)) AS BESTAND
@@ -1003,7 +1009,9 @@ BEGIN
     -- Verkauf verbuchen
     INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
     (1, 1, NULL, CURRENT_DATE);
-
+   
+   COMMIT;
+    
     SELECT MAX(VERKAUF.id) INTO verkauf_id FROM ASTROSPHERE.VERKAUF;
 
     INSERT INTO ASTROSPHERE.VERKAUF_MERCH(VERKAUF_ID, MERCHARTIKEL_ID, ANZAHL) VALUES
@@ -1070,6 +1078,8 @@ BEGIN
     INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
     (1, 1, NULL, CURRENT_DATE);
 
+   COMMIT;
+
     SELECT MAX(VERKAUF.id) INTO verkauf_id FROM ASTROSPHERE.VERKAUF;
 
     INSERT INTO ASTROSPHERE.VERKAUF_SNACK(VERKAUF_ID, SNACK_ID, ANZAHL) VALUES
@@ -1083,6 +1093,79 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
 END VERKAUFEN_SNACK;
 /
+
+-- Stored Procedure zum nachbestellen von Snacks
+CREATE OR REPLACE PROCEDURE nachbestellung_snack (
+    p_snack_id IN NUMBER,
+    p_anzahl IN NUMBER
+) AS
+    v_verkauf_preis_stk NUMBER(5,2);
+    v_ankauf_preis NUMBER(5,2);
+    v_lieferant_id NUMBER(8,0);
+BEGIN
+    -- Bestimme den Lieferanten basierend auf der Snack-ID
+    v_lieferant_id := CASE 
+        WHEN p_snack_id IN (2, 4, 10, 12, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 50) THEN 1  -- Coca Cola
+        WHEN p_snack_id IN (6, 8, 16, 18) THEN 9  -- Frying Friends
+        WHEN p_snack_id IN (14, 46, 48) THEN 10  -- Muenchner Moenchsbrauerei
+        ELSE 8  -- Standardlieferant Greener Food
+    END;
+
+    -- Abrufen des Verkaufspreises aus der Tabelle SNACK
+    SELECT VERKAUF_PREIS_STK 
+    INTO v_verkauf_preis_stk 
+    FROM SNACK
+    WHERE ID = p_snack_id;
+
+    -- Berechnung des Ankaufs-Preises
+    v_ankauf_preis := v_verkauf_preis_stk * p_anzahl;
+
+    -- Einfügen der Nachbestellung in die Tabelle BESTELLUNG
+    INSERT INTO "ASTROSPHERE"."BESTELLUNG" 
+    (SNACK_ID, MERCHARTIKEL_ID, LIEFERANT_ID, ANZAHL, RABATT, ANKAUF_PREIS) 
+    VALUES 
+    (p_snack_id, NULL, v_lieferant_id, p_anzahl, 0, v_ankauf_preis);
+    
+    COMMIT;
+END nachbestellung_snack;
+/
+
+
+
+
+create or replace PROCEDURE VERKAUFEN_TICKET (
+    p_stufe IN TICKETSTUFE.STUFE%TYPE,
+    p_verkauf_anzahl IN VERKAUF_TICKETSTUFE.anzahl%TYPE
+) AS
+    verkauf_id VERKAUF.id%TYPE;
+BEGIN
+    -- Verkauf verbuchen
+    INSERT INTO VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM)
+    VALUES (1, 1, NULL, CURRENT_DATE);
+    
+    COMMIT;
+    
+    -- Verkauf ID ermitteln
+    SELECT MAX(id) INTO verkauf_id FROM VERKAUF;
+
+    -- Ticketverkauf einfügen
+    INSERT INTO VERKAUF_TICKETSTUFE(VERKAUF_ID, STUFE, ANZAHL)
+    VALUES (verkauf_id, p_stufe, p_verkauf_anzahl);
+
+    -- Transaktion abschließen
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Ticketstufe nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END VERKAUFEN_TICKET;
+/
+
+
+
+
+
 
 
 
@@ -1105,7 +1188,23 @@ EXCEPTION
 END SUCHE_RAUM_BEZEICHNUNG;
 /
 
-
+-- Stored Procedure zur Suche von Teleskopen nach Bezeichnung
+create or replace PROCEDURE SUCHE_TELESKOP_BEZEICHNUNG (
+    p_teleskop_bezeichnung IN TELESKOP.bezeichnung%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM TELESKOP 
+    WHERE bezeichnung LIKE '%' || p_teleskop_bezeichnung || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Teleksop Bezeichnung nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_TELESKOP_BEZEICHNUNG;
+/
 
 
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung

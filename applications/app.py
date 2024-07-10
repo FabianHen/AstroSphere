@@ -129,6 +129,11 @@ def intern_rooms():
 
 @app.route('/intern/rooms/roomlist', methods=['GET'])
 def intern_roomlist():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM RAUM")
+    return jsonify(query_result)
+
+@app.route('/intern/rooms/freeRooms', methods=['GET'])
+def intern_free_rooms():
     query_result = execute_sql_query_list_of_dicts("SELECT * FROM FREIE_RAEUME")
     return jsonify(query_result)
 
@@ -168,12 +173,29 @@ def intern_planets():
 
 @app.route('/intern/planets/planetlist', methods=['GET'])
 def intern_planetlist():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM PLANETEN")
+    query_result=execute_sql_query("Select * from planeten")
+    print(query_result)
     return jsonify(query_result)
 
 @app.route('/intern/telescopes')
 def intern_telescopes():
     return render_template('intern_telescopes.html')
+
+@app.route('/intern/telescopes/telescopeList', methods=['GET'])
+def telescope_list():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TELESKOP")
+    return jsonify(query_result)
+
+@app.route('/intern/telescopes/search_teescop_by_name', methods=['POST'])
+def teleskop_by_name():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_TELESKOP_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
 
 @app.route('/back_to_home')
 def back_to_home():
@@ -212,40 +234,37 @@ def check_data(data):
     for aktItem in data['shoppingCart']:
         shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['größe'], aktItem['anzahl']))
 
-
     for shoppingItem in shoppingCartItems:
         itemName=str(shoppingItem[1])
         if "Ticket" in itemName:
             available.append(True)
         elif int(shoppingItem[0])%2==0:
             for databaseItem in itemNumSnack:
-                if int(databaseItem[0])==int(shoppingItem[0]):
-                    if databaseItem[3]==None:
+                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                    if databaseItem['BESTAND']==None:
                         available.append(False)
-                    elif int(databaseItem[3]<int(shoppingItem[3])):
+                    elif int(databaseItem['BESTAND']<int(shoppingItem[3])):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem[3])<10:
-                        print("Nachbestellen von: ", databaseItem[1])
-                        #nachbestellen vom aktuellen Snack
-                        params=[int(databaseItem[3]), 10]
-                        #execute_procedure("ORDER_SNACK", params)
+                    if int(databaseItem['BESTAND'])<10:
+                        params=[int(databaseItem['ID']), 7]
+                        print(params)
+                        execute_procedure("nachbestellung_snack", params)
 
         else:
             for databaseItem in itemNumMerch:
-                if int(databaseItem[0])==int(shoppingItem[0]):
-                    if databaseItem[3]==None:
+                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                    if databaseItem['BESTAND']==None:
                         available.append(False)
-                    elif int(databaseItem[3])<int(shoppingItem[3]):
+                    elif int(databaseItem['BESTAND'])<int(shoppingItem[3]):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem[3])<10:
-                        print("Nachbestellen von: ", databaseItem[1])
-                        #nachbestellen von Merch
-                        params=[int(databaseItem[3]), 10]
-                        #execute_procedure("ORDER_MERCH", params)
+                    if int(databaseItem['BESTAND'])<10:
+                        params=[int(databaseItem['ID']), 7]
+                        print(params)
+                        execute_procedure("nachbestellen_merch", params)
     return available
 
 OrderNum=0
@@ -262,14 +281,20 @@ def buyShoppingCart(data):
         for aktItem in data['shoppingCart']:
             params=[int(aktItem['id']), int(aktItem['anzahl'])]
             if "Ticket" in aktItem['type']:
+                if 'Tag' in aktItem['type']:
+                    params[0]="Tag"
+                elif 'Monat' in aktItem['type']:
+                    params[0]="Monat"
+                else:
+                    params[0]="Jahr"
                 print("update Database with ticket")
-                #execute_procedure("VERKAUFEN_TICKET", params)
+                execute_procedure("VERKAUFEN_TICKET", params)
             elif int(aktItem['id'])%2==0:
                 print("update Database with snack")
-                #execute_procedure("VERKAUFEN_SNACK", params)
+                execute_procedure("VERKAUFEN_SNACK", params)
             else:
                 print("update Database with merch")
-                #execute_procedure("VERKAUFEN_MERCH", params)
+                execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
 
 

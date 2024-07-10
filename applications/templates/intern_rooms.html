@@ -16,8 +16,8 @@
     </header>
 
     <div class= "main">
-        <div class= "leftComponent">
-            <h2>Raum Buchen</h2>
+        <div class= "leftComponent" id="nav-rooms">
+            <h2>Räume anzeigen</h2>
         </div>
 
         <div class= "rightComponent">
@@ -31,7 +31,6 @@
             <div id="raeume" class="mainContent active" style="padding: 15px">
                 <h2>Räume</h2>
                 <div style="display: flex; padding: 5px; justify-content: space-around">
-                    <button onclick="getRooms()">Räume anzeigen</button>
                     <form>
                     <label style="font-size: 10px">Suche Räume nach Bezeichnung
                         <br/>
@@ -47,7 +46,7 @@
                         <button type="button" onclick="searchRaumByCapacity()">Suchen</button>
                     </form>
                 </div>
-                <div style="display: flex; justify-content: center; margin-top: 30px">
+                <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll; height: 400px;">
                 <table width="90%" id="roomTable">
                     <tr>
                         <th class="roomName">Bezeichnung</th>
