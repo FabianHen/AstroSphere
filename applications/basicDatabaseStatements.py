@@ -1084,6 +1084,42 @@ EXCEPTION
 END VERKAUFEN_SNACK;
 /
 
+-- Stored Procedure zum nachbestellen von Snacks
+CREATE OR REPLACE PROCEDURE nachbestellung_snack (
+    p_snack_id IN NUMBER,
+    p_anzahl IN NUMBER
+) AS
+    v_verkauf_preis_stk NUMBER(5,2);
+    v_ankauf_preis NUMBER(5,2);
+    v_lieferant_id NUMBER(8,0);
+BEGIN
+    -- Bestimme den Lieferanten basierend auf der Snack-ID
+    v_lieferant_id := CASE 
+        WHEN p_snack_id IN (2, 4, 10, 12, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 50) THEN 1  -- Coca Cola
+        WHEN p_snack_id IN (6, 8, 16, 18) THEN 9  -- Frying Friends
+        WHEN p_snack_id IN (14, 46, 48) THEN 10  -- Muenchner Moenchsbrauerei
+        ELSE 8  -- Standardlieferant Greener Food
+    END;
+
+    -- Abrufen des Verkaufspreises aus der Tabelle SNACK
+    SELECT VERKAUF_PREIS_STK 
+    INTO v_verkauf_preis_stk 
+    FROM SNACK
+    WHERE ID = p_snack_id;
+
+    -- Berechnung des Ankaufs-Preises
+    v_ankauf_preis := v_verkauf_preis_stk * p_anzahl;
+
+    -- Einfügen der Nachbestellung in die Tabelle BESTELLUNG
+    INSERT INTO "ASTROSPHERE"."BESTELLUNG" 
+    (SNACK_ID, MERCHARTIKEL_ID, LIEFERANT_ID, ANZAHL, RABATT, ANKAUF_PREIS) 
+    VALUES 
+    (p_snack_id, NULL, v_lieferant_id, p_anzahl, 0, v_ankauf_preis);
+    
+    COMMIT;
+END nachbestellung_snack;
+/
+
 
 
 

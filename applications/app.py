@@ -122,7 +122,7 @@ def get_all_events():
 
 @app.route('/intern/events/details', methods=['POST'])
 def get_event_details():
-    return execute_sql_query2("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
 
 @app.route('/intern/rooms')
 def intern_rooms():
@@ -213,40 +213,37 @@ def check_data(data):
     for aktItem in data['shoppingCart']:
         shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['größe'], aktItem['anzahl']))
 
-
     for shoppingItem in shoppingCartItems:
         itemName=str(shoppingItem[1])
         if "Ticket" in itemName:
             available.append(True)
         elif int(shoppingItem[0])%2==0:
             for databaseItem in itemNumSnack:
-                if int(databaseItem[0])==int(shoppingItem[0]):
-                    if databaseItem[3]==None:
+                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                    if databaseItem['BESTAND']==None:
                         available.append(False)
-                    elif int(databaseItem[3]<int(shoppingItem[3])):
+                    elif int(databaseItem['BESTAND']<int(shoppingItem[3])):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem[3])<10:
-                        print("Nachbestellen von: ", databaseItem[1])
-                        #nachbestellen vom aktuellen Snack
-                        params=[int(databaseItem[3]), 10]
-                        #execute_procedure("ORDER_SNACK", params)
+                    if int(databaseItem['BESTAND'])<10:
+                        params=[int(databaseItem['ID']), 7]
+                        print(params)
+                        execute_procedure("nachbestellung_snack", params)
 
         else:
             for databaseItem in itemNumMerch:
-                if int(databaseItem[0])==int(shoppingItem[0]):
-                    if databaseItem[3]==None:
+                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                    if databaseItem['BESTAND']==None:
                         available.append(False)
-                    elif int(databaseItem[3])<int(shoppingItem[3]):
+                    elif int(databaseItem['BESTAND'])<int(shoppingItem[3]):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem[3])<10:
-                        print("Nachbestellen von: ", databaseItem[1])
-                        #nachbestellen von Merch
-                        params=[int(databaseItem[3]), 10]
-                        #execute_procedure("ORDER_MERCH", params)
+                    if int(databaseItem['BESTAND'])<10:
+                        params=[int(databaseItem['ID']), 7]
+                        print(params)
+                        execute_procedure("nachbestellen_merch", params)
     return available
 
 OrderNum=0
