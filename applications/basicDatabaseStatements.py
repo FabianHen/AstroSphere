@@ -880,8 +880,7 @@ ORDER BY RAUM.id;
 -- View zur Anzeige der Planeten
 CREATE VIEW PLANETEN AS
 SELECT PLANET.id, PLANET.name, PLANET.informationen
-FROM PLANETEN
-GROUP BY PLANET.id, PLANET.name, PLANET.informationen
+FROM PLANET
 ORDER BY PLANET.id;
 
 -- View zur Anzeige des aktuellen Bestands der Snacks
