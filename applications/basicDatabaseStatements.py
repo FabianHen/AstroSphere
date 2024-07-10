@@ -908,22 +908,60 @@ FROM KOMET
 ORDER BY KOMET.id;
 
 -- View zur Anzeige des aktuellen Bestands der Snacks
-CREATE OR REPLACE VIEW BESTAENDE_SNACK AS
-SELECT SNACK.id, SNACK.bezeichnung, SNACK.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_SNACK.anzahl), 0)) AS BESTAND
-FROM SNACK 
-LEFT JOIN VERKAUF_SNACK ON SNACK.id = VERKAUF_SNACK.snack_id
-LEFT JOIN BESTELLUNG ON SNACK.id = BESTELLUNG.snack_id
-GROUP BY SNACK.id, SNACK.bezeichnung, SNACK.groesse
-ORDER BY SNACK.id;
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "ASTROSPHERE"."BESTAENDE_SNACK" ("SNACK_ID", "BESTAND") AS 
+  SELECT
+    si.id AS snack_id,
+    COALESCE(b.bestellt_anzahl, 0) - COALESCE(v.verkauft_anzahl, 0) AS bestand
+FROM
+    (SELECT id FROM snack) si
+LEFT JOIN (
+    SELECT
+        snack_id,
+        SUM(anzahl) AS bestellt_anzahl
+    FROM
+        Bestellung
+    GROUP BY
+        snack_id
+) b ON si.id = b.snack_id
+LEFT JOIN (
+    SELECT
+        snack_id,
+        SUM(anzahl) AS verkauft_anzahl
+    FROM
+        verkauf_snack
+    GROUP BY
+        snack_id
+) v ON si.id = v.snack_id
+ORDER BY
+    si.id;
 
 -- View zur Anzeige des aktuellen Bestands der Merchartikel
-CREATE OR REPLACE VIEW BESTAENDE_MERCH AS
-SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_MERCH.anzahl), 0)) AS BESTAND
-FROM MERCHARTIKEL 
-LEFT JOIN VERKAUF_MERCH ON MERCHARTIKEL.id = VERKAUF_MERCH.merchartikel_id
-LEFT JOIN BESTELLUNG ON MERCHARTIKEL.id = BESTELLUNG.MERCHARTIKEL_ID
-GROUP BY MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.groesse
-ORDER BY MERCHARTIKEL.id;
+CREATE OR REPLACE VIEW bestaende_merch AS
+SELECT
+    mi.id AS merchartikel_id,
+    COALESCE(b.bestellt_anzahl, 0) - COALESCE(v.verkauft_anzahl, 0) AS bestand
+FROM
+    (SELECT id FROM merchartikel) mi
+LEFT JOIN (
+    SELECT
+        merchartikel_id,
+        SUM(anzahl) AS bestellt_anzahl
+    FROM
+        Bestellung
+    GROUP BY
+        merchartikel_id
+) b ON mi.id = b.merchartikel_id
+LEFT JOIN (
+    SELECT
+        merchartikel_id,
+        SUM(anzahl) AS verkauft_anzahl
+    FROM
+        Verkauf_merch
+    GROUP BY
+        merchartikel_id
+) v ON mi.id = v.merchartikel_id
+ORDER BY
+    mi.id;
 
 -- View zur Anzeige der Medien 
 CREATE VIEW MEDIUM_VIEW AS
@@ -1188,6 +1226,28 @@ END VERKAUFEN_TICKET;
 
 
 
+CREATE OR REPLACE PROCEDURE new_customer (
+    p_name IN KUNDE.NAME%TYPE,
+    p_vorname IN KUNDE.VORNAME%TYPE,
+    p_telefon_nr IN KUNDE.TELEFON_NR%TYPE,
+    p_email IN KUNDE.EMAIL%TYPE
+) AS
+BEGIN
+    INSERT INTO ASTROSPHERE.KUNDE (NAME, VORNAME, TELEFON_NR, EMAIL) 
+    VALUES (p_name, p_vorname, p_telefon_nr, p_email);
+
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Einfügen eines neuen Kunden: ' || SQLERRM);
+END new_customer;
+/
+
+
+
+
+
+
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung
 create or replace PROCEDURE SUCHE_RAUM_BEZEICHNUNG (
     p_raum_bezeichnung IN RAUM.bezeichnung%TYPE,
@@ -1380,7 +1440,7 @@ END VERANSTALTUNG_MEDIUM_DETAILS;
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
     p_veranstaltung_datum in VERANSTALTUNG.datum%TYPE,
-    p_raum_id in RAUM.id%TYPE,
+    p_raum_id in NUMBER,
     p_veranstaltung_name in VERANSTALTUNG.name%TYPE,
     p_veranstaltung_beschreibung in VERANSTALTUNG.beschreibung%TYPE
 ) AS
@@ -1406,8 +1466,8 @@ END BUCHE_VERANSTALTUNG;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
-    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE,
-    p_medium_id IN MEDIUM.id%TYPE
+    p_veranstaltung_id IN NUMBER,
+    p_medium_id IN NUMBER
 ) AS
 BEGIN
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
