@@ -256,12 +256,36 @@ function goBackHome() {
     window.location.href = '/';
 }
 
+// Event-Listener für DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async function() {
+    if ( document.getElementById('nav-rooms')){
+        await getRooms();
+    }
+});
+
 async function getRooms() {
     try {
         response = await fetch("/intern/rooms/roomlist");
         if (response.ok) {
             const data = await response.json();
-            processRooms(data)
+            const freeRooms = await getFreeRooms();
+            processRooms(data, freeRooms)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+async function getFreeRooms() {
+    try {
+        response = await fetch("/intern/rooms/freeRooms");
+        if (response.ok) {
+            const data = await response.json();
             return data
         } else {
             console.error('Server error:', response.status);
@@ -306,7 +330,7 @@ function processEvents(data, all) {
 }
 
 
-function processRooms(data, button) {
+function processRooms(data,freeRooms, button) {
     var table = document.getElementById("roomTable");
 
     if(button) {
@@ -327,9 +351,15 @@ function processRooms(data, button) {
     }
 
     data.forEach(raum => {
-        let status = "frei";
-        if (raum.PREIS === null) {
+        let status = "besetzt";
+        if (raum.MIET_PREIS == null) {
             status = "Abteilungsraum";
+        }
+        if(status === "besetzt"){
+            freeRooms.forEach(fr => {
+                if(raum.ID == fr.ID) status = "frei";
+                return;
+            });
         }
         if(button) {
             tempHTML += `
@@ -366,7 +396,8 @@ async function searchRaumByBezeichnung(){
 
         if (response.ok) {
             const result = await response.json();
-            processRooms(result);
+            const freeRooms = await getFreeRooms();
+            processRooms(result, freeRooms);
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -391,7 +422,8 @@ async function searchRaumByCapacity(){
 
         if (response.ok) {
             const result = await response.json();
-            processRooms(result);
+            const freeRooms = await getFreeRooms();
+            processRooms(result, freeRooms);
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -514,4 +546,51 @@ function processPlanets(data) {
 
 function saveEvent() {
     console.log("Not implemented")
+}
+
+// Event-Listener für DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async function() {
+    if ( document.getElementById('nav-telescopes')){
+        await getTelescopes();
+    }
+});
+
+async function getTelescopes() {
+    try {
+        response = await fetch("/intern/telescopes/telescopeList");
+        if (response.ok) {
+            const data = await response.json();
+            processPlanets(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processTelescopes(data) {
+    var table = document.getElementById("telescopesTable");
+
+        var tempHTML = `<tr>
+                            <th class="roomName">Name</th>
+                            <th>Id</th>
+                            <th>Typ</th>
+                            <th>Beschreibung</th>
+                            <th>Auswahl</th>
+                        </tr>`;
+
+    data.forEach(telescope => {
+        
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${telescope.BEZEICHNUNG}</td>
+                    <td>${telescope.ID}</td>
+                    <td>${telescope.TYP}</td>
+                </tr>`;
+        });
+    table.innerHTML = tempHTML;
 }
