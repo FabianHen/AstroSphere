@@ -110,6 +110,21 @@ def get_medien():
     query_result = execute_sql_query_list_of_dicts("SELECT * FROM MEDIUM_VIEW")
     return jsonify(query_result)
 
+@app.route('/intern/events/medium', methods=['POST'])
+def get_medium():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM MEDIUM_VIEW ")
+    return jsonify(query_result)
+
+@app.route('/intern/events/allEvents', methods=['GET'])
+def get_all_events():
+    query_result = execute_sql_query_list_of_dicts("SELECT id, raum_id, name, datum FROM VERANSTALTUNG WHERE datum > current_date")
+    return jsonify(query_result)
+
+@app.route('/intern/events/details', methods=['POST'])
+def get_event_details():
+    query_result = execute_sql_query_list_of_dicts("SELECT id, raum_id, name, datum FROM VERANSTALTUNG")
+    return jsonify(query_result)
+
 @app.route('/intern/rooms')
 def intern_rooms():
     return render_template('intern_rooms.html')
@@ -213,7 +228,12 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-        
+                    if int(databaseItem[3])<10:
+                        print("Nachbestellen von: ", databaseItem[1])
+                        #nachbestellen vom aktuellen Snack
+                        params=[int(databaseItem[3]), 10]
+                        #execute_procedure("ORDER_SNACK", params)
+
         else:
             for databaseItem in itemNumMerch:
                 if int(databaseItem[0])==int(shoppingItem[0]):
@@ -223,6 +243,11 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
+                    if int(databaseItem[3])<10:
+                        print("Nachbestellen von: ", databaseItem[1])
+                        #nachbestellen von Merch
+                        params=[int(databaseItem[3]), 10]
+                        #execute_procedure("ORDER_MERCH", params)
     return available
 
 OrderNum=0

@@ -898,6 +898,7 @@ ORDER BY MERCHARTIKEL.id;
 -- View zur Anzeige der Medien 
 CREATE VIEW MEDIUM_VIEW AS
 SELECT 
+    MEDIUM.id
     galaxie.name AS galaxie_name, 
     planet.name AS planet_name, 
     planetensystem.name AS planetensystem_name, 
@@ -1095,6 +1096,34 @@ EXCEPTION
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
 END GET_FREIE_RAUME_DATUM;
+/
+
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
+    p_veranstaltung_datum,
+    p_raum_id in RAUM.id%TYPE,
+    p_name,
+    p_datum,
+    p_beschreibung
+) AS
+    veranstaltung_id ASTROSPHERE.VERANSTALTUNG.id%TYPE;
+BEGIN
+    -- Veranstaltung verbuchen
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+    (p_raum_id, p_name, p_datum, p_beschreibung);
+
+    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
+    (veranstaltung_id, 1);
+
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END VERKAUFEN_MERCH;
 /
 """
 
