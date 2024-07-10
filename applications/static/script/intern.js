@@ -557,8 +557,8 @@ async function searchPlanetensystemByBezeichnung(){
 
         if (response.ok) {
             const result = await response.json();
-            const freeRooms = await getPlanetsystems();
-            processPlanetsystems(result, freeRooms);
+            const planetsystems = await getPlanetsystems();
+            processPlanetsystems(result, planetsystems);
             return result;
         } else {
             console.error('Server error:', response.status);
