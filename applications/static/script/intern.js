@@ -594,3 +594,28 @@ function processTelescopes(data) {
         });
     table.innerHTML = tempHTML;
 }
+
+async function searchTelescopeByName(){
+    try {
+        const bezeichnung = document.getElementById('searchTelescopeByNameInput').value;
+        const response = await fetch('/intern/telescopes/search_teescop_by_name', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processTelescopes(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}

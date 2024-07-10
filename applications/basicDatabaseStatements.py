@@ -1141,7 +1141,23 @@ EXCEPTION
 END SUCHE_RAUM_BEZEICHNUNG;
 /
 
-
+-- Stored Procedure zur Suche von Räumen nach Bezeichnung
+create or replace PROCEDURE SUCHE_TELESKOP_BEZEICHNUNG (
+    p_teleskop_bezeichnung IN TELESKOP.bezeichnung%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM TELESKOP 
+    WHERE bezeichnung LIKE '%' || p_teleskop_bezeichnung || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Raum Bezeichnung nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_TELESKOP_BEZEICHNUNG;
+/
 
 
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung

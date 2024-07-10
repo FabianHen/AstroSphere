@@ -152,8 +152,8 @@ def get_room_by_capacity():
 @app.route('/intern/rooms/search_room_bezeichnung', methods=['POST'])
 def get_room_by_bezeichnung():
     try:
-        bezecihnung = request.json.get('bezeichnung')
-        procedure_result = execute_procedure_list_of_dicts("SUCHE_RAUM_BEZEICHNUNG", bezecihnung)
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_RAUM_BEZEICHNUNG", bezeichnung)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -185,6 +185,17 @@ def intern_telescopes():
 def telescope_list():
     query_result = execute_sql_query_list_of_dicts("SELECT * FROM TELESKOP")
     return jsonify(query_result)
+
+@app.route('/intern/telescopes/search_teescop_by_name', methods=['POST'])
+def teleskop_by_name():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_TELESKOP_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
 
 @app.route('/back_to_home')
 def back_to_home():
