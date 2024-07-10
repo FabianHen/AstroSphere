@@ -528,6 +528,7 @@ function processPlanets(data) {
                         <th class="roomName">Bezeichnung</th>
                         <th>ID</th>
                         <th>Informationen</th>
+                        <th>Action</th>
                     </tr>`;
 
     data.forEach(planet => {
@@ -536,6 +537,7 @@ function processPlanets(data) {
                     <td class="roomName">${planet.BEZEICHNUNG}</td>
                     <td>${planet.ID}</td>
                     <td>${planet.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="">Edit</button></td>
                 </tr>`;
         }
     );
