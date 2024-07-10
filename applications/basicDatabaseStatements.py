@@ -877,6 +877,36 @@ WHERE RAUM.miet_preis IS NOT NULL AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.d
 GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
 ORDER BY RAUM.id;
 
+-- View zur Anzeige der Planetensysteme
+CREATE VIEW PLANETENSYSTEME AS
+SELECT PLANETENSYSTEM.id, PLANETENSYSTEM.name, PLANETENSYSTEM.informationen
+FROM PLANETENSYSTEM
+ORDER BY PLANETENSYSTEM.id;
+
+-- View zur Anzeige der Planeten
+CREATE VIEW PLANETEN AS
+SELECT PLANET.id, PLANET.name, PLANET.informationen
+FROM PLANET
+ORDER BY PLANET.id;
+
+-- View zur Anzeige der Sternenbilder
+CREATE VIEW STERNENBILDER AS
+SELECT STERNENBILD.id, STERNENBILD.name, STERNENBILD.informationen
+FROM STERNENBILD
+ORDER BY STERNENBILD.id;
+
+-- View zur Anzeige der Sterne
+CREATE VIEW STERNE AS
+SELECT STERN.id, STERN.name, STERN.informationen
+FROM STERN
+ORDER BY STERN.id;
+
+-- View zur Anzeige der Kometen
+CREATE VIEW KOMETEN AS
+SELECT KOMET.id, KOMET.name, KOMET.informationen
+FROM KOMET
+ORDER BY KOMET.id;
+
 -- View zur Anzeige des aktuellen Bestands der Snacks
 CREATE OR REPLACE VIEW BESTAENDE_SNACK AS
 SELECT SNACK.id, SNACK.bezeichnung, SNACK.groesse, (NVL(SUM(BESTELLUNG.anzahl), 0) - NVL(SUM(VERKAUF_SNACK.anzahl), 0)) AS BESTAND
@@ -1003,7 +1033,9 @@ BEGIN
     -- Verkauf verbuchen
     INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
     (1, 1, NULL, CURRENT_DATE);
-
+   
+   COMMIT;
+    
     SELECT MAX(VERKAUF.id) INTO verkauf_id FROM ASTROSPHERE.VERKAUF;
 
     INSERT INTO ASTROSPHERE.VERKAUF_MERCH(VERKAUF_ID, MERCHARTIKEL_ID, ANZAHL) VALUES
@@ -1070,6 +1102,8 @@ BEGIN
     INSERT INTO ASTROSPHERE.VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM) VALUES
     (1, 1, NULL, CURRENT_DATE);
 
+   COMMIT;
+
     SELECT MAX(VERKAUF.id) INTO verkauf_id FROM ASTROSPHERE.VERKAUF;
 
     INSERT INTO ASTROSPHERE.VERKAUF_SNACK(VERKAUF_ID, SNACK_ID, ANZAHL) VALUES
@@ -1123,6 +1157,43 @@ END nachbestellung_snack;
 
 
 
+create or replace PROCEDURE VERKAUFEN_TICKET (
+    p_stufe IN TICKETSTUFE.STUFE%TYPE,
+    p_verkauf_anzahl IN VERKAUF_TICKETSTUFE.anzahl%TYPE
+) AS
+    verkauf_id VERKAUF.id%TYPE;
+BEGIN
+    -- Verkauf verbuchen
+    INSERT INTO VERKAUF(KUNDE_ID, ANGESTELLTER_ID, RABATT, DATUM)
+    VALUES (1, 1, NULL, CURRENT_DATE);
+    
+    COMMIT;
+    
+    -- Verkauf ID ermitteln
+    SELECT MAX(id) INTO verkauf_id FROM VERKAUF;
+
+    -- Ticketverkauf einfügen
+    INSERT INTO VERKAUF_TICKETSTUFE(VERKAUF_ID, STUFE, ANZAHL)
+    VALUES (verkauf_id, p_stufe, p_verkauf_anzahl);
+
+    -- Transaktion abschließen
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Ticketstufe nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END VERKAUFEN_TICKET;
+/
+
+
+
+
+
+
+
+
+
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung
 create or replace PROCEDURE SUCHE_RAUM_BEZEICHNUNG (
     p_raum_bezeichnung IN RAUM.bezeichnung%TYPE,
@@ -1141,7 +1212,42 @@ EXCEPTION
 END SUCHE_RAUM_BEZEICHNUNG;
 /
 
+-- Stored Procedure zur Suche von Planetensystemen nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_PLANETENSYSTEM_BEZEICHNUNG (
+    p_planetensystem_name IN PLANETENSYSTEM.NAME%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM PLANETENSYSTEM 
+    WHERE NAME LIKE '%' || p_planetensystem_name || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Planetensystem Name nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_PLANETENSYSTEM_BEZEICHNUNG;
+/
 
+
+-- Stored Procedure zur Suche von Teleskopen nach Bezeichnung
+create or replace PROCEDURE SUCHE_TELESKOP_BEZEICHNUNG (
+    p_teleskop_bezeichnung IN TELESKOP.bezeichnung%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM TELESKOP 
+    WHERE bezeichnung LIKE '%' || p_teleskop_bezeichnung || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Teleksop Bezeichnung nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_TELESKOP_BEZEICHNUNG;
+/
 
 
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung
@@ -1161,16 +1267,17 @@ EXCEPTION
 END SUCHE_RAUM_KAPAZITAET;
 /
 
-create or replace PROCEDURE GET_FREIE_RAUME_DATUM (
+CREATE OR REPLACE PROCEDURE GET_FREIE_RAUME_DATUM (
    p_datum IN VERMIETUNG_RAUM.datum%TYPE,
    p_result OUT SYS_REFCURSOR
 ) AS 
 BEGIN
    OPEN p_result FOR
    SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
-   FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
+   FROM RAUM 
+   LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
    WHERE RAUM.miet_preis IS NOT NULL 
-     AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < p_datum
+     AND (VERMIETUNG_RAUM.datum IS NULL OR (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < p_datum)
    GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
    ORDER BY RAUM.id;
 EXCEPTION
@@ -1184,42 +1291,44 @@ END GET_FREIE_RAUME_DATUM;
 
 
 
--- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+-- Stored Procedure zum Suchen aller Medien einer Veranstaltung
 CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
-    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE;
+    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE,
+    p_result OUT SYS_REFCURSOR
 ) AS
 BEGIN
-    SELECT MEDIUM.* 
-    FROM MEDIUM
-    JOIN VERANSTALTUNG_MEDIUM
-    ON MEDIUM.id = VERANSTALTUNG_MEDIUM.medium_id
-    WHERE VERANSTALTUNG_MEDIUM.veranstaltung_id = p_veranstaltung_id;
+    OPEN p_result FOR
+        SELECT MEDIUM.*
+        FROM MEDIUM
+        JOIN VERANSTALTUNG_MEDIUM
+        ON MEDIUM.id = VERANSTALTUNG_MEDIUM.medium_id
+        WHERE VERANSTALTUNG_MEDIUM.veranstaltung_id = p_veranstaltung_id;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-END VERKAUFEN_MERCH;
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Abrufen der Medium-Details.');
+END VERANSTALTUNG_MEDIUM_DETAILS;
 /
+
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
-    p_veranstaltung_datum,
+    p_veranstaltung_datum in VERANSTALTUNG.datum%TYPE,
     p_raum_id in RAUM.id%TYPE,
-    p_name,
-    p_datum,
-    p_beschreibung
+    p_veranstaltung_name in VERANSTALTUNG.name%TYPE,
+    p_veranstaltung_beschreibung in VERANSTALTUNG.beschreibung%TYPE
 ) AS
     veranstaltung_id ASTROSPHERE.VERANSTALTUNG.id%TYPE;
 BEGIN
     -- Veranstaltung verbuchen
     INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-    (p_raum_id, p_name, p_datum, p_beschreibung);
+    (p_raum_id, p_veranstaltung_name, p_veranstaltung_datum, p_veranstaltung_beschreibung);
 
     SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
 
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
-    (veranstaltung_id, 1);
+    (veranstaltung_id, 2);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
@@ -1227,8 +1336,27 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-END VERKAUFEN_MERCH;
+END BUCHE_VERANSTALTUNG;
 /
+
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
+CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
+    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE,
+    p_medium_id IN MEDIUM.id%TYPE
+) AS
+BEGIN
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
+    VALUES (p_veranstaltung_id, p_medium_id);
+
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen des Mediums für die Veranstaltung.');
+END BUCHE_VERANSTALTUNG_MEDIUM;
+/
+
 """
 
 sql_configuration="""

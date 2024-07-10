@@ -106,18 +106,24 @@ async function initEventsPage() {
     description.addEventListener('input', checkInputs);
     dateInput.addEventListener('input', checkDate);
 
-    generateEventTable(true);
+    generateEventTable(true, true);
 }
 
 async function getEventDetails(eventId) {
     try {
         var response = await fetch('/intern/events/allEvents');
-        if (response.ok) {
+        var responseMedia = await fetch('/intern/events/medium', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: eventId})
+        });
+        if (response.ok && responseMedia.ok) {
             const data = await response.json();
-            const event = 1;
             data.forEach(event => {
                 if (event.ID === eventId) {
-                    showEventDetails(event);
+                    showEventDetails(event, responseMedia);
                 }
             });
             // showEventDetails(event);
@@ -131,7 +137,7 @@ async function getEventDetails(eventId) {
     }
 }
 
-function showEventDetails(event) {
+function showEventDetails(event, media) {
     const mainContent = document.getElementById('event-details');
 
     mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${event.NAME}</h2>
@@ -142,7 +148,7 @@ function showEventDetails(event) {
                             <p style="margin: 5px auto 0px 60px;">ID: ${event.ID}</p>
                             <p style="margin: 5px auto 0px 60px;">Raum: ${event.RAUM_ID}</p>
                             <p style="margin: 5px auto 0px 60px;">Datum: ${event.DATUM}</p>
-            
+                            
                             <h3 style="margin: 5px auto 0px 30px;">Medien:</h3>
                             <div style="display: flex; justify-content: center; margin-top: 30px">
                                 <table width="100%" id="media-table">
@@ -153,6 +159,14 @@ function showEventDetails(event) {
                                     </tr>
                                 </table>
                             </div>`;
+    
+    media.forEach(medium => {
+        mainContent.innerHTML += `<tr>
+                                    <td>${medium.ID}</td>
+                                    <td>${medium.FORMAT}</td>
+                                    <td>${medium.TYP}</td>
+                                </tr>`;
+    });
 }
 
 function loadMedia(elem, medien) {
@@ -256,12 +270,36 @@ function goBackHome() {
     window.location.href = '/';
 }
 
+// Event-Listener für DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async function() {
+    if ( document.getElementById('nav-rooms')){
+        await getRooms();
+    }
+});
+
 async function getRooms() {
     try {
         response = await fetch("/intern/rooms/roomlist");
         if (response.ok) {
             const data = await response.json();
-            processRooms(data)
+            const freeRooms = await getFreeRooms();
+            processRooms(data, freeRooms)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+async function getFreeRooms() {
+    try {
+        response = await fetch("/intern/rooms/freeRooms");
+        if (response.ok) {
+            const data = await response.json();
             return data
         } else {
             console.error('Server error:', response.status);
@@ -306,7 +344,7 @@ function processEvents(data, all) {
 }
 
 
-function processRooms(data, button) {
+function processRooms(data,freeRooms, button) {
     var table = document.getElementById("roomTable");
 
     if(button) {
@@ -327,9 +365,15 @@ function processRooms(data, button) {
     }
 
     data.forEach(raum => {
-        let status = "frei";
-        if (raum.PREIS === null) {
+        let status = "besetzt";
+        if (raum.MIET_PREIS == null) {
             status = "Abteilungsraum";
+        }
+        if(status === "besetzt"){
+            freeRooms.forEach(fr => {
+                if(raum.ID == fr.ID) status = "frei";
+                return;
+            });
         }
         if(button) {
             tempHTML += `
@@ -366,7 +410,8 @@ async function searchRaumByBezeichnung(){
 
         if (response.ok) {
             const result = await response.json();
-            processRooms(result);
+            const freeRooms = await getFreeRooms();
+            processRooms(result, freeRooms);
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -391,7 +436,8 @@ async function searchRaumByCapacity(){
 
         if (response.ok) {
             const result = await response.json();
-            processRooms(result);
+            const freeRooms = await getFreeRooms();
+            processRooms(result, freeRooms);
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -426,7 +472,8 @@ async function searchForFreeRooms(){
         });
         
         if (response.ok) {
-            const result = await response.json();
+            const result = await response.json()
+            console.log(result);
             processRooms(result, true);
             return result;
         } else {
@@ -456,13 +503,24 @@ function toggleMenu(menuId, link) {
     }
 }
 
-async function generateEventTable(all){
+async function generateEventTable(fromAll, all){
     try {
-        var response = await fetch('/intern/events/allEvents');
+        if (fromAll) {
+            var response = await fetch('/intern/events/allEvents');
+        } else {
+            var response = await fetch('/intern/events/mineEvents');
+        }
         if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            processEvents(data, all);
+            var data = await response.json();
+            if (!all) {
+                data = data.filter(event => {
+                    console.log(event)
+                    var currentDate = new Date();
+                    var eventDate = new Date(event.DATUM);
+                    return eventDate >= currentDate;
+                })
+            }
+            processEvents(data, fromAll);
             return data;
         }
         else {
@@ -470,6 +528,70 @@ async function generateEventTable(all){
         }
     } catch (error) {
         throw new Error('Fehler beim Laden der Daten:', error);
+    }
+}
+
+async function getPlanetsystems() {
+    try {
+        response = await fetch("/intern/planets/planetsystemlist");
+        if (response.ok) {
+            const data = await response.json();
+            processPlanetsystems(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processPlanetsystems(data) {
+    var table = document.getElementById("planetsystemTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(planetsystem => {
+        tempHTML += `
+                <tr>
+                    <td>${planetsystem.NAME}</td>
+                    <td>${planetsystem.ID}</td>
+                    <td>${planetsystem.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planetsystem).replace(/"/g, '&quot;')})">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function searchPlanetensystemByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchPlanetensystemBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_planetsystem_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processPlanetsystems(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
     }
 }
 
@@ -493,17 +615,136 @@ async function getPlanets() {
 function processPlanets(data) {
     var table = document.getElementById("planetTable");
     var tempHTML = `<tr>
-                        <th class="roomName">Bezeichnung</th>
+                        <th>Bezeichnung</th>
                         <th>ID</th>
                         <th>Informationen</th>
+                        <th>Action</th>
                     </tr>`;
 
     data.forEach(planet => {
         tempHTML += `
                 <tr>
-                    <td class="roomName">${planet.BEZEICHNUNG}</td>
+                    <td>${planet.NAME}</td>
                     <td>${planet.ID}</td>
                     <td>${planet.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planet).replace(/"/g, '&quot;')})">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function getStarimages() {
+    try {
+        response = await fetch("/intern/planets/starimagelist");
+        if (response.ok) {
+            const data = await response.json();
+            processStarimages(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processStarimages(data) {
+    var table = document.getElementById("starimageTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(starimage => {
+        tempHTML += `
+                <tr>
+                    <td>${starimage.NAME}</td>
+                    <td>${starimage.ID}</td>
+                    <td>${starimage.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(starimage).replace(/"/g, '&quot;')})">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function getStars() {
+    try {
+        response = await fetch("/intern/planets/starlist");
+        if (response.ok) {
+            const data = await response.json();
+            processStars(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processStars(data) {
+    var table = document.getElementById("starTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(star => {
+        tempHTML += `
+                <tr>
+                    <td>${star.NAME}</td>
+                    <td>${star.ID}</td>
+                    <td>${star.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(star).replace(/"/g, '&quot;')})">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function getComets() {
+    try {
+        response = await fetch("/intern/planets/cometlist");
+        if (response.ok) {
+            const data = await response.json();
+            processComets(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processComets(data) {
+    var table = document.getElementById("cometTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(comet => {
+        tempHTML += `
+                <tr>
+                    <td>${comet.NAME}</td>
+                    <td>${comet.ID}</td>
+                    <td>${comet.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(comet).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
@@ -511,7 +752,102 @@ function processPlanets(data) {
 }
 
 
-
 function saveEvent() {
     console.log("Not implemented")
+}
+
+// Event-Listener für DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async function() {
+    if ( document.getElementById('nav-telescopes')){
+        await getTelescopes();
+    }
+});
+
+async function getTelescopes() {
+    try {
+        response = await fetch("/intern/telescopes/telescopeList");
+        if (response.ok) {
+            const data = await response.json();
+            processPlanets(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processTelescopes(data) {
+    var table = document.getElementById("telescopesTable");
+
+        var tempHTML = `<tr>
+                            <th class="roomName">Name</th>
+                            <th>Id</th>
+                            <th>Typ</th>
+                            <th>Beschreibung</th>
+                            <th>Auswahl</th>
+                        </tr>`;
+
+    data.forEach(telescope => {
+        
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${telescope.BEZEICHNUNG}</td>
+                    <td>${telescope.ID}</td>
+                    <td>${telescope.TYP}</td>
+                </tr>`;
+        });
+    table.innerHTML = tempHTML;
+}
+
+async function searchTelescopeByName(){
+    try {
+        const bezeichnung = document.getElementById('searchTelescopeByNameInput').value;
+        const response = await fetch('/intern/telescopes/search_teescop_by_name', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processTelescopes(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function openModal(id, object) {
+    var modal = document.getElementById(id);
+    modal.style.display = "block";
+    if(id === "editObject") {
+        modal.querySelector("#bezeichnung").value = object.NAME;
+        modal.querySelector("#id").value = object.ID;
+        modal.querySelector("#informationen").value = object.INFORMATIONEN;
+    }
+    
+    if(id === "addObject") {
+        //object wird Objektart die angelegt wird
+    }
+}
+
+async function closeModal(id) {
+    var modal = document.getElementById(id);
+    modal.style.display = "none";
+
+}
+
+async function saveChanges() {
+
 }
