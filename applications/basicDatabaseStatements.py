@@ -1188,6 +1188,22 @@ END VERKAUFEN_TICKET;
 
 
 
+CREATE OR REPLACE PROCEDURE new_customer (
+    p_name IN KUNDE.NAME%TYPE,
+    p_vorname IN KUNDE.VORNAME%TYPE,
+    p_telefon_nr IN KUNDE.TELEFON_NR%TYPE,
+    p_email IN KUNDE.EMAIL%TYPE
+) AS
+BEGIN
+    INSERT INTO ASTROSPHERE.KUNDE (NAME, VORNAME, TELEFON_NR, EMAIL) 
+    VALUES (p_name, p_vorname, p_telefon_nr, p_email);
+
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Einfügen eines neuen Kunden: ' || SQLERRM);
+END new_customer;
+/
 
 
 
