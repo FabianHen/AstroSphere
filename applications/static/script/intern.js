@@ -27,6 +27,12 @@ function getCurrentDateTime() {
 document.addEventListener('DOMContentLoaded', async function() {
     if ( document.getElementById('nav-events')){
         initEventsPage();
+    } else if ( document.getElementById('nav-rooms')){
+        await getRooms();
+    } else if ( document.getElementById('nav-planets')){
+        await getPlanetsystems();
+    } else if ( document.getElementById('nav-telescopes')){
+        await getTelescopes();
     }
 });
 
@@ -269,13 +275,6 @@ function goToTelescopes() {
 function goBackHome() {
     window.location.href = '/';
 }
-
-// Event-Listener für DOMContentLoaded
-document.addEventListener('DOMContentLoaded', async function() {
-    if ( document.getElementById('nav-rooms')){
-        await getRooms();
-    }
-});
 
 async function getRooms() {
     try {
@@ -755,13 +754,6 @@ function processComets(data) {
 function saveEvent() {
     console.log("Not implemented")
 }
-
-// Event-Listener für DOMContentLoaded
-document.addEventListener('DOMContentLoaded', async function() {
-    if ( document.getElementById('nav-telescopes')){
-        await getTelescopes();
-    }
-});
 
 var globalDataTelescopes = [];
 
