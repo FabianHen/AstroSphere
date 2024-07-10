@@ -11,8 +11,26 @@ function showSection(sectionId) {
     selectedSection.classList.add('active');
 }
 
+// Funktion, um das aktuelle Datum und die Uhrzeit im richtigen Format zu erhalten
+function getCurrentDateTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Monate sind 0-basiert
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
 // Event-Listener für DOMContentLoaded
 document.addEventListener('DOMContentLoaded', async function() {
+    if ( document.getElementById('nav-events')){
+        initEventsPage();
+    }
+});
+
+async function initEventsPage() {
     const mediaItem = document.getElementById('mediaGrid');
     const save_media = document.getElementById('save-media');
     if (mediaItem) {
@@ -44,6 +62,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Datum vom Eingabefeld abrufen
     const dateInput = document.getElementById('eventTime');
     const date_btn = document.getElementById('date-btn');
+
+    dateInput.min = getCurrentDateTime();
 
     function checkInputs() {
         // Überprüfe, ob beide Eingabefelder Inhalt haben
@@ -87,22 +107,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     dateInput.addEventListener('input', checkDate);
 
     generateEventTable(true);
-});
+}
 
 async function getEventDetails(eventId) {
     try {
         var response = await fetch('/intern/events/allEvents');
         if (response.ok) {
             const data = await response.json();
-            console.log(eventId);
             const event = 1;
             data.forEach(event => {
-                console.log(event.ID);
                 if (event.ID === eventId) {
                     showEventDetails(event);
                 }
             });
-            console.log(event);
             // showEventDetails(event);
             return data;
         }
@@ -119,20 +136,16 @@ function showEventDetails(event) {
 
     mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${event.NAME}</h2>
                             <div class="text-box">
-                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
-                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
-                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
-                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
-                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                ${event.BESCHREIBUNG}
                             </div>
                             <h3 style="margin: 5px auto 0px 30px;">Details:</h3>
                             <p style="margin: 5px auto 0px 60px;">ID: ${event.ID}</p>
                             <p style="margin: 5px auto 0px 60px;">Raum: ${event.RAUM_ID}</p>
                             <p style="margin: 5px auto 0px 60px;">Datum: ${event.DATUM}</p>
-                            <p style="margin: 5px auto 30px 60px;">Angestellter: default</p>
+            
                             <h3 style="margin: 5px auto 0px 30px;">Medien:</h3>
                             <div style="display: flex; justify-content: center; margin-top: 30px">
-                                <table width="100%" id="event-table">
+                                <table width="100%" id="media-table">
                                     <tr>
                                         <th>Id</th>
                                         <th>Format</th>
@@ -448,6 +461,7 @@ async function generateEventTable(all){
         var response = await fetch('/intern/events/allEvents');
         if (response.ok) {
             const data = await response.json();
+            console.log(data);
             processEvents(data, all);
             return data;
         }

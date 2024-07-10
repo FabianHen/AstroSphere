@@ -786,7 +786,7 @@ create index VERKAUFT_FK on VERKAUF_SNACK (
 /*==============================================================*/
 create table VERKAUF_TICKETSTUFE (
    VERKAUF_ID           NUMBER(8)             not null,
-   STUFE                CHAR(20)              default 'Tag' check (STUFE in ('Tag','Monat','Jahr')) not null,
+   STUFE                VARCHAR2(20)              default 'Tag' check (STUFE in ('Tag','Monat','Jahr')) not null,
    ANZAHL               NUMBER(2)             not null,
    constraint PK_VERKAUF_TICKETSTUFE primary key (VERKAUF_ID, STUFE),
    constraint "FK_VERKAUF__TICKET WI_VERKAUF" foreign key (VERKAUF_ID)
@@ -1018,6 +1018,47 @@ EXCEPTION
 END VERKAUFEN_MERCH;
 /
 
+
+-- Stored Procedure zum nachbestellen von Merchartikeln
+CREATE OR REPLACE PROCEDURE nachbestellung_merch (
+    p_merchartikel_id IN NUMBER,
+    p_anzahl IN NUMBER
+) AS
+    v_verkauf_preis_stk NUMBER(5,2);
+    v_ankauf_preis NUMBER(5,2);
+    v_lieferant_id NUMBER(8,0);
+BEGIN
+    -- Bestimme den Lieferanten basierend auf der Merch-Artikel-ID
+    v_lieferant_id := CASE 
+        WHEN p_merchartikel_id IN (1, 3, 5, 7, 9, 11, 21, 29, 31, 33, 35, 39) THEN 6  -- Worldwide wearables
+        WHEN p_merchartikel_id IN (13, 15, 17, 37) THEN 5  -- Promohub
+        WHEN p_merchartikel_id IN (19, 27) THEN 3  -- Elemental Electronics
+        WHEN p_merchartikel_id IN (23, 25) THEN 4  -- Pen and Jerrys Paper Inc.
+        ELSE 10  -- Standardlieferant
+    END;
+
+    -- Abrufen des Verkaufspreises aus der Tabelle MERCHARTIKEL
+    SELECT VERKAUF_PREIS_STK 
+    INTO v_verkauf_preis_stk 
+    FROM MERCHARTIKEL
+    WHERE ID = p_merchartikel_id;
+
+    -- Berechnung des Ankaufs-Preises
+    v_ankauf_preis := v_verkauf_preis_stk * p_anzahl;
+
+    -- Einfügen der Nachbestellung in die Tabelle BESTELLUNG
+    INSERT INTO "ASTROSPHERE"."BESTELLUNG" 
+    (SNACK_ID, MERCHARTIKEL_ID, LIEFERANT_ID, ANZAHL, RABATT, ANKAUF_PREIS) 
+    VALUES 
+    (NULL, p_merchartikel_id, v_lieferant_id, p_anzahl, 0, v_ankauf_preis);
+    
+    COMMIT;
+END nachbestellung_merch;
+/
+
+
+
+
 -- Stored Procedure zur Verbuchung von verkauften Snacks
 CREATE OR REPLACE PROCEDURE VERKAUFEN_SNACK (
     p_snack_id IN SNACK.id%TYPE,
@@ -1043,6 +1084,45 @@ EXCEPTION
 END VERKAUFEN_SNACK;
 /
 
+-- Stored Procedure zum nachbestellen von Snacks
+CREATE OR REPLACE PROCEDURE nachbestellung_snack (
+    p_snack_id IN NUMBER,
+    p_anzahl IN NUMBER
+) AS
+    v_verkauf_preis_stk NUMBER(5,2);
+    v_ankauf_preis NUMBER(5,2);
+    v_lieferant_id NUMBER(8,0);
+BEGIN
+    -- Bestimme den Lieferanten basierend auf der Snack-ID
+    v_lieferant_id := CASE 
+        WHEN p_snack_id IN (2, 4, 10, 12, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 50) THEN 1  -- Coca Cola
+        WHEN p_snack_id IN (6, 8, 16, 18) THEN 9  -- Frying Friends
+        WHEN p_snack_id IN (14, 46, 48) THEN 10  -- Muenchner Moenchsbrauerei
+        ELSE 8  -- Standardlieferant Greener Food
+    END;
+
+    -- Abrufen des Verkaufspreises aus der Tabelle SNACK
+    SELECT VERKAUF_PREIS_STK 
+    INTO v_verkauf_preis_stk 
+    FROM SNACK
+    WHERE ID = p_snack_id;
+
+    -- Berechnung des Ankaufs-Preises
+    v_ankauf_preis := v_verkauf_preis_stk * p_anzahl;
+
+    -- Einfügen der Nachbestellung in die Tabelle BESTELLUNG
+    INSERT INTO "ASTROSPHERE"."BESTELLUNG" 
+    (SNACK_ID, MERCHARTIKEL_ID, LIEFERANT_ID, ANZAHL, RABATT, ANKAUF_PREIS) 
+    VALUES 
+    (p_snack_id, NULL, v_lieferant_id, p_anzahl, 0, v_ankauf_preis);
+    
+    COMMIT;
+END nachbestellung_snack;
+/
+
+
+
+
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung
 create or replace PROCEDURE SUCHE_RAUM_BEZEICHNUNG (
     p_raum_bezeichnung IN RAUM.bezeichnung%TYPE,
@@ -1060,6 +1140,9 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
 END SUCHE_RAUM_BEZEICHNUNG;
 /
+
+
+
 
 -- Stored Procedure zur Suche von Räumen nach Bezeichnung
 create or replace PROCEDURE SUCHE_RAUM_KAPAZITAET (
@@ -1096,6 +1179,27 @@ EXCEPTION
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
 END GET_FREIE_RAUME_DATUM;
+/
+
+
+
+
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
+    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE;
+) AS
+BEGIN
+    SELECT MEDIUM.* 
+    FROM MEDIUM
+    JOIN VERANSTALTUNG_MEDIUM
+    ON MEDIUM.id = VERANSTALTUNG_MEDIUM.medium_id
+    WHERE VERANSTALTUNG_MEDIUM.veranstaltung_id = p_veranstaltung_id;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END VERKAUFEN_MERCH;
 /
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
@@ -1313,7 +1417,7 @@ INSERT INTO ASTROSPHERE.GALAXIE(NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, I
 -- Inserting data into table ASTROSPHERE.KUNDE
 --
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
-('Kruse', 'Hella', '+52 14 3932 7671', 'AbeSSims856@example.com');
+('Gast', 'Gast', '+0000000000000000000', 'gast.gast@gast.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
 ('Abert', 'Baldo ', '+52 41 2393 1767', 'Bolin641@example.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
@@ -1552,27 +1656,27 @@ INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE_PATH) VALUES
 -- Inserting data into table ASTROSPHERE.ANGESTELLTER
 --
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(NULL, 4, 'Kleiner', 'Paschalis', 5126.56);
+(NULL, 1, 'Terminal', 'Terminal', 0.00);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 10, 'Leist', 'Joerge', 3069.86);
+(2, 10, 'Leist', 'Joerge', 3069.86);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 1, 'Kleinermann', 'Felin', 3013.03);
+(2, 1, 'Kleinermann', 'Felin', 3013.03);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 8, 'Paulig', 'Balintt ', 5402.6);
+(2, 8, 'Paulig', 'Balintt ', 5402.6);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 4, 'Zurbriggen', 'Filiberta', 4457.12);
+(2, 4, 'Zurbriggen', 'Filiberta', 4457.12);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 4, 'Forster', 'Filina', 5429.74);
+(2, 4, 'Forster', 'Filina', 5429.74);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 3, 'Schlechter', 'Gotfrit', 2471.51);
+(2, 3, 'Schlechter', 'Gotfrit', 2471.51);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 9, 'Tischbein', 'Adelisa ', 3151.59);
+(2, 9, 'Tischbein', 'Adelisa ', 3151.59);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 2, 'Heitsch', 'Cathrine', 2459.32);
+(2, 2, 'Heitsch', 'Cathrine', 2459.32);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 10, 'Abicht', 'Basileo ', 5247.51);
+(2, 10, 'Abicht', 'Basileo ', 5247.51);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(1, 8, 'Franke', 'Elika', 3399.43);
+(2, 8, 'Franke', 'Elika', 3399.43);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (2, 4, 'Meier', 'Volkbert', 4446.9);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES

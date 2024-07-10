@@ -84,7 +84,6 @@ def execute_sql_query(sql_query):
             connection.close()
 
 
-
 #method to execute a stored Procedure
 # params: procedure_name = "Name of stored Procedure", params = [x, ...] Array of Values
 def execute_procedure(procedure_name, params):
