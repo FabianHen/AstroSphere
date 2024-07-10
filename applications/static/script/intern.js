@@ -197,6 +197,7 @@ function loadMedia(elem, medien) {
         }
 
         htmlElem += "<p>" + medium.FORMAT + "</p>"
+        htmlElem += "<p sytle='display: none'>" + medium.ID + "</p>"
         htmlElem += "</a>"
 
         elem.innerHTML += htmlElem;
@@ -382,7 +383,7 @@ function processRooms(data,freeRooms, button) {
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
-                    <td><button class"save-btn" onclick="saveEvent()">Wälen</button></td>
+                    <td><button class"save-btn" onclick="saveEvent(${raum.ID})">Wälen</button></td>
                 </tr>`;
         } else {
             tempHTML += `
@@ -752,8 +753,24 @@ function processComets(data) {
 }
 
 
-function saveEvent() {
-    console.log("Not implemented")
+async function saveEvent(roomID) {
+    try {
+        const name = document.getElementById('name');
+        const beschreibung = document.getElementById('description');
+        const date = document.getElementById('eventTime');
+        const mediaItems = document.querySelectorAll('.media-item active');
+
+        const response = await fetch('/intern/events/book_event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ datum: date, raum_id: roomID, name: name, beschreibung: beschreibung})
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 // Event-Listener für DOMContentLoaded

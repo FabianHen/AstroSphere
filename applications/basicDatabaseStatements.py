@@ -928,7 +928,7 @@ ORDER BY MERCHARTIKEL.id;
 -- View zur Anzeige der Medien 
 CREATE VIEW MEDIUM_VIEW AS
 SELECT 
-    MEDIUM.id
+    MEDIUM.id,
     galaxie.name AS galaxie_name, 
     planet.name AS planet_name, 
     planetensystem.name AS planetensystem_name, 
