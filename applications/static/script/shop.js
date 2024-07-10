@@ -1,13 +1,21 @@
 // SLEEPTIMER + DISPLAYTIMER = Gesamtzeit bis reset
 const IDLETIMER = 50000;
 const SLEEPTIMER = 10000;
+// Colors for the Fade of the sleeptimer display
 const STARTCOLOR = { r: 66, g: 4, b: 176 };
 const ENDCOLOR = { r: 211, g: 13, b: 164 };
 
+/**
+ * Sends the user back to the main page of the Terminal
+ */
 function goBack() {
     window.location.href = window.location.href.split('/', window.location.href.split('/').length - 1).join('/');
 }
 
+/**
+ * Collapses the given filter if its already unfolded. Switches to a display of all items of this filter and unfolds further filters if not
+ * @param {*} filter the filter that has been clicked (`"snack_filter"`, `"merch_filter"` or `"ticket_filter"`)
+ */
 function collapseFilter(filter) {
     if (filter) {
         let content = document.getElementById(filter);
@@ -39,6 +47,10 @@ function collapseFilter(filter) {
 
 let idle_timeout;
 let sleep_timeout;
+
+/**
+ * Resets the idle timer and the sleep timer, if it has already started
+ */
 function resetTimers() {
     let sleepDiv = document.getElementById("sleepTimer")
     if (sleepDiv && sleepDiv.style.display == "flex") {
@@ -50,6 +62,10 @@ function resetTimers() {
     idle_timeout = setTimeout(sleepTimer, IDLETIMER);
 }
 
+/**
+ * Opens the sleeptimer window and updates the time that's left every second. The color of the displayed time is gradually changed from blue to pink. 
+ * The user will be sent back to the main page if the timer runs out
+ */
 function sleepTimer() {
     clearTimeout(idle_timeout);
     let rounds_total = SLEEPTIMER / 1000;
@@ -70,10 +86,21 @@ function sleepTimer() {
     }, 1000);
 }
 
+/**
+ * Converts a rgb values to a Hexcode
+ * @returns a Hexcode that represents the given RGB values
+ */
 function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 }
 
+/**
+ * Calculates a Color between two given colors based on the given factor
+ * @param {*} color1 the startcolor
+ * @param {*} color2 the endcolor
+ * @param {*} factor a factor between 0 and 1 to calculate the new color 
+ * @returns a color between color1 and color 2
+ */
 function interpolateColor(color1, color2, factor) {
     const result = {
         r: Math.round(color1.r + factor * (color2.r - color1.r)),
@@ -83,12 +110,16 @@ function interpolateColor(color1, color2, factor) {
     return result;
 }
 
+/**
+ * Resets the timers and opens the Drop down filters of the previously selected category
+ */
 window.addEventListener("load", function (e) {
     let params = new URL(document.location).searchParams;
     let selected = params.get("selected");
     if (selected) {
         collapseFilter(selected);
     }
+    // Timers will be reset when the user either moves the mouse or clicks on the screen
     document.addEventListener('mousemove', resetTimers);
     document.addEventListener('click', resetTimers);
     resetTimers();
@@ -109,15 +140,20 @@ class Artikel {
         this.image = imagePath;
     }
 }
+
 class Kunde {
-    constructor(vorname, nachname, email, telefonnummer){
-        this.vorname=vorname;
-        this.nachname=nachname;
-        this.email=email;
-        this.telefonnummer=telefonnummer;
+    constructor(vorname, nachname, email, telefonnummer) {
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.email = email;
+        this.telefonnummer = telefonnummer;
     }
 }
 
+/**
+ * Adds an item to the shopping cart. If this Item has been added to the shoppingcart previously, 
+ * the amount of this item will be increased
+ */
 function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath) {
     aktItem = new Artikel(id, type, beschreibung, größe, preis, anzahl, imagePath);
     for (let i = 0; i < shoppingCart.length; i++) {
@@ -137,6 +173,12 @@ function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath
     cart_badge.innerHTML = shoppingCart.length;
 }
 
+/**
+ * Removes a given item from the cart and updates the cart badge 
+ * @param {} type the type of the item
+ * @param {*} größe the size of the item
+ * @param {*} num the amount to be removed
+ */
 function removeItemFromCart(type, größe, num) {
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
@@ -156,7 +198,9 @@ function removeItemFromCart(type, größe, num) {
     console.log(`Artikel ${type} nicht gefunden.`);
 }
 
-
+/**
+ * Creates HTML Items for all elements in the shoppingcart and adds them to the shoppingcart window
+ */
 function createItems() {
     var newHTMLString = "";
     for (let i = 0; i < shoppingCart.length; i++) {
@@ -168,7 +212,7 @@ function createItems() {
         newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>" + shoppingCart[i].type + "</h3>\n";
         newHTMLItem += "\t\t<div class='line'></div>\n";
         newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].beschreibung + "</p>\n";
-        if(shoppingCart[i].größe!=""){
+        if (shoppingCart[i].größe != "") {
             newHTMLItem += "\t\t<p class='groesse' id='item_" + i + "Gr'>Größe: " + shoppingCart[i].größe + "</p>\n";
         }
         newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: " + shoppingCart[i].preis + "</p>\n";
@@ -185,8 +229,10 @@ function createItems() {
     document.getElementById('itemList').innerHTML = newHTMLString;
 }
 
-
-
+/**
+ * Updates the displayed amount of each item and the displayed price of the order, checks for availability of products 
+ * @param {boolean} updateNum if set, this function will check the amount of each item and will remove it if 0
+ */
 function updateShoppingCart(updateNum) {
     var gesSumme = 0.0;
     for (let i = 0; i < shoppingCart.length; i++) {
@@ -217,12 +263,19 @@ function updateShoppingCart(updateNum) {
     }
 }
 
+/**
+ * Removes the item with the given id from the shoppingcart
+ * @param {number} id 
+ */
 function deleteItem(id) {
     const aktItem = "item_" + id + "Num";
     document.getElementById(aktItem).value = 0;
     updateShoppingCart(true);
 }
 
+/**
+ * Displays the order and its id based on the items in the shoppingcart
+ */
 function showOrder() {
     var htmlList = "";
     var price = 0;
@@ -248,9 +301,9 @@ function showOrder() {
     document.getElementById('buyItems').style.display = "block";
 }
 
-
-
-
+/**
+ * Opens the shoppingcart window if it is currently open. Closes it otherwise
+ */
 function goTo_shoppingCart() {
     if (document.getElementById('shoppingCart').style.display == "flex") {
         document.getElementById('shoppingCart').style.display = "none";
@@ -261,6 +314,9 @@ function goTo_shoppingCart() {
     updateShoppingCart(false);
 }
 
+/**
+ * Resets order form and clears the shoppingcart
+ */
 function cancel_Order() {
     shoppingCart = [];
     updateShoppingCart();
@@ -269,18 +325,22 @@ function cancel_Order() {
     document.getElementById('personalInfoForm').reset();
 }
 
-
-
-function cancelUserInput(){
+/**
+ * Closes the window that is used for collecting user information
+ */
+function cancelUserInput() {
     document.getElementById('personalInformation').style.display = "none";
     document.getElementById('personalInfoForm').reset();
 }
 
-
 let isOrderPending = false;
-var newKunde=null;
-var stop=false;
+var newKunde = null;
+var stop = false;
 
+/**
+ * Creates a new Customer based on the input of the user through the personal information form
+ * @param {event} event 
+ */
 function handleUserData(event) {
     event.preventDefault();
     const firstName = document.getElementById('firstName').value;
@@ -297,8 +357,10 @@ function handleUserData(event) {
     }
 }
 
-
-
+/**
+ * Checks if payment method is set, cancels if not. Opens the personal information window if a year or month ticket is bought.
+ * Continues the order if both are not the case.
+ */
 async function buy_Order() {
     const paymentMethod = document.getElementById('payment-method').value;
     if (paymentMethod === "") {
@@ -318,14 +380,14 @@ async function buy_Order() {
             return;
         }
     }
-    newKunde=null;
+    newKunde = null;
     continueOrder();
 }
 
-
-
+/**
+ * Trys to buy the tems from the shoppingcart. Shows order on screen if succesfull, shows error if not
+ */
 async function continueOrder() {
-    
     var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, newKunde);
     if (result.success[0][0]) {
         document.getElementById('purchaseS').style.display = "flex";
@@ -346,8 +408,10 @@ async function continueOrder() {
     }, 9000);
 }
 
-
-
+/**
+ * Checks if all items form the shoppingcart are in stock
+ * @returns A `bool` that shows whether all items in the shoppingcart are available
+ */
 async function checkIfAvailable() {
     var result = await buyOrCheck("checkAvailableItems", { shoppingCart }, null);
     var boolArray = result.success;
@@ -370,7 +434,13 @@ async function checkIfAvailable() {
 }
 
 
-
+/**
+ * Sends a POST request with the given data to the server and returns the response
+ * @param {String} action 
+ * @param {*} data 
+ * @param {Kunde | null} kunde 
+ * @returns the servers response, `null` if the process failed
+ */
 async function buyOrCheck(action, data, kunde) {
     try {
         const response = await fetch('/shop/buyOrCheck', {
@@ -378,7 +448,7 @@ async function buyOrCheck(action, data, kunde) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ action: action, data: data , kunde: kunde})
+            body: JSON.stringify({ action: action, data: data, kunde: kunde })
         });
 
         if (response.ok) {
@@ -394,7 +464,11 @@ async function buyOrCheck(action, data, kunde) {
     }
 }
 
-
+/**
+ * Gets the snacks from the server based on the set filter, generates the html items and shows them on the screen
+ * @param {String} filter `"drinks"`, `"sweet"` or `"salty"`
+ * @returns the requested data as `json`, `null`if the process failed
+ */
 async function getSnacks(filter) {
     try {
         var response;
@@ -427,6 +501,10 @@ async function getSnacks(filter) {
     }
 }
 
+/**
+ * Creates HTML Items for the given snacks and displays them on the shop screen
+ * @param {*} data the snacks that will be displayed
+ */
 function processSnacks(data) {
     const specialItems = ["Solary Salad", "Venus Vinegar Chips", "Zodiac Sourcreme Chips", "Galaxie Gummi Bears", "Parsec Peanuts"];
     var products = document.querySelector('.products');
@@ -456,7 +534,7 @@ function processSnacks(data) {
                         <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', document.getElementById('size_${snack.ID}').value, '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
-            else{
+            else {
                 tempHTML += `</div>
                         <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', 'Standard', '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
@@ -468,7 +546,11 @@ function processSnacks(data) {
     products.innerHTML = tempHTML;
 }
 
-
+/**
+ * Gets the merch from the server based on the set filter, generates the html items and shows them on the screen
+ * @param {String} filter `"clothing"`, `"accessoires"`, `"householdItem"`, `"stationery"` or `"salty"`
+ * @returns the requested data as `json`, `null`if the process failed
+ */
 async function getMerch(filter) {
     try {
         var response;
@@ -507,6 +589,10 @@ async function getMerch(filter) {
     }
 }
 
+/**
+ * Creates HTML Items for the given merch and displays them on the shop screen
+ * @param {*} data the snacks that will be displayed
+ */
 function processMerch(data) {
     const specialItems = [
         "Solar System Socks", "Marsian Mug", "Milkyway Mug", "Uranus USB Stick",
@@ -540,7 +626,7 @@ function processMerch(data) {
                         <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', document.getElementById('size_${merch.ID}').value, '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
-            else{
+            else {
                 tempHTML += `</div>
                                 <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', 'Standard', '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
                         </div>`;
@@ -551,7 +637,11 @@ function processMerch(data) {
 
     products.innerHTML = tempHTML;
 }
-
+/**
+ * Gets the tickets from the server based on the set filter, generates the html items and shows them on the screen
+ * @param {String} filter `"day"`, `"month"` or `"year"`
+ * @returns the requested data as `json`, `null`if the process failed
+ */
 async function getTicket(filter) {
     try {
         var response;
@@ -584,6 +674,10 @@ async function getTicket(filter) {
     }
 }
 
+/**
+ * Creates HTML Items for the given tickets and displays them on the shop screen
+ * @param {*} data the snacks that will be displayed
+ */
 function processTickets(data) {
     var products = document.querySelector('.products');
     var tempHTML = '';
@@ -606,7 +700,16 @@ function processTickets(data) {
 
     products.innerHTML = tempHTML;
 }
-
+/**
+ * Adds article with the given parameters to the shoppincart and displays info text for .75s
+ * @param {*} id item id
+ * @param {*} type item type
+ * @param {*} beschreibung item description
+ * @param {*} groesse item size
+ * @param {*} preis item price
+ * @param {*} anzahl item amount
+ * @param {*} image item image
+ */
 function add(id, type, beschreibung, groesse, preis, anzahl, image) {
     addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
     document.getElementById('putItemInCard').style.display = "block";
