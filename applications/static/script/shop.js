@@ -80,7 +80,6 @@ function sleepTimer() {
         current_round--;
         const factor = 1 - (current_round / rounds_total);
         const interpolatedColor = interpolateColor(STARTCOLOR, ENDCOLOR, factor);
-        console.log(interpolatedColor)
         document.getElementById("timer").style.color = rgbToHex(interpolatedColor.r, interpolatedColor.g, interpolatedColor.b);
         document.getElementById("timer").innerHTML = current_round
         if (current_round < 0) {
@@ -754,9 +753,8 @@ function eventUpdateTimer(data, time, element) {
                 currentIndex = 0;
             }
             tempHTML += `<div class="ticket_event"> 
-            ${data[currentIndex].DATUM} - ${data[currentIndex].NAME} 
+            ${updateTimestamp(data[currentIndex].DATUM)} - ${data[currentIndex].NAME} 
             </div>`
-            console.log(element, currentIndex)
         }
         element.innerHTML = tempHTML;
     }, time);
@@ -770,9 +768,28 @@ function eventUpdateTimer(data, time, element) {
 function addEvents(data, element) {
     data.forEach(event => {
         element.innerHTML += `<div class="ticket_event"> 
-        ${event.DATUM} - ${event.NAME} 
+        ${updateTimestamp(event.DATUM)} - ${event.NAME} 
         </div>`
     })
+}
+
+/**
+ * Transforms the given timestamp to another format
+ * @param {String} timestamp timestamp in DD Mon YYYY HH:MM:ss TMZ format 
+ * @returns a Timestamp in DD Mon YYYY HH:MM format
+ */
+function updateTimestamp(timestamp) {
+    // Trenne den String am " - ", um den Datum- und Uhrzeitteil zu extrahieren
+    let date_time_part = timestamp.split(' - ')[0];
+
+    // Trenne den Datum- und Uhrzeitteil in seine Bestandteile
+    let parts = date_time_part.split(' ');
+
+    // Setze den relevanten Teil (Datum und Zeit ohne Sekunden und Zeitzone) zusammen
+    let date = parts.slice(0, 4).join(' '); // Thu, 18 Jul 2024
+    let time = parts[4].split(':').slice(0, 2).join(':'); // 15:00
+
+    return `${date} ${time}`;
 }
 
 /**
