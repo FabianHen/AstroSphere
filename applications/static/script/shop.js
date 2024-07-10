@@ -694,6 +694,7 @@ function processTickets(data) {
                     <div>
                         <h2>Events you will have access to:</h2>
                     </div>
+                    <div class="loader"></div>
                 </div>
                 <img src="${ticket.IMAGE_PATH}" alt="${ticket.STUFE} Bild">
             </div>
@@ -766,6 +767,7 @@ function eventUpdateTimer(data, time, element) {
  * @param {*} element The HTML Element that the data will be added to
  */
 function addEvents(data, element) {
+    element.innerHTML = '<div><h2> Events you will have access to:</h2 ></div> '
     data.forEach(event => {
         element.innerHTML += `<div class="ticket_event"> 
         ${updateTimestamp(event.DATUM)} - ${event.NAME} 
