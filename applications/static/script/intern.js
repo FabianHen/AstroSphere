@@ -1062,5 +1062,13 @@ async function closeModal(id) {
 }
 
 async function saveChanges() {
-    //Die Eingaben werden in die Datenbank übertragen
+    const form = document.getElementById('editForm');
+    const formData = new FormData(form);
+
+    let dataObject = {};
+    formData.forEach((value, key) => {
+        dataObject[key] = value;
+    });
+
+    console.log('Gesammelte Daten:', dataObject);
 }
