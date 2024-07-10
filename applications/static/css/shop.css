@@ -120,6 +120,55 @@ button:hover {
     border-radius: 10px;
 }
 
+.tickets {
+    display: none;
+    flex-direction: column;
+    justify-items: center;
+    flex: 1 1 auto;
+    height: 80vh;
+    overflow-y: auto;
+}
+
+.ticket_card {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    height: 50%;
+    padding: 10px;
+    margin: 20px
+}
+
+.ticket_event {
+    margin: auto;
+}
+
+.ticket_column {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    border-right: 1px solid gainsboro;
+    padding-right: 20px;
+}
+
+.pricetag {
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: auto;
+    background: linear-gradient(to left, var(--astrosphere-pink), var(--astrosphere-blue));
+    color: white;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 5px;
+    padding: 5px;
+    padding-right: 15px;
+    height: 10%;
+    margin-bottom: auto;
+}
+
 .product_image {
     background-color: #c9c1c1;
     margin: 2px 2px;
