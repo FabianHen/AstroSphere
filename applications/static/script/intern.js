@@ -12,20 +12,141 @@ function showSection(sectionId) {
 }
 
 // Event-Listener für DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const mediaItem = document.getElementById('mediaGrid');
+    const save_media = document.getElementById('save-media');
     if (mediaItem) {
-        getMedium(mediaItem);
+        await getMedium(mediaItem);
+        let mediaItems = document.querySelectorAll('.media-item');
+        mediaItems.forEach(mediaItem => { 
+            mediaItem.addEventListener('click', function() {
+                if (mediaItem.classList.contains('active')) {
+                    nav_date.classList.remove('disabled');
+                    save_media.disabled = false;
+                }
+                else {
+                    nav_date.classList.add('disabled');
+                    save_media.disabled = true;
+                }
+            });
+        });
     }
+
+    const name = document.getElementById('name');
+    const description = document.getElementById('description');
+    const continue_thema = document.getElementById('continue-thema');
+
+    const nav_thema = document.getElementById('nav-thema');
+    const nav_media = document.getElementById('nav-media');
+    const nav_date = document.getElementById('nav-date');
+    const nav_room = document.getElementById('nav-room');
+
+    // Datum vom Eingabefeld abrufen
+    const dateInput = document.getElementById('eventTime');
+    const date_btn = document.getElementById('date-btn');
+
+    function checkInputs() {
+        // Überprüfe, ob beide Eingabefelder Inhalt haben
+        if (name.value.trim() !== '' && description.value.trim() !== '') {
+            continue_thema.disabled = false;
+            nav_media.classList.remove('disabled');
+
+        } else {
+            continue_thema.disabled = true;
+            nav_media.classList.add('disabled');
+            nav_date.classList.add('disabled');
+            nav_room.classList.add('disabled');
+        }
+    }
+
+    function checkDate() {
+        // Überprüfe, ob beide Eingabefelder Inhalt haben
+        if (dateInput.value.trim() !== '') {
+            date_btn.disabled = false;
+            nav_room.classList.remove('disabled');
+
+        } else {
+            continue_thema.disabled = true;
+            nav_room.classList.add('disabled');
+        }
+    }
+
+    save_media.addEventListener('click', () => {
+        filter('nav-date', 'date');
+        return;
+    });
+
+    date_btn.addEventListener('click', () => {
+        filter('nav-room', 'room')
+        searchForFreeRooms();
+    });
+
+    // Event-Listener für Änderungen in den Eingabefeldern hinzufügen
+    name.addEventListener('input', checkInputs);
+    description.addEventListener('input', checkInputs);
+    dateInput.addEventListener('input', checkDate);
+
+    generateEventTable(true);
 });
+
+async function getEventDetails(eventId) {
+    try {
+        var response = await fetch('/intern/events/allEvents');
+        if (response.ok) {
+            const data = await response.json();
+            console.log(eventId);
+            const event = 1;
+            data.forEach(event => {
+                console.log(event.ID);
+                if (event.ID === eventId) {
+                    showEventDetails(event);
+                }
+            });
+            console.log(event);
+            // showEventDetails(event);
+            return data;
+        }
+        else {
+            throw new Error('Network response was not ok');
+        }
+    } catch (error) {
+        throw new Error('Fehler beim Laden der Daten:', error);
+    }
+}
+
+function showEventDetails(event) {
+    const mainContent = document.getElementById('event-details');
+
+    mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${event.NAME}</h2>
+                            <div class="text-box">
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                                Hier kommt die Beschreibung hin, wenn die Seite fertig ist
+                            </div>
+                            <h3 style="margin: 5px auto 0px 30px;">Details:</h3>
+                            <p style="margin: 5px auto 0px 60px;">ID: ${event.ID}</p>
+                            <p style="margin: 5px auto 0px 60px;">Raum: ${event.RAUM_ID}</p>
+                            <p style="margin: 5px auto 0px 60px;">Datum: ${event.DATUM}</p>
+                            <p style="margin: 5px auto 30px 60px;">Angestellter: default</p>
+                            <h3 style="margin: 5px auto 0px 30px;">Medien:</h3>
+                            <div style="display: flex; justify-content: center; margin-top: 30px">
+                                <table width="100%" id="event-table">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Format</th>
+                                        <th>Typ</th>
+                                    </tr>
+                                </table>
+                            </div>`;
+}
 
 function loadMedia(elem, medien) {
     // Datenbank lesen
-    console.log(medien);
     medien.forEach(medium => {
-        console.log(medium);
         var htmlElem =  "<a href='#' class='media-item' onclick='mediaPressed(this)'>"
-        htmlElem += `<img src="${medium.IMAGE_PATH}" alt='Media 1'>`
+        htmlElem += `<img src="${medium.IMAGE_PATH}" alt="Media 1" width="150" height="150">`
         if(medium.GALAXIE_NAME) {
             htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>"
         }
@@ -55,19 +176,31 @@ function loadMedia(elem, medien) {
     });
 }
 
-function filter(event, sectionId) {
-    event.preventDefault();
+function filter(linkId, sectionId) {
+    // event.preventDefault();
 
     // Alle Navigationslinks deaktivieren
     var navLinks = document.querySelectorAll('.leftComponent a');
     navLinks.forEach(function(link) {
-        link.classList.remove('active');
+        if (link.id !== linkId){
+            link.classList.remove('active');
+        }
+        else {
+            link.classList.add('active');
+        }
     });
 
     // Den geklickten Navigationslink aktivieren
-    event.target.classList.add('active');
+    // event.target.classList.add('active');
 
     showSection(sectionId);
+}
+
+function changeLeftComponent() {
+    const nav_create_event = document.getElementById('nav-create-event');
+    const nav_events = document.getElementById('nav-events');
+    nav_create_event.classList.toggle('disabled');
+    nav_events.classList.toggle('disabled');
 }
 
 async function getMedium(mediaItem) {
@@ -127,21 +260,74 @@ async function getRooms() {
     }
 }
 
-
-function processRooms(data) {
-    var table = document.getElementById("roomTable");
+function processEvents(data, all) {
+    var eventTable = document.getElementById('event-table');
     var tempHTML = `<tr>
-                        <th class="roomName">Bezeichnung</th>
                         <th>Id</th>
-                        <th>Kapazität</th>
-                        <th>Status</th>
+                        <th>Name</th>
+                        <th>Datum</th>
+                        <th>Raum</th>
+                        <th>Action</th>
                     </tr>`;
+    data.forEach(event => {
+        if (all) {
+            tempHTML +=   `<tr>
+                                    <td class="roomName" >${event.ID}</td>
+                                    <td>${event.NAME}</td>
+                                    <td>${event.DATUM}</td>
+                                    <td>${event.RAUM_ID}</td>
+                                    <td><button class"save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">Mehr</button></td>
+                                </tr>`;
+        } else {
+            tempHTML += `<tr>
+                                    <td>${event.ID}</td>
+                                    <td>${event.NAME}</td>
+                                    <td>${event.DATUM}</td>
+                                    <td>${event.RAUM_ID}</td>
+                                    <td><button class"save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">Bearbeiten</button></td>
+                                </tr>`;
+        }
+    });
+
+    eventTable.innerHTML = tempHTML;
+}
+
+
+function processRooms(data, button) {
+    var table = document.getElementById("roomTable");
+
+    if(button) {
+        var tempHTML = `<tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Id</th>
+                            <th>Kapazität</th>
+                            <th>Status</th>
+                            <th>Auswahl</th>
+                        </tr>`;
+    } else {
+        var tempHTML = `<tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Id</th>
+                            <th>Kapazität</th>
+                            <th>Status</th>
+                        </tr>`;
+    }
 
     data.forEach(raum => {
         let status = "frei";
         if (raum.PREIS === null) {
             status = "Abteilungsraum";
         }
+        if(button) {
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITAT}</td>
+                    <td class="${status}">${status}</td>
+                    <td><button class"save-btn" onclick="saveEvent()">Wälen</button></td>
+                </tr>`;
+        } else {
             tempHTML += `
                 <tr>
                     <td class="roomName">${raum.BEZEICHNUNG}</td>
@@ -150,7 +336,7 @@ function processRooms(data) {
                     <td class="${status}">${status}</td>
                 </tr>`;
         }
-    );
+    });
     table.innerHTML = tempHTML;
 }
 
@@ -206,18 +392,29 @@ async function searchRaumByCapacity(){
 
 async function searchForFreeRooms(){
     try {
-        const date = document.getElementById('').value;
-        const response = await fetch('/intern/rooms/search_free_rooms', {
+        // Datum vom Eingabefeld abrufen
+        const dateInput = document.getElementById('eventTime').value;
+
+        // Eingabedatum in ein Date-Objekt konvertieren
+        const date = new Date(dateInput);
+
+        // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
+        const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+            ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+            date.getFullYear();
+
+        // POST-Anfrage mit dem formatierten Datum senden
+        var response = await fetch('/intern/rooms/search_free_rooms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ date: Date})
+            body: JSON.stringify({ date: formattedDate }) // Formatiertes Datum hier verwenden
         });
-
+        
         if (response.ok) {
             const result = await response.json();
-            processRooms(result);
+            processRooms(result, true);
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -243,6 +440,22 @@ function toggleMenu(menuId, link) {
     } else {
         submenu.classList.add('hidden');
         link.classList.remove('selected');
+    }
+}
+
+async function generateEventTable(all){
+    try {
+        var response = await fetch('/intern/events/allEvents');
+        if (response.ok) {
+            const data = await response.json();
+            processEvents(data, all);
+            return data;
+        }
+        else {
+            throw new Error('Network response was not ok');
+        }
+    } catch (error) {
+        throw new Error('Fehler beim Laden der Daten:', error);
     }
 }
 
@@ -283,3 +496,8 @@ function processPlanets(data) {
     table.innerHTML = tempHTML;
 }
 
+
+
+function saveEvent() {
+    console.log("Not implemented")
+}

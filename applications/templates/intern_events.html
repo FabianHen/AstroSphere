@@ -16,25 +16,49 @@
     </header>
 
     <div class= "main">
-        <div class= "leftComponent">
+        <div class= "leftComponent disabled" id="nav-create-event">
             <h2>Neue Veranstaltung anlegen</h2>
-            <h3>Deine Vortrag</h3>
-            <a class="active" href="#" onclick="filter(event, 'topic')">Thema</a>
-            <a href="#" onclick="filter(event, 'media')">Medien</a>
+            <h3>Dein Vortrag</h3>
+            <a class="active" id="nav-thema" href="#" onclick="filter('nav-thema', 'topic')" >Thema</a>
+            <a class="disabled" href="#" id="nav-media" onclick="filter('nav-media', 'media')">Medien</a>
             <h3>Dein Termin</h3>
-            <a href="#" onclick="filter(event, 'date')">Datum & Uhrzeit</a>
-            <a href="#" onclick="filter(event, 'room')">Raum</a>
+            <a class="disabled" href="#" id="nav-date" onclick="filter('nav-date', 'date')">Datum & Uhrzeit</a>
+            <a class="disabled" href="#" id="nav-room" onclick="filter('nav-room', 'room')">Raum</a>
+            <button class="save-btn" id="cancel" onclick="filter('nav-all', 'events-container'), changeLeftComponent()">Abbrechen</button>
+        </div>
+
+        <div class= "leftComponent" id="nav-events">
+            <h2>Anstehende Veranstaltungen</h2>
+            <a class="active" id="nav-all" href="#" onclick="filter('nav-all', 'events-container'), generateEventTable(true)" >Alle Veranstaltungen</a>
+            <a href="#" id="nav-mine" onclick="filter('nav-mine', 'events-container'), generateEventTable(false)">Deine Veranstaltungen</a>
+            <a href="#" id="nav-create" onclick="filter('nav-thema', 'topic'), changeLeftComponent()">Veranstaltung erstellen</a>
         </div>
 
         <div class= "rightComponent">
             <nav class="navigationBar">
                 <a href="#" class="active" onclick="goToEvents()">Veranstaltungen</a>
-                <a href="#" onclick="goToRooms()">Räume</a>
-                <a href="#" onclick="goToPlanets()">Planeten</a>
-                <a href="#" onclick="goToTelescopes()">Teleskope</a>
+                <a href="#" onclick="goToRooms()" >Räume</a>
+                <a href="#" onclick="goToPlanets()" >Planeten</a>
+                <a href="#" onclick="goToTelescopes()" >Teleskope</a>
             </nav>
 
-            <div id="topic" class="mainContent active">
+            <div id="events-container" class="mainContent active" style="overflow-y: scroll;">
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="event-table">
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Datum</th>
+                            <th>Raum</th>
+                            <th>Action</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="event-details" class="mainContent" style="overflow-y: scroll; width: 100%; height:100%">
+                
+            </div>
+            <div id="topic" class="mainContent">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name">
@@ -43,6 +67,7 @@
                     <label for="description">Beschreibung</label>
                     <textarea id="description" name="description" placeholder="In dieser Veranstaltung geht es um..."></textarea>
                 </div>
+                <button class="save-btn" id="continue-thema" onclick="filter('nav-media', 'media')" disabled>Weiter</button>
             </div>
             <div id="media" class="mainContent">
                 <div class="mediaHeader">
@@ -50,7 +75,7 @@
                         <h2>Medien</h2>
                         <p>Wähle die Medien aus, die du für deinen Vortrag benötigst</p>
                     </div>
-                    <button id="speichern">Speichern</button>
+                    <button class="save-btn" id="save-media" disabled>Speichern</button>
                 </div>
                 <div id="mediaGrid" class="media-grid">
                     
@@ -60,7 +85,7 @@
                 <div id="dateInput"> 
                     <label for="eventTime">Wann soll die Veranstaltung stattfinden:</label>
                     <input type="datetime-local" id="eventTime">
-                    <input type="submit">
+                    <button class="save-btn" id="date-btn" disabled>Absenden</button>
                 </div>
             </div>
             <div id="room" class="mainContent">
@@ -69,7 +94,18 @@
                         <h2>Räume</h2>
                         <p>Wähle einen der Verfügbaren Räume aus:</p>
                     </div>
-                    <button id="speichern">Speichern</button>
+                    <button class="save-btn" id="save_rooms" onclick="filter('nav-all', 'events-container'), changeLeftComponent()">Speichern</button>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px">
+                    <table width="90%" id="roomTable">
+                        <tr>
+                            <th class="roomName">Bezeichnung</th>
+                            <th>Id</th>
+                            <th>Kapazität</th>
+                            <th>Status</th>
+                            <th>Auswahl</th>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

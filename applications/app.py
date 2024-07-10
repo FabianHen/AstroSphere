@@ -113,6 +113,21 @@ def get_medien():
     query_result = execute_sql_query_list_of_dicts("SELECT * FROM MEDIUM_VIEW")
     return jsonify(query_result)
 
+@app.route('/intern/events/medium', methods=['POST'])
+def get_medium():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM MEDIUM_VIEW ")
+    return jsonify(query_result)
+
+@app.route('/intern/events/allEvents', methods=['GET'])
+def get_all_events():
+    query_result = execute_sql_query_list_of_dicts("SELECT id, raum_id, name, datum FROM VERANSTALTUNG WHERE datum > current_date")
+    return jsonify(query_result)
+
+@app.route('/intern/events/details', methods=['POST'])
+def get_event_details():
+    query_result = execute_sql_query_list_of_dicts("SELECT id, raum_id, name, datum FROM VERANSTALTUNG")
+    return jsonify(query_result)
+
 @app.route('/intern/rooms')
 def intern_rooms():
     return render_template('intern_rooms.html')

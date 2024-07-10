@@ -75,6 +75,14 @@ header {
     border-right: 1px solid black;
 }
 
+.leftComponent.disabled {
+    display: none;
+    flex-direction: column;
+    width: 15%;
+    height: 100%;
+    border-right: 1px solid black;
+}
+
 .leftComponent h2 {
     margin-top: 20%;
     margin-left: 5px;
@@ -94,7 +102,7 @@ header {
     align-items: center;
     padding: 10px;
     text-decoration: none;
-    color: #bbb;
+    color: gray;
     margin-bottom: 10px;
 }
 
@@ -106,6 +114,14 @@ header {
     background-color: #ddd;
     color: #000;
     font-weight: bold;
+}
+
+/* Stil für deaktivierte Links */
+.leftComponent a.disabled {
+    color: #bbb;
+    pointer-events: none;
+    cursor: not-allowed;
+    text-decoration: none;
 }
 
 /* Navigation Bar + Main Content */
@@ -218,13 +234,20 @@ header {
     margin: 0;
 }
 
-#speichern {
+.save-btn {
     border-radius: 5px;
     background: linear-gradient(to right, var(--pink), var(--purple));
     color: white;
     padding: 10px;
     font-size: 12px;
     margin: auto;
+}
+
+/* Stil für den deaktivierten Button */
+.save-btn:disabled {
+    background-color: grey;
+    color: darkgray;
+    cursor: not-allowed;
 }
 
 /* Class for active text elements  */
@@ -319,4 +342,16 @@ td {
 .selected {
     color: black;
     font-weight: bold;
+}
+
+.text-box {
+    border: 2px solid black;
+    padding: 20px;
+    width: 60%;
+    margin: 0px auto 0px auto;
+    text-align: center;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
 }
