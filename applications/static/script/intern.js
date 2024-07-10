@@ -750,7 +750,6 @@ function processComets(data) {
     table.innerHTML = tempHTML;
 }
 
-
 function saveEvent() {
     console.log("Not implemented")
 }
