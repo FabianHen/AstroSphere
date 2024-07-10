@@ -537,7 +537,7 @@ function processPlanetsystems(data) {
                     <td>${planetsystem.NAME}</td>
                     <td>${planetsystem.ID}</td>
                     <td>${planetsystem.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planetsystem).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
@@ -800,4 +800,21 @@ async function searchTelescopeByName(){
         console.error('Error:', error);
         return null;
     }
+}
+
+async function openModal(id, object) {
+    var modal = document.getElementById(id);
+    modal.style.display = "block";
+    if(id === "editObject") {
+        modal.querySelector("#bezeichnung").value = object.NAME;
+        modal.querySelector("#id").value = object.ID;
+        modal.querySelector("#informationen").value = object.INFORMATIONEN;
+    }
+
+}
+
+async function closeModal(id) {
+    var modal = document.getElementById(id);
+    modal.style.display = "none";
+
 }

@@ -43,7 +43,7 @@
             </div>
             <div id="planetensysteme" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" class="button round" onclick="">Planetensystem hinzufügen</button>
+                    <button type="button" class="button round" onclick="openModal('addObject')">Planetensystem hinzufügen</button>
                     <input type="text" id="searchPlanetensystemBezeichnungInput" name="searchPlanetensystemBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="searchPlanetensystemByBezeichnung()">Planetensystem suchen</button>
                 </div>
@@ -126,6 +126,37 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="addObject" class="modal">
+        <div class="modal-content">
+            <button type="button" class="button round" onclick="closeModal('addObject')">x</button>
+            <h2>Object hinzufügen</h2>
+            <form id="editForm">
+                <label for="bezeichnung">Bezeichnung</label>
+                <input type="text" id="bezeichnung" name="bezeichnung"><br><br>
+                <label for="id">ID</label>
+                <input type="text" id="id" name="id"><br><br>
+                <label for="informationen">Informationen</label>
+                <input type="text" id="informationen" name="informationen"><br><br>
+                <button type="button" class="button round" onclick="">Speichern</button>
+            </form>
+        </div>
+    </div>
+    <div id="editObject" class="modal">
+        <div class="modal-content">
+            <button type="button" class="button round" onclick="closeModal('editObject')">x</button>
+            <h2>Object Bearbeiten</h2>
+            <form id="editForm">
+                <label for="bezeichnung">Bezeichnung</label>
+                <input type="text" id="bezeichnung" name="bezeichnung"><br><br>
+                <label for="id">ID</label>
+                <input type="text" id="id" name="id"><br><br>
+                <label for="informationen">Informationen</label>
+                <input type="text" id="informationen" name="informationen"><br><br>
+                <button type="button" class="button round" onclick="">Speichern</button>
+            </form>
         </div>
     </div>
 </body>
