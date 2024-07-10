@@ -878,34 +878,50 @@ GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
 ORDER BY RAUM.id;
 
 -- View zur Anzeige der Planetensysteme
-CREATE VIEW PLANETENSYSTEME AS
-SELECT PLANETENSYSTEM.id, PLANETENSYSTEM.galaxie_id, PLANETENSYSTEM.name, PLANETENSYSTEM.informationen
-FROM PLANETENSYSTEM
-ORDER BY PLANETENSYSTEM.id;
+CREATE OR REPLACE VIEW PLANETENSYSTEME AS
+SELECT 
+    id, galaxie_id, name, informationen
+FROM 
+    PLANETENSYSTEM
+ORDER BY 
+    id;
 
 -- View zur Anzeige der Planeten
-CREATE VIEW PLANETEN AS
-SELECT PLANET.id, PLANET.planetensystem_id, PLANET.zentrumsplanet_id, PLANET.name, PLANET.durchmesser_km, PLANET.masse_kg, PLANET.umlaufzeit_tage, PLANET.temperatur_celsius, PLANET.fallbeschleunigung, PLANET.informationen
-FROM PLANET
-ORDER BY PLANET.id;
+CREATE OR REPLACE VIEW PLANETEN AS
+SELECT 
+    id, planetensystem_id, zentrumsplanet_id, name, durchmesser_km, masse_kg, umlaufzeit_tage, temperatur_celsius, fallbeschleunigung, informationen
+FROM 
+    PLANET
+ORDER BY 
+    id;
 
 -- View zur Anzeige der Sternenbilder
-CREATE VIEW STERNENBILDER AS
-SELECT STERNENBILD.id, STERNENBILD.name, STERNENBILD.anzahl_sterne, STERNENBILD.informationen
-FROM STERNENBILD
-ORDER BY STERNENBILD.id;
+CREATE OR REPLACE VIEW STERNENBILDER AS
+SELECT 
+    id, name, anzahl_sterne, informationen
+FROM 
+    STERNENBILD
+ORDER BY 
+    id;
 
 -- View zur Anzeige der Sterne
-CREATE VIEW STERNE AS
-SELECT STERN.id, STERN.sternenbild_id, STERN.planetensystem_id, STERN.name, STERN.typ, STERN.durchmesser_km, STERN.masse_kg, STERN.entfernung_lj, STERN.informationen
-FROM STERN
-ORDER BY STERN.id;
+CREATE OR REPLACE VIEW STERNE AS
+SELECT 
+    id, sternenbild_id, planetensystem_id, name, typ, durchmesser_km, masse_kg, entfernung_lj, informationen
+FROM 
+    STERN
+ORDER BY 
+    id;
 
 -- View zur Anzeige der Kometen
-CREATE VIEW KOMETEN AS
-SELECT KOMET.id, KOMET.galaxie_id, KOMET.name, KOMET.durchmesser_km, KOMET.masse_kg, KOMET.umlaufzeit_lj, KOMET.informationen
-FROM KOMET
-ORDER BY KOMET.id;
+CREATE OR REPLACE VIEW KOMETEN AS
+SELECT 
+    id, galaxie_id, name, durchmesser_km, masse_kg, umlaufzeit_j, informationen
+FROM 
+    KOMET
+ORDER BY 
+    id;
+
 
 -- View zur Anzeige des aktuellen Bestands der Snacks
   CREATE OR REPLACE FORCE EDITIONABLE VIEW "ASTROSPHERE"."BESTAENDE_SNACK" ("SNACK_ID", "BESTAND") AS 
@@ -964,34 +980,36 @@ ORDER BY
     mi.id;
 
 -- View zur Anzeige der Medien 
-CREATE VIEW MEDIUM_VIEW AS
+CREATE OR REPLACE VIEW MEDIUM_VIEW AS
 SELECT 
-    MEDIUM.id
-    galaxie.name AS galaxie_name, 
-    planet.name AS planet_name, 
-    planetensystem.name AS planetensystem_name, 
-    nebel.name AS nebel_name, 
-    stern.name AS stern_name, 
-    sternenbild.name AS sternenbild_name, 
-    komet.name AS komet_name, 
-    MEDIUM.FORMAT, 
-    MEDIUM.TYP,
+    MEDIUM.id,
+    GALAXIE.name AS galaxie_name, 
+    PLANET.name AS planet_name, 
+    PLANETENSYSTEM.name AS planetensystem_name, 
+    NEBEL.name AS nebel_name, 
+    STERN.name AS stern_name, 
+    STERNENBILD.name AS sternenbild_name, 
+    KOMET.name AS komet_name, 
+    MEDIUM.format, 
+    MEDIUM.typ,
     MEDIUM.image_path
-FROM MEDIUM
-LEFT JOIN GALAXIE 
-ON MEDIUM.GALAXIE_ID = GALAXIE.ID
-LEFT JOIN PLANET 
-ON MEDIUM.PLANET_ID = PLANET.ID
-LEFT JOIN PLANETENSYSTEM 
-ON MEDIUM.PLANETENSYSTEM_ID = PLANETENSYSTEM.ID
-LEFT JOIN NEBEL 
-ON MEDIUM.NEBEL_ID = NEBEL.ID
-LEFT JOIN STERN 
-ON MEDIUM.STERN_ID = STERN.ID
-LEFT JOIN STERNENBILD 
-ON MEDIUM.STERNENBILD_ID = STERNENBILD.ID
-LEFT JOIN KOMET 
-ON MEDIUM.KOMET_ID = KOMET.ID;
+FROM 
+    MEDIUM
+LEFT JOIN 
+    GALAXIE ON MEDIUM.galaxie_id = GALAXIE.id
+LEFT JOIN 
+    PLANET ON MEDIUM.planet_id = PLANET.id
+LEFT JOIN 
+    PLANETENSYSTEM ON MEDIUM.planetensystem_id = PLANETENSYSTEM.id
+LEFT JOIN 
+    NEBEL ON MEDIUM.nebel_id = NEBEL.id
+LEFT JOIN 
+    STERN ON MEDIUM.stern_id = STERN.id
+LEFT JOIN 
+    STERNENBILD ON MEDIUM.sternenbild_id = STERNENBILD.id
+LEFT JOIN 
+    KOMET ON MEDIUM.komet_id = KOMET.id;
+
 
 
 
