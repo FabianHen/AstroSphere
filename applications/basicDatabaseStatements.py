@@ -1267,16 +1267,17 @@ EXCEPTION
 END SUCHE_RAUM_KAPAZITAET;
 /
 
-create or replace PROCEDURE GET_FREIE_RAUME_DATUM (
+CREATE OR REPLACE PROCEDURE GET_FREIE_RAUME_DATUM (
    p_datum IN VERMIETUNG_RAUM.datum%TYPE,
    p_result OUT SYS_REFCURSOR
 ) AS 
 BEGIN
    OPEN p_result FOR
    SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
-   FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
+   FROM RAUM 
+   LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
    WHERE RAUM.miet_preis IS NOT NULL 
-     AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < p_veranstaltung_datum
+     AND (VERMIETUNG_RAUM.datum IS NULL OR (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < p_datum)
    GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
    ORDER BY RAUM.id;
 EXCEPTION
@@ -1292,21 +1293,24 @@ END GET_FREIE_RAUME_DATUM;
 
 -- Stored Procedure zum Suchen aller Medien einer Veranstaltung
 CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
-    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE;
+    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE,
+    p_result OUT SYS_REFCURSOR
 ) AS
 BEGIN
-    SELECT MEDIUM.* 
-    FROM MEDIUM
-    JOIN VERANSTALTUNG_MEDIUM
-    ON MEDIUM.id = VERANSTALTUNG_MEDIUM.medium_id
-    WHERE VERANSTALTUNG_MEDIUM.veranstaltung_id = p_veranstaltung_id;
+    OPEN p_result FOR
+        SELECT MEDIUM.*
+        FROM MEDIUM
+        JOIN VERANSTALTUNG_MEDIUM
+        ON MEDIUM.id = VERANSTALTUNG_MEDIUM.medium_id
+        WHERE VERANSTALTUNG_MEDIUM.veranstaltung_id = p_veranstaltung_id;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-END VERKAUFEN_MERCH;
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Abrufen der Medium-Details.');
+END VERANSTALTUNG_MEDIUM_DETAILS;
 /
+
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
@@ -1332,26 +1336,27 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-END VERKAUFEN_MERCH;
+END BUCHE_VERANSTALTUNG;
 /
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
-    p_veranstaltung_id in VERANSTALTUNG.id%TYPE,
-    p_medium_id in MEDIUM.id%TYPE,
+    p_veranstaltung_id IN VERANSTALTUNG.id%TYPE,
+    p_medium_id IN MEDIUM.id%TYPE
 ) AS
 BEGIN
-    INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM(veranstaltung_id, medium_id) VALUES
-    (p_veranstaltung_id, p_medium_id);
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
+    VALUES (p_veranstaltung_id, p_medium_id);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-END VERKAUFEN_MERCH;
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen des Mediums für die Veranstaltung.');
+END BUCHE_VERANSTALTUNG_MEDIUM;
 /
+
 """
 
 sql_configuration="""

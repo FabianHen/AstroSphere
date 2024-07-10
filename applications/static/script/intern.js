@@ -567,7 +567,7 @@ function processPlanetsystems(data) {
                     <td>${planetsystem.NAME}</td>
                     <td>${planetsystem.ID}</td>
                     <td>${planetsystem.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planetsystem).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
@@ -631,7 +631,7 @@ function processPlanets(data) {
                     <td>${planet.NAME}</td>
                     <td>${planet.ID}</td>
                     <td>${planet.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planet).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
@@ -670,7 +670,7 @@ function processStarimages(data) {
                     <td>${starimage.NAME}</td>
                     <td>${starimage.ID}</td>
                     <td>${starimage.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(starimage).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
@@ -709,7 +709,7 @@ function processStars(data) {
                     <td>${star.NAME}</td>
                     <td>${star.ID}</td>
                     <td>${star.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(star).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
@@ -748,7 +748,7 @@ function processComets(data) {
                     <td>${comet.NAME}</td>
                     <td>${comet.ID}</td>
                     <td>${comet.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(comet).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
@@ -846,4 +846,28 @@ async function searchTelescopeByName(){
         console.error('Error:', error);
         return null;
     }
+}
+
+async function openModal(id, object) {
+    var modal = document.getElementById(id);
+    modal.style.display = "block";
+    if(id === "editObject") {
+        modal.querySelector("#bezeichnung").value = object.NAME;
+        modal.querySelector("#id").value = object.ID;
+        modal.querySelector("#informationen").value = object.INFORMATIONEN;
+    }
+    
+    if(id === "addObject") {
+        //object wird Objektart die angelegt wird
+    }
+}
+
+async function closeModal(id) {
+    var modal = document.getElementById(id);
+    modal.style.display = "none";
+
+}
+
+async function saveChanges() {
+
 }
