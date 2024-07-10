@@ -1230,6 +1230,77 @@ EXCEPTION
 END SUCHE_PLANETENSYSTEM_BEZEICHNUNG;
 /
 
+-- Stored Procedure zur Suche von Planeten nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_PLANET_BEZEICHNUNG (
+    p_planet_name IN PLANET.NAME%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM PLANET 
+    WHERE NAME LIKE '%' || p_planet_name || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Planet Name nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_PLANET_BEZEICHNUNG;
+/
+
+-- Stored Procedure zur Suche von Sternenbildern nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_STERNENBILD_BEZEICHNUNG (
+    p_sternenbild_name IN STERNENBILD.NAME%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM STERNENBILD 
+    WHERE NAME LIKE '%' || p_sternenbild_name || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Sternenbild Name nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_STERNENBILD_BEZEICHNUNG;
+/
+
+-- Stored Procedure zur Suche von Sternen nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_STERN_BEZEICHNUNG (
+    p_stern_name IN STERN.NAME%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM STERN
+    WHERE NAME LIKE '%' || p_stern_name || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Stern Name nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_STERN_BEZEICHNUNG;
+/
+
+-- Stored Procedure zur Suche von Kometen nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_KOMET_BEZEICHNUNG (
+    p_komet_name IN KOMET.NAME%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM KOMET
+    WHERE NAME LIKE '%' || p_komet_name || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Komet Name nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_KOMET_BEZEICHNUNG;
+/
 
 -- Stored Procedure zur Suche von Teleskopen nach Bezeichnung
 create or replace PROCEDURE SUCHE_TELESKOP_BEZEICHNUNG (

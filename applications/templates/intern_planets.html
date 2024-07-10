@@ -59,7 +59,7 @@
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
                     <button type="button" class="button round" onclick="openModal('addObject')">Planet hinzufügen</button>
                     <input type="text" id="searchPlanetBezeichnungInput" name="searchPlanetBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
-                    <button type="button" onclick="">Planet suchen</button>
+                    <button type="button" onclick="searchPlanetenByBezeichnung()">Planet suchen</button>
                 </div>
                 <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll;">
                     <table width="90%" id="planetTable">
@@ -132,8 +132,6 @@
             <form id="editForm">
                 <label for="bezeichnung">Bezeichnung</label>
                 <input type="text" id="bezeichnung" name="bezeichnung"><br><br>
-                <label for="id">ID</label>
-                <input type="text" id="id" name="id"><br><br>
                 <label for="informationen">Informationen</label>
                 <input type="text" id="informationen" name="informationen"><br><br>
                 <button type="button" class="button round" onclick="saveChanges()">Speichern</button>
@@ -147,8 +145,6 @@
             <form id="editForm">
                 <label for="bezeichnung">Bezeichnung</label>
                 <input type="text" id="bezeichnung" name="bezeichnung"><br><br>
-                <label for="id">ID</label>
-                <input type="text" id="id" name="id"><br><br>
                 <label for="informationen">Informationen</label>
                 <input type="text" id="informationen" name="informationen"><br><br>
                 <button type="button" class="button round" onclick="saveChanges()">Speichern</button>

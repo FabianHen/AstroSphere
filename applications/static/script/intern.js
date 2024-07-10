@@ -633,6 +633,31 @@ function processPlanets(data) {
     table.innerHTML = tempHTML;
 }
 
+async function searchPlanetByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchPlanetBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_planet_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processPlanets(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
 async function getStarimages() {
     try {
         response = await fetch("/intern/planets/starimagelist");
@@ -670,6 +695,31 @@ function processStarimages(data) {
         }
     );
     table.innerHTML = tempHTML;
+}
+
+async function searchSternenbildByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchSternenbildBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_starimage_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processStarimages(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function getStars() {
@@ -711,6 +761,31 @@ function processStars(data) {
     table.innerHTML = tempHTML;
 }
 
+async function searchSternByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchSternBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_star_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processStars(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
 async function getComets() {
     try {
         response = await fetch("/intern/planets/cometlist");
@@ -748,6 +823,31 @@ function processComets(data) {
         }
     );
     table.innerHTML = tempHTML;
+}
+
+async function searchKometByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchKometBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_comet_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processComets(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 function saveEvent() {
@@ -840,7 +940,6 @@ async function openModal(id, object) {
     modal.style.display = "block";
     if(id === "editObject") {
         modal.querySelector("#bezeichnung").value = object.NAME;
-        modal.querySelector("#id").value = object.ID;
         modal.querySelector("#informationen").value = object.INFORMATIONEN;
     }
     

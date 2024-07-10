@@ -223,11 +223,31 @@ def intern_planetlist():
     print(query_result)
     return jsonify(query_result)
 
+@app.route('/intern/planets/search_planet_bezeichnung', methods=['POST'])
+def get_planet_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_PLANET_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
 @app.route('/intern/planets/starimagelist', methods=['GET'])
 def intern_starimagelist():
     query_result=execute_sql_query("Select * from sternenbilder")
     print(query_result)
     return jsonify(query_result)
+
+@app.route('/intern/planets/search_starimage_bezeichnung', methods=['POST'])
+def get_starimage_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_STERNENBILD_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
 
 @app.route('/intern/planets/starlist', methods=['GET'])
 def intern_starlist():
@@ -235,11 +255,31 @@ def intern_starlist():
     print(query_result)
     return jsonify(query_result)
 
+@app.route('/intern/planets/search_star_bezeichnung', methods=['POST'])
+def get_star_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_STERN_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
 @app.route('/intern/planets/cometlist', methods=['GET'])
 def intern_cometlist():
     query_result=execute_sql_query("Select * from kometen")
     print(query_result)
     return jsonify(query_result)
+
+@app.route('/intern/planets/search_comet_bezeichnung', methods=['POST'])
+def get_comet_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_KOMET_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
 
 @app.route('/intern/telescopes')
 def intern_telescopes():
