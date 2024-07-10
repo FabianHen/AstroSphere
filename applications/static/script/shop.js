@@ -13,11 +13,19 @@ function goBack() {
 }
 
 /**
- * Collapses the given filter if its already unfolded. Switches to a display of all items of this filter and unfolds further filters if not
- * @param {*} filter the filter that has been clicked (`"snack_filter"`, `"merch_filter"` or `"ticket_filter"`)
+ * Collapses the given filter if its already unfolded. Switches to a display of all items of this filter and unfolds further filters if not.
+ * Shows all tickets if filter is ticket_filter
+ * @param {*} filter the filter that has been clicked (`"snack_filter"`, `"ticket_filter"`  or `"merch_filter"`)
  */
 function collapseFilter(filter) {
     if (filter) {
+        clearInterval(event_day_timer)
+        clearInterval(event_month_timer)
+        clearInterval(event_year_timer)
+        if (filter == 'ticket_filter') {
+            getTickets();
+            return;
+        }
         let content = document.getElementById(filter);
         if (content) {
             if (content.style.display == 'flex') {
@@ -33,9 +41,6 @@ function collapseFilter(filter) {
                         break;
                     case 'merch_filter':
                         getMerch('all');
-                        break;
-                    case 'ticket_filter':
-                        getTicket('all');
                         break;
                     default:
                         break;
@@ -75,7 +80,6 @@ function sleepTimer() {
         current_round--;
         const factor = 1 - (current_round / rounds_total);
         const interpolatedColor = interpolateColor(STARTCOLOR, ENDCOLOR, factor);
-        console.log(interpolatedColor)
         document.getElementById("timer").style.color = rgbToHex(interpolatedColor.r, interpolatedColor.g, interpolatedColor.b);
         document.getElementById("timer").innerHTML = current_round
         if (current_round < 0) {
@@ -509,7 +513,8 @@ function processSnacks(data) {
     const specialItems = ["Solary Salad", "Venus Vinegar Chips", "Zodiac Sourcreme Chips", "Galaxie Gummi Bears", "Parsec Peanuts"];
     var products = document.querySelector('.products');
     var tempHTML = '';
-
+    products.style.display = "grid";
+    document.querySelector('.tickets').style.display = "none";
     products.innerHTML = '';
 
     data.forEach(snack => {
@@ -601,6 +606,8 @@ function processMerch(data) {
     ];
     var products = document.querySelector('.products');
     var tempHTML = '';
+    products.style.display = "grid";
+    document.querySelector('.tickets').style.display = "none";
 
     products.innerHTML = '';
 
@@ -638,28 +645,12 @@ function processMerch(data) {
     products.innerHTML = tempHTML;
 }
 /**
- * Gets the tickets from the server based on the set filter, generates the html items and shows them on the screen
- * @param {String} filter `"day"`, `"month"` or `"year"`
+ * Gets the tickets from the server, generates the html items and shows them on the screen
  * @returns the requested data as `json`, `null`if the process failed
  */
-async function getTicket(filter) {
+async function getTickets() {
     try {
-        var response;
-        switch (filter) {
-            case "day":
-                response = await fetch("/terminal/shop/tickets/day");
-                break;
-            case "month":
-                response = await fetch("/terminal/shop/tickets/month");
-                break;
-            case "year":
-                response = await fetch("/terminal/shop/tickets/year");
-                break;
-            default:
-                response = await fetch("/terminal/shop/tickets");
-                break;
-        }
-
+        var response = await fetch("/terminal/shop/tickets");
         if (response.ok) {
             const data = await response.json();
             processTickets(data)
@@ -679,27 +670,162 @@ async function getTicket(filter) {
  * @param {*} data the snacks that will be displayed
  */
 function processTickets(data) {
+
     var products = document.querySelector('.products');
     var tempHTML = '';
-
+    var tickets = document.querySelector('.tickets')
+    tickets.style.display = "flex"
+    products.style.display = "none";
     products.innerHTML = '';
 
     data.forEach(ticket => {
         if (!tempHTML.includes(ticket.STUFE)) {
             tempHTML += `
-                <div class="product_card">
-                    <img class="product_image" src="${ticket.IMAGE_PATH}" alt="${ticket.STUFE} Bild" width="150" height="150">
-                    <label class="product_name" for="">${ticket.STUFE}</label>
+            <div class="ticket_card">
+                <div class="pricetag">${ticket.PREIS}€</div>
+                <div class="ticket_column">
+                    <h1>${ticket.STUFE}</h1>
+                    <h2>This ticket allows you to visit all events in the next ${ticket.ZEITRAUM} day(s)</h2>
+                    <p>Note that tickets are handed out at the register when showing your receit like other products.
+                    </p>
+                    <button type="button" style="margin-top: auto" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.PREIS}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
+                </div>
+                <div class="ticket_column" id="${ticket.STUFE}_events">
                     <div>
-                        <label class="product_price" for="">${ticket.PREIS} €</label>
+                        <h2>Events you will have access to:</h2>
                     </div>
-                    <button type="button" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.PREIS}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
-                </div>`;
+                </div>
+                <img src="${ticket.IMAGE_PATH}" alt="${ticket.STUFE} Bild">
+            </div>
+            `
         }
     });
-
-    products.innerHTML = tempHTML;
+    tickets.innerHTML = tempHTML;
+    setEventInfo()
 }
+
+var event_day_timer;
+var event_month_timer;
+var event_year_timer;
+
+/**
+ * Sets the Information about events for the tickets. Starts intervals if there are more than 5 events
+ */
+async function setEventInfo() {
+    const display_day = document.getElementById("Tag_events")
+    const display_month = document.getElementById("Monat_events")
+    const display_year = document.getElementById("Jahr_events")
+    const events_day = await getEvents("tag")
+    const events_month = await getEvents("monat")
+    const events_year = await getEvents("jahr")
+
+    addEvents(events_day.slice(0, 5), display_day)
+    if (events_day.length > 5) {
+        event_day_timer = eventUpdateTimer(events_day, 8000, display_day)
+    }
+
+    addEvents(events_month.slice(0, 5), display_month)
+    if (events_month.length > 5) {
+        event_month_timer = eventUpdateTimer(events_month, 4000, display_month)
+    }
+
+    addEvents(events_year.slice(0, 5), display_year);
+    if (events_year.length > 5) {
+        event_year_timer = eventUpdateTimer(events_year, 2000, display_year);
+    }
+}
+
+/**
+ * Sets a interval that updates the content of the ticket events in
+ * @param {*} data the events that are displayed
+ * @param {Number} time the update rate 
+ * @param {*} element the html element that contains the events
+ * @returns the id of the set interval neccessary for clearing it later
+ */
+function eventUpdateTimer(data, time, element) {
+    currentIndex = 0;
+    return setInterval(function () {
+        let tempHTML = "";
+        tempHTML += '<div><h2> Events you will have access to:</h2 ></div> '
+        for (let i = 0; i < 5; i++) {
+            currentIndex += 1;
+            if (currentIndex >= data.length) {
+                currentIndex = 0;
+            }
+            tempHTML += `<div class="ticket_event"> 
+            ${updateTimestamp(data[currentIndex].DATUM)} - ${data[currentIndex].NAME} 
+            </div>`
+        }
+        element.innerHTML = tempHTML;
+    }, time);
+}
+
+/**
+ * Adds all of the eventdata to the given element
+ * @param {*} data The event data that will be shown 
+ * @param {*} element The HTML Element that the data will be added to
+ */
+function addEvents(data, element) {
+    data.forEach(event => {
+        element.innerHTML += `<div class="ticket_event"> 
+        ${updateTimestamp(event.DATUM)} - ${event.NAME} 
+        </div>`
+    })
+}
+
+/**
+ * Transforms the given timestamp to another format
+ * @param {String} timestamp timestamp in DD Mon YYYY HH:MM:ss TMZ format 
+ * @returns a Timestamp in DD Mon YYYY HH:MM format
+ */
+function updateTimestamp(timestamp) {
+    // Trenne den String am " - ", um den Datum- und Uhrzeitteil zu extrahieren
+    let date_time_part = timestamp.split(' - ')[0];
+
+    // Trenne den Datum- und Uhrzeitteil in seine Bestandteile
+    let parts = date_time_part.split(' ');
+
+    // Setze den relevanten Teil (Datum und Zeit ohne Sekunden und Zeitzone) zusammen
+    let date = parts.slice(0, 4).join(' '); // Thu, 18 Jul 2024
+    let time = parts[4].split(':').slice(0, 2).join(':'); // 15:00
+
+    return `${date} ${time}`;
+}
+
+/**
+ * Gets the events from the server based on the set filter, generates the html items and shows them on the screen
+ * @param {String} filter `"tag"`, `"monat"` or `"jahr"`
+ * @returns the requested data as `json`, `null`if the process failed
+ */
+async function getEvents(filter) {
+    try {
+        var response;
+        switch (filter) {
+            case "tag":
+                response = await fetch("/terminal/shop/events/day");
+                break;
+            case "monat":
+                response = await fetch("/terminal/shop/events/month");
+                break;
+            case "jahr":
+                response = await fetch("/terminal/shop/events/year");
+                break;
+            default:
+                break;
+        }
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
 /**
  * Adds article with the given parameters to the shoppincart and displays info text for .75s
  * @param {*} id item id

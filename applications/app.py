@@ -88,21 +88,18 @@ def get_tickets():
     query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE")
     return jsonify(query_result)
 
-@app.route('/terminal/shop/tickets/day', methods=['GET'])
-def get_ticket_day():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Tag'")
-    return jsonify(query_result)
+@app.route('/terminal/shop/events/day', methods=['GET'])
+def get_events_day():
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG_TAG ")
+     
+@app.route('/terminal/shop/events/month', methods=['GET'])
+def get_events_month():
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG_MONAT ")
+   
 
-@app.route('/terminal/shop/tickets/month', methods=['GET'])
-def get_ticket_month():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Monat'")
-    return jsonify(query_result)
-
-@app.route('/terminal/shop/tickets/year', methods=['GET'])
-def get_ticket_year():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TICKETSTUFE WHERE TICKETSTUFE.stufe = 'Jahr'")
-    return jsonify(query_result)
-
+@app.route('/terminal/shop/events/year', methods=['GET'])
+def get_events_year():
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG_JAHR ")
 
 @app.route('/intern/events')
 def intern_events():
