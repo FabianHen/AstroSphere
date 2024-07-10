@@ -130,6 +130,11 @@ def intern_rooms():
 
 @app.route('/intern/rooms/roomlist', methods=['GET'])
 def intern_roomlist():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM RAUM")
+    return jsonify(query_result)
+
+@app.route('/intern/rooms/freeRooms', methods=['GET'])
+def intern_free_rooms():
     query_result = execute_sql_query_list_of_dicts("SELECT * FROM FREIE_RAEUME")
     return jsonify(query_result)
 
@@ -175,6 +180,11 @@ def intern_planetlist():
 @app.route('/intern/telescopes')
 def intern_telescopes():
     return render_template('intern_telescopes.html')
+
+@app.route('/intern/telescopes/telescopeList', methods=['GET'])
+def telescope_list():
+    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TELESKOP")
+    return jsonify(query_result)
 
 @app.route('/back_to_home')
 def back_to_home():

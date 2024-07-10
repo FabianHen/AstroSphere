@@ -16,7 +16,7 @@
     </header>
 
     <div class= "main">
-        <div class= "leftComponent">
+        <div class= "leftComponent" id="nav-telescopes">
             <h2>Teleskope buchen</h2>
         </div>
 
@@ -28,9 +28,28 @@
                 <a href="#" class="active" onclick="goToTelescopes()">Teleskope</a>
             </nav>
 
-            <div id="raeume" class="mainContent active">
+            <div id="telescopes" class="mainContent active">
                 <h2>Teleskope</h2>
-                <p>Informationen zu den Teleskopen...</p>
+                <div style="display: flex; padding: 5px; justify-content: space-around">
+                    <form>
+                    <label style="font-size: 10px">Suche Teleskope nach Bezeichnung
+                        <br/>
+                        <input type="text" id="searchRaumBezeichnungInput" name="searchRaumBezeichnungInput"></input>
+                    </label>
+                        <button type="button" onclick="searchRaumByBezeichnung()">Suchen</button>
+                    </form>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll; height: 400px;">
+                <table width="90%" id="telescopesTable">
+                    <tr>
+                        <th class="roomName">Name</th>
+                        <th>Id</th>
+                        <th>Typ</th>
+                        <th>Beschreibung</th>
+                    </tr>
+                </table>
+                </div>
+            </div>
             </div>
         </div>
     </div>
