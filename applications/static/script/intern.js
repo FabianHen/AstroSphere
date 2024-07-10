@@ -106,18 +106,24 @@ async function initEventsPage() {
     description.addEventListener('input', checkInputs);
     dateInput.addEventListener('input', checkDate);
 
-    generateEventTable(true);
+    generateEventTable(true, true);
 }
 
 async function getEventDetails(eventId) {
     try {
         var response = await fetch('/intern/events/allEvents');
-        if (response.ok) {
+        var responseMedia = await fetch('/intern/events/medium', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: eventId})
+        });
+        if (response.ok && responseMedia.ok) {
             const data = await response.json();
-            const event = 1;
             data.forEach(event => {
                 if (event.ID === eventId) {
-                    showEventDetails(event);
+                    showEventDetails(event, responseMedia);
                 }
             });
             // showEventDetails(event);
@@ -131,7 +137,7 @@ async function getEventDetails(eventId) {
     }
 }
 
-function showEventDetails(event) {
+function showEventDetails(event, media) {
     const mainContent = document.getElementById('event-details');
 
     mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${event.NAME}</h2>
@@ -142,7 +148,7 @@ function showEventDetails(event) {
                             <p style="margin: 5px auto 0px 60px;">ID: ${event.ID}</p>
                             <p style="margin: 5px auto 0px 60px;">Raum: ${event.RAUM_ID}</p>
                             <p style="margin: 5px auto 0px 60px;">Datum: ${event.DATUM}</p>
-            
+                            
                             <h3 style="margin: 5px auto 0px 30px;">Medien:</h3>
                             <div style="display: flex; justify-content: center; margin-top: 30px">
                                 <table width="100%" id="media-table">
@@ -153,6 +159,14 @@ function showEventDetails(event) {
                                     </tr>
                                 </table>
                             </div>`;
+    
+    media.forEach(medium => {
+        mainContent.innerHTML += `<tr>
+                                    <td>${medium.ID}</td>
+                                    <td>${medium.FORMAT}</td>
+                                    <td>${medium.TYP}</td>
+                                </tr>`;
+    });
 }
 
 function loadMedia(elem, medien) {
@@ -489,13 +503,24 @@ function toggleMenu(menuId, link) {
     }
 }
 
-async function generateEventTable(all){
+async function generateEventTable(fromAll, all){
     try {
-        var response = await fetch('/intern/events/allEvents');
+        if (fromAll) {
+            var response = await fetch('/intern/events/allEvents');
+        } else {
+            var response = await fetch('/intern/events/mineEvents');
+        }
         if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            processEvents(data, all);
+            var data = await response.json();
+            if (!all) {
+                data = data.filter(event => {
+                    console.log(event)
+                    var currentDate = new Date();
+                    var eventDate = new Date(event.DATUM);
+                    return eventDate >= currentDate;
+                })
+            }
+            processEvents(data, fromAll);
             return data;
         }
         else {

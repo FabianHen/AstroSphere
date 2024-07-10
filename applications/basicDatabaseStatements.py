@@ -1247,7 +1247,7 @@ END GET_FREIE_RAUME_DATUM;
 
 
 
--- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+-- Stored Procedure zum Suchen aller Medien einer Veranstaltung
 CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
     p_veranstaltung_id IN VERANSTALTUNG.id%TYPE;
 ) AS
@@ -1281,7 +1281,7 @@ BEGIN
     SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
 
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
-    (veranstaltung_id, 1);
+    (veranstaltung_id, 2);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
@@ -1293,7 +1293,7 @@ END VERKAUFEN_MERCH;
 /
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
-CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
+CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
     p_veranstaltung_id in VERANSTALTUNG.id%TYPE,
     p_medium_id in MEDIUM.id%TYPE,
 ) AS
