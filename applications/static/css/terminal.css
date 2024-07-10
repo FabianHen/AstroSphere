@@ -16,7 +16,10 @@ body {
 }
 
 header {
+    display: flex;
+    flex-direction: row;
     padding-top: 5px;
+    align-items: start;
 }
 
 #advertisement {
@@ -35,7 +38,7 @@ header {
 #adImage {
     height: 98%;
     object-fit: contain;
-    animation: dynamic 7s infinite ;
+    animation: dynamic 7s infinite;
 }
 
 #startText {
@@ -45,16 +48,18 @@ header {
     color: white;
     font-size: 25px;
     opacity: 0.8;
-    animation: blink 2s infinite ;
+    animation: blink 2s infinite;
 }
 
 @keyframes blink {
     0% {
         opacity: 0.5;
     }
+
     50% {
         opacity: 0.8;
     }
+
     100% {
         opacity: 0.5;
     }
@@ -64,18 +69,37 @@ header {
     0% {
         opacity: 0;
     }
-    10%{
+
+    10% {
         opacity: 1;
     }
-    80%{
+
+    80% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
 }
 
+#questionmark {
+    outline: none;
+    align-items: center;
+    background: linear-gradient(to left, var(--astrosphere-pink), var(--astrosphere-blue));
+    border-radius: 3px;
+    border: none;
+    font-weight: bold;
+    aspect-ratio: 1/1;
+    margin-left: auto
+}
 
+#questionmark_icon {
+    margin-top: auto;
+    width: 90%;
+    height: 90%;
+    color: white;
+}
 
 button {
     background: linear-gradient(to left, var(--astrosphere-pink), var(--astrosphere-blue));
@@ -111,6 +135,14 @@ button:hover {
     margin-right: 2.5%;
     padding: 5px;
     padding-bottom: 20px;
+    background: linear-gradient(to right, var(--astrosphere-pink), var(--astrosphere-blue));
+    border-radius: 10%;
+    color: white;
+}
+
+#questionmark {
+    padding: 0;
+    width: 50px;
     background: linear-gradient(to right, var(--astrosphere-pink), var(--astrosphere-blue));
     border-radius: 10%;
     color: white;

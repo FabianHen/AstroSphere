@@ -6,7 +6,11 @@ function goToShop(element) {
     window.location.href += `/shop?selected=${element}`;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+function goToDirections() {
+    window.location.href += `/directions`;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
     var advertisement = document.getElementById("advertisement");
     var adImage = document.getElementById("adImage");
     var imageSources = [
@@ -23,15 +27,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function startInterval() {
-        intervalId = setInterval(function() {
+        intervalId = setInterval(function () {
             showNextImage();
-            advertisement.style.display="flex";
+            advertisement.style.display = "flex";
         }, 7000);
     }
 
     document.addEventListener("click", reset);
-    function reset(){
-        advertisement.style.display="none";
+    function reset() {
+        advertisement.style.display = "none";
         clearInterval(intervalId);
         setTimeout(startInterval, 15000);
     }

@@ -16,6 +16,10 @@ def terminal():
 def shop():
     return render_template('shop.html')
 
+@app.route('/terminal/directions')
+def directions():
+    return render_template('directions.html')
+
 @app.route('/terminal/shop/snacks', methods=['GET'])
 def get_snacks():
     query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse "+
