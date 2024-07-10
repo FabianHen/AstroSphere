@@ -178,6 +178,12 @@ def intern_planetlist():
     print(query_result)
     return jsonify(query_result)
 
+@app.route('/intern/planets/planetsystemlist', methods=['GET'])
+def intern_planetsystemlist():
+    query_result=execute_sql_query("Select * from planetensysteme")
+    print(query_result)
+    return jsonify(query_result)
+
 @app.route('/intern/telescopes')
 def intern_telescopes():
     return render_template('intern_telescopes.html')

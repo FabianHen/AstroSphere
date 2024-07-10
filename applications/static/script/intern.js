@@ -505,6 +505,45 @@ async function generateEventTable(all){
     }
 }
 
+async function getPlanetsystems() {
+    try {
+        response = await fetch("/intern/planets/planetsystemlist");
+        if (response.ok) {
+            const data = await response.json();
+            processPlanetsystems(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processPlanetsystems(data) {
+    var table = document.getElementById("planetsystemTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(planetsystem => {
+        tempHTML += `
+                <tr>
+                    <td>${planetsystem.NAME}</td>
+                    <td>${planetsystem.ID}</td>
+                    <td>${planetsystem.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
 async function getPlanets() {
     try {
         response = await fetch("/intern/planets/planetlist");
@@ -525,7 +564,7 @@ async function getPlanets() {
 function processPlanets(data) {
     var table = document.getElementById("planetTable");
     var tempHTML = `<tr>
-                        <th class="roomName">Bezeichnung</th>
+                        <th>Bezeichnung</th>
                         <th>ID</th>
                         <th>Informationen</th>
                         <th>Action</th>
@@ -534,7 +573,7 @@ function processPlanets(data) {
     data.forEach(planet => {
         tempHTML += `
                 <tr>
-                    <td class="roomName">${planet.BEZEICHNUNG}</td>
+                    <td>${planet.NAME}</td>
                     <td>${planet.ID}</td>
                     <td>${planet.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="">Edit</button></td>
