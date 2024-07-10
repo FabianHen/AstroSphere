@@ -121,9 +121,10 @@ async function getEventDetails(eventId) {
         });
         if (response.ok && responseMedia.ok) {
             const data = await response.json();
+            const mediaData = await responseMedia.json();
             data.forEach(event => {
                 if (event.ID === eventId) {
-                    showEventDetails(event, responseMedia);
+                    showEventDetails(event, mediaData);
                 }
             });
             // showEventDetails(event);
@@ -160,8 +161,10 @@ function showEventDetails(event, media) {
                                 </table>
                             </div>`;
     
+    var table = document.getElementById('media-table');
+
     media.forEach(medium => {
-        mainContent.innerHTML += `<tr>
+        table.innerHTML += `<tr>
                                     <td>${medium.ID}</td>
                                     <td>${medium.FORMAT}</td>
                                     <td>${medium.TYP}</td>
