@@ -879,31 +879,31 @@ ORDER BY RAUM.id;
 
 -- View zur Anzeige der Planetensysteme
 CREATE VIEW PLANETENSYSTEME AS
-SELECT PLANETENSYSTEM.id, PLANETENSYSTEM.name, PLANETENSYSTEM.informationen
+SELECT PLANETENSYSTEM.id, PLANETENSYSTEM.galaxie_id, PLANETENSYSTEM.name, PLANETENSYSTEM.informationen
 FROM PLANETENSYSTEM
 ORDER BY PLANETENSYSTEM.id;
 
 -- View zur Anzeige der Planeten
 CREATE VIEW PLANETEN AS
-SELECT PLANET.id, PLANET.name, PLANET.informationen
+SELECT PLANET.id, PLANET.planetensystem_id, PLANET.zentrumsplanet_id, PLANET.name, PLANET.durchmesser_km, PLANET.masse_kg, PLANET.umlaufzeit_tage, PLANET.temperatur_celsius, PLANET.fallbeschleunigung, PLANET.informationen
 FROM PLANET
 ORDER BY PLANET.id;
 
 -- View zur Anzeige der Sternenbilder
 CREATE VIEW STERNENBILDER AS
-SELECT STERNENBILD.id, STERNENBILD.name, STERNENBILD.informationen
+SELECT STERNENBILD.id, STERNENBILD.name, STERNENBILD.anzahl_sterne, STERNENBILD.informationen
 FROM STERNENBILD
 ORDER BY STERNENBILD.id;
 
 -- View zur Anzeige der Sterne
 CREATE VIEW STERNE AS
-SELECT STERN.id, STERN.name, STERN.informationen
+SELECT STERN.id, STERN.sternenbild_id, STERN.planetensystem_id, STERN.name, STERN.typ, STERN.durchmesser_km, STERN.masse_kg, STERN.entfernung_lj, STERN.informationen
 FROM STERN
 ORDER BY STERN.id;
 
 -- View zur Anzeige der Kometen
 CREATE VIEW KOMETEN AS
-SELECT KOMET.id, KOMET.name, KOMET.informationen
+SELECT KOMET.id, KOMET.galaxie_id, KOMET.name, KOMET.durchmesser_km, KOMET.masse_kg, KOMET.umlaufzeit_lj, KOMET.informationen
 FROM KOMET
 ORDER BY KOMET.id;
 
@@ -1185,12 +1185,6 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
 END VERKAUFEN_TICKET;
 /
-
-
-
-
-
-
 
 
 

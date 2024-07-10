@@ -550,8 +550,8 @@ async function getPlanetsystems() {
 function processPlanetsystems(data) {
     var table = document.getElementById("planetsystemTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -559,8 +559,8 @@ function processPlanetsystems(data) {
     data.forEach(planetsystem => {
         tempHTML += `
                 <tr>
-                    <td>${planetsystem.NAME}</td>
                     <td>${planetsystem.ID}</td>
+                    <td>${planetsystem.NAME}</td>
                     <td>${planetsystem.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planetsystem).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
@@ -614,8 +614,8 @@ async function getPlanets() {
 function processPlanets(data) {
     var table = document.getElementById("planetTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -623,8 +623,8 @@ function processPlanets(data) {
     data.forEach(planet => {
         tempHTML += `
                 <tr>
-                    <td>${planet.NAME}</td>
                     <td>${planet.ID}</td>
+                    <td>${planet.NAME}</td>
                     <td>${planet.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planet).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
@@ -678,8 +678,8 @@ async function getStarimages() {
 function processStarimages(data) {
     var table = document.getElementById("starimageTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -687,8 +687,8 @@ function processStarimages(data) {
     data.forEach(starimage => {
         tempHTML += `
                 <tr>
-                    <td>${starimage.NAME}</td>
                     <td>${starimage.ID}</td>
+                    <td>${starimage.NAME}</td>
                     <td>${starimage.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(starimage).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
@@ -742,8 +742,8 @@ async function getStars() {
 function processStars(data) {
     var table = document.getElementById("starTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -751,8 +751,8 @@ function processStars(data) {
     data.forEach(star => {
         tempHTML += `
                 <tr>
-                    <td>${star.NAME}</td>
                     <td>${star.ID}</td>
+                    <td>${star.NAME}</td>
                     <td>${star.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(star).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
@@ -806,8 +806,8 @@ async function getComets() {
 function processComets(data) {
     var table = document.getElementById("cometTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -815,8 +815,8 @@ function processComets(data) {
     data.forEach(comet => {
         tempHTML += `
                 <tr>
-                    <td>${comet.NAME}</td>
                     <td>${comet.ID}</td>
+                    <td>${comet.NAME}</td>
                     <td>${comet.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(comet).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
@@ -938,14 +938,121 @@ async function searchTelescopeByName(){
 async function openModal(id, object) {
     var modal = document.getElementById(id);
     modal.style.display = "block";
+    const form = modal.querySelector("#editForm");
+    form.innerHTML = '';
+
     if(id === "editObject") {
-        modal.querySelector("#bezeichnung").value = object.NAME;
-        modal.querySelector("#informationen").value = object.INFORMATIONEN;
+        for (const key in object) {
+            if (object.hasOwnProperty(key)) {
+                const label = document.createElement('label');
+                label.setAttribute('for', key);
+                label.textContent = key + ' ';
+
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('id', key);
+                input.setAttribute('name', key);
+                input.value = object[key];
+
+                form.appendChild(label);
+                form.appendChild(input);
+                form.appendChild(document.createElement('br'));
+                form.appendChild(document.createElement('br'));
+            }
+        }
+
+        modal.style.display = "block";
     }
     
     if(id === "addObject") {
-        //object wird Objektart die angelegt wird
+        switch (object) {
+            case 'Planetensystem':
+                try {
+                    const data = await getPlanetsystems();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No planet systems found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching planetsystems:', error);
+                }
+                break;
+            case 'Planet':
+                try {
+                    const data = await getPlanets();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No planets found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching planets:', error);
+                }
+                break;
+            case 'Sternenbild':
+                try {
+                    const data = await getStarimages();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No starimages found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching starimages:', error);
+                }
+                break;
+            case 'Stern':
+                try {
+                    const data = await getStars();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No stars found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching stars:', error);
+                }
+                break;
+            case 'Komet':
+                try {
+                    const data = await getComets();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No comets found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching comets:', error);
+                }
+                break;
+            default:
+                const label = document.createElement('label');
+                label.textContent = 'Default';
+                form.appendChild(label);
+          }
     }
+}
+
+function generateModal(data, form){
+    const fetched_object = data[0];
+        for (const key in fetched_object) {
+            if (fetched_object.hasOwnProperty(key)) {
+                const label = document.createElement('label');
+                label.setAttribute('for', key);
+                label.textContent = key + ' ';
+
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('id', key);
+                input.setAttribute('name', key);
+
+                form.appendChild(label);
+                form.appendChild(input);
+                form.appendChild(document.createElement('br'));
+                form.appendChild(document.createElement('br'));
+            }
+        }
 }
 
 async function closeModal(id) {
