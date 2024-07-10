@@ -877,11 +877,35 @@ WHERE RAUM.miet_preis IS NOT NULL AND (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.d
 GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
 ORDER BY RAUM.id;
 
+-- View zur Anzeige der Planetensysteme
+CREATE VIEW PLANETENSYSTEME AS
+SELECT PLANETENSYSTEM.id, PLANETENSYSTEM.name, PLANETENSYSTEM.informationen
+FROM PLANETENSYSTEM
+ORDER BY PLANETENSYSTEM.id;
+
 -- View zur Anzeige der Planeten
 CREATE VIEW PLANETEN AS
 SELECT PLANET.id, PLANET.name, PLANET.informationen
 FROM PLANET
 ORDER BY PLANET.id;
+
+-- View zur Anzeige der Sternenbilder
+CREATE VIEW STERNENBILDER AS
+SELECT STERNENBILD.id, STERNENBILD.name, STERNENBILD.informationen
+FROM STERNENBILD
+ORDER BY STERNENBILD.id;
+
+-- View zur Anzeige der Sterne
+CREATE VIEW STERNE AS
+SELECT STERN.id, STERN.name, STERN.informationen
+FROM STERN
+ORDER BY STERN.id;
+
+-- View zur Anzeige der Kometen
+CREATE VIEW KOMETEN AS
+SELECT KOMET.id, KOMET.name, KOMET.informationen
+FROM KOMET
+ORDER BY KOMET.id;
 
 -- View zur Anzeige des aktuellen Bestands der Snacks
 CREATE OR REPLACE VIEW BESTAENDE_SNACK AS
@@ -1187,6 +1211,25 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
 END SUCHE_RAUM_BEZEICHNUNG;
 /
+
+-- Stored Procedure zur Suche von Planetensystemen nach Bezeichnung
+CREATE OR REPLACE PROCEDURE SUCHE_PLANETENSYSTEM_BEZEICHNUNG (
+    p_planetensystem_name IN PLANETENSYSTEM.NAME%TYPE,
+    p_result OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * 
+    FROM PLANETENSYSTEM 
+    WHERE NAME LIKE '%' || p_planetensystem_name || '%';
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Planetensystem Name nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Suchen.');
+END SUCHE_PLANETENSYSTEM_BEZEICHNUNG;
+/
+
 
 -- Stored Procedure zur Suche von Teleskopen nach Bezeichnung
 create or replace PROCEDURE SUCHE_TELESKOP_BEZEICHNUNG (

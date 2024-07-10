@@ -197,9 +197,43 @@ def get_room_by_date():
 def intern_planets():
     return render_template('intern_planets.html')
 
+@app.route('/intern/planets/planetsystemlist', methods=['GET'])
+def intern_planetsystemlist():
+    query_result=execute_sql_query("Select * from planetensysteme")
+    print(query_result)
+    return jsonify(query_result)
+
+@app.route('/intern/rooms/search_planetsystem_bezeichnung', methods=['POST'])
+def get_planetsystem_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_PLANETENSYSTEM_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
 @app.route('/intern/planets/planetlist', methods=['GET'])
 def intern_planetlist():
     query_result=execute_sql_query("Select * from planeten")
+    print(query_result)
+    return jsonify(query_result)
+
+@app.route('/intern/planets/starimagelist', methods=['GET'])
+def intern_starimagelist():
+    query_result=execute_sql_query("Select * from sternenbilder")
+    print(query_result)
+    return jsonify(query_result)
+
+@app.route('/intern/planets/starlist', methods=['GET'])
+def intern_starlist():
+    query_result=execute_sql_query("Select * from sterne")
+    print(query_result)
+    return jsonify(query_result)
+
+@app.route('/intern/planets/cometlist', methods=['GET'])
+def intern_cometlist():
+    query_result=execute_sql_query("Select * from kometen")
     print(query_result)
     return jsonify(query_result)
 

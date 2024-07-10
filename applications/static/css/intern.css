@@ -273,6 +273,11 @@ button {
     border-top-right-radius: 8px;
 }
 
+.round {
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
 input {
     border-color: var(--inputPink);
     background-color: var(--inputPink);

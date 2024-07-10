@@ -531,6 +531,70 @@ async function generateEventTable(fromAll, all){
     }
 }
 
+async function getPlanetsystems() {
+    try {
+        response = await fetch("/intern/planets/planetsystemlist");
+        if (response.ok) {
+            const data = await response.json();
+            processPlanetsystems(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processPlanetsystems(data) {
+    var table = document.getElementById("planetsystemTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(planetsystem => {
+        tempHTML += `
+                <tr>
+                    <td>${planetsystem.NAME}</td>
+                    <td>${planetsystem.ID}</td>
+                    <td>${planetsystem.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function searchPlanetensystemByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchPlanetensystemBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_planetsystem_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processPlanetsystems(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
 async function getPlanets() {
     try {
         response = await fetch("/intern/planets/planetlist");
@@ -551,7 +615,7 @@ async function getPlanets() {
 function processPlanets(data) {
     var table = document.getElementById("planetTable");
     var tempHTML = `<tr>
-                        <th class="roomName">Bezeichnung</th>
+                        <th>Bezeichnung</th>
                         <th>ID</th>
                         <th>Informationen</th>
                         <th>Action</th>
@@ -560,7 +624,7 @@ function processPlanets(data) {
     data.forEach(planet => {
         tempHTML += `
                 <tr>
-                    <td class="roomName">${planet.BEZEICHNUNG}</td>
+                    <td>${planet.NAME}</td>
                     <td>${planet.ID}</td>
                     <td>${planet.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="">Edit</button></td>
@@ -570,6 +634,122 @@ function processPlanets(data) {
     table.innerHTML = tempHTML;
 }
 
+async function getStarimages() {
+    try {
+        response = await fetch("/intern/planets/starimagelist");
+        if (response.ok) {
+            const data = await response.json();
+            processStarimages(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processStarimages(data) {
+    var table = document.getElementById("starimageTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(starimage => {
+        tempHTML += `
+                <tr>
+                    <td>${starimage.NAME}</td>
+                    <td>${starimage.ID}</td>
+                    <td>${starimage.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function getStars() {
+    try {
+        response = await fetch("/intern/planets/starlist");
+        if (response.ok) {
+            const data = await response.json();
+            processStars(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processStars(data) {
+    var table = document.getElementById("starTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(star => {
+        tempHTML += `
+                <tr>
+                    <td>${star.NAME}</td>
+                    <td>${star.ID}</td>
+                    <td>${star.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
+
+async function getComets() {
+    try {
+        response = await fetch("/intern/planets/cometlist");
+        if (response.ok) {
+            const data = await response.json();
+            processComets(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processComets(data) {
+    var table = document.getElementById("cometTable");
+    var tempHTML = `<tr>
+                        <th>Bezeichnung</th>
+                        <th>ID</th>
+                        <th>Informationen</th>
+                        <th>Action</th>
+                    </tr>`;
+
+    data.forEach(comet => {
+        tempHTML += `
+                <tr>
+                    <td>${comet.NAME}</td>
+                    <td>${comet.ID}</td>
+                    <td>${comet.INFORMATIONEN}</td>
+                    <td><button class"save-btn" onclick="">Edit</button></td>
+                </tr>`;
+        }
+    );
+    table.innerHTML = tempHTML;
+}
 
 
 function saveEvent() {

@@ -20,14 +20,14 @@
             <h2>Planeten Daten</h2>
             <ul class="menu">
                 <li>
-                    <a href="#" onclick="toggleMenu('planetensystemeSubmenu', this, 'kometenSubmenu'), filter(event, 'planetensysteme')">Planetensysteme</a>
+                    <a href="#" onclick="toggleMenu('planetensystemeSubmenu', this, 'kometenSubmenu'), filter(event, 'planetensysteme'), getPlanetsystems()">Planetensysteme</a>
                     <ul id="planetensystemeSubmenu" class="submenu hidden">
                         <li><a href="#" onclick="filter(event, 'planeten'), getPlanets()">Planeten</a></li>
-                        <li><a href="#"onclick="filter(event, 'sternenbilder')">Sternenbilder</a></li>
-                        <li><a href="#"onclick="filter(event, 'sterne')">Sterne</a></li>
+                        <li><a href="#"onclick="filter(event, 'sternenbilder'), getStarimages()">Sternenbilder</a></li>
+                        <li><a href="#"onclick="filter(event, 'sterne'), getStars()">Sterne</a></li>
                     </ul>
                 </li>
-                <li><a href="#" onclick="filter(event, 'kometen')">Kometen</a></li>
+                <li><a href="#" onclick="filter(event, 'kometen'), getComets()">Kometen</a></li>
             </ul>
         </div>
 
@@ -38,18 +38,20 @@
                 <a href="#" class="active" onclick="goToPlanets()">Planeten</a>
                 <a href="#" onclick="goToTelescopes()">Teleskope</a>
             </nav>
-            <div id="planetensysteme" class="mainContent active">
+            <div id="main" class="mainContent active">
+                <!-- Erster Main Content beim laden der Seite -->
+            </div>
+            <div id="planetensysteme" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" onclick="">Planetensystem hinzufügen</button>
+                    <button type="button" class="button round" onclick="">Planetensystem hinzufügen</button>
                     <input type="text" id="searchPlanetensystemBezeichnungInput" name="searchPlanetensystemBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
-                    <button type="button" onclick="">Planetensystem suchen</button>
-                    
+                    <button type="button" onclick="searchPlanetensystemByBezeichnung()">Planetensystem suchen</button>
                 </div>
-                <div style="display: flex; justify-content: center; margin-top: 30px">
-                    <table width="90%" id="planetensystemTable">
+                <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll;">
+                    <table width="90%" id="planetsystemTable">
                         <tr>
-                            <th class="roomName">Bezeichnung</th>
-                            <th>Name</th>
+                            <th>Bezeichnung</th>
+                            <th>ID</th>
                             <th>Informationen</th>
                             <th>Action</th>
                         </tr>
@@ -58,16 +60,15 @@
             </div>
             <div id="planeten" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" onclick="showLogInPage()">Planet hinzufügen</button>
+                    <button type="button" class="button round" onclick="">Planet hinzufügen</button>
                     <input type="text" id="searchPlanetBezeichnungInput" name="searchPlanetBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Planet suchen</button>
-                    
                 </div>
-                <div style="display: flex; justify-content: center; margin-top: 30px">
+                <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll;">
                     <table width="90%" id="planetTable">
                         <tr>
-                            <th class="roomName">Bezeichnung</th>
-                            <th>Name</th>
+                            <th>Bezeichnung</th>
+                            <th>ID</th>
                             <th>Informationen</th>
                             <th>Action</th>
                         </tr>
@@ -76,15 +77,15 @@
             </div>
             <div id="sternenbilder" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" onclick="">Sternenbild hinzufügen</button>
+                    <button type="button" class="button round" onclick="">Sternenbild hinzufügen</button>
                     <input type="text" id="searchSternenbildBezeichnungInput" name="searchSternenbildBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Sternenbild suchen</button>
                 </div>
-                <div style="display: flex; justify-content: center; margin-top: 30px">
-                    <table width="90%" id="starTable">
+                <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll;">
+                    <table width="90%" id="starimageTable">
                         <tr>
-                            <th class="roomName">Bezeichnung</th>
-                            <th>Name</th>
+                            <th>Bezeichnung</th>
+                            <th>ID</th>
                             <th>Informationen</th>
                             <th>Action</th>
                         </tr>
@@ -93,16 +94,15 @@
             </div>
             <div id="sterne" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" onclick="">Stern hinzufügen</button>
+                    <button type="button" class="button round" onclick="">Stern hinzufügen</button>
                     <input type="text" id="searchSternBezeichnungInput" name="searchSternBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Stern suchen</button>
-                    
                 </div>
-                <div style="display: flex; justify-content: center; margin-top: 30px">
-                    <table width="90%" id="sternTable">
+                <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll;">
+                    <table width="90%" id="starTable">
                         <tr>
-                            <th class="roomName">Bezeichnung</th>
-                            <th>Name</th>
+                            <th>Bezeichnung</th>
+                            <th>ID</th>
                             <th>Informationen</th>
                             <th>Action</th>
                         </tr>
@@ -111,15 +111,15 @@
             </div>
             <div id="kometen" class="mainContent">
                 <div style="display: flex; justify-content: left; margin-left: 30px; margin-top: 30px">
-                    <button type="button" onclick="">Komet hinzufügen</button>
+                    <button type="button" class="button round" onclick="">Komet hinzufügen</button>
                     <input type="text" id="searchKometBezeichnungInput" name="searchKometBezeichnungInput" style="margin-left: 30px;" placeholder="Bezeichnung..."></input>
                     <button type="button" onclick="">Komet suchen</button>
                 </div>
-                <div style="display: flex; justify-content: center; margin-top: 30px">
+                <div style="display: flex; justify-content: center; margin-top: 30px; overflow-y: scroll;">
                     <table width="90%" id="cometTable">
                         <tr>
-                            <th class="roomName">Bezeichnung</th>
-                            <th>Name</th>
+                            <th>Bezeichnung</th>
+                            <th>ID</th>
                             <th>Informationen</th>
                             <th>Action</th>
                         </tr>
