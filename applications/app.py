@@ -207,7 +207,7 @@ def intern_planetsystemlist():
     print(query_result)
     return jsonify(query_result)
 
-@app.route('/intern/rooms/search_planetsystem_bezeichnung', methods=['POST'])
+@app.route('/intern/planets/search_planetsystem_bezeichnung', methods=['POST'])
 def get_planetsystem_by_bezeichnung():
     try:
         bezeichnung = request.json.get('bezeichnung')
