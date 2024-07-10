@@ -849,5 +849,5 @@ async function closeModal(id) {
 }
 
 async function saveChanges() {
-
+    //Die Eingaben werden in die Datenbank übertragen
 }
