@@ -426,7 +426,8 @@ async function searchForFreeRooms(){
         });
         
         if (response.ok) {
-            const result = await response.json();
+            const result = await response.json()
+            console.log(result);
             processRooms(result, true);
             return result;
         } else {

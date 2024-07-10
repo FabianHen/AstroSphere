@@ -117,12 +117,11 @@ def get_medium():
 
 @app.route('/intern/events/allEvents', methods=['GET'])
 def get_all_events():
-    query_result = execute_sql_query_list_of_dicts("SELECT id, raum_id, name, datum FROM VERANSTALTUNG WHERE datum > current_date")
-    return jsonify(query_result)
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
 
 @app.route('/intern/events/details', methods=['POST'])
 def get_event_details():
-    return execute_sql_query2("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
+    return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
 
 @app.route('/intern/rooms')
 def intern_rooms():
@@ -147,8 +146,8 @@ def get_room_by_capacity():
 @app.route('/intern/rooms/search_room_bezeichnung', methods=['POST'])
 def get_room_by_bezeichnung():
     try:
-        bezecihnung = request.json.get('bezeichnung')
-        procedure_result = execute_procedure_list_of_dicts("SUCHE_RAUM_BEZEICHNUNG", bezecihnung)
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_RAUM_BEZEICHNUNG", bezeichnung)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
