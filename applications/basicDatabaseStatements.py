@@ -1541,6 +1541,26 @@ BEGIN
 END insert_into_planetensystem;
 /
 
+CREATE OR REPLACE PROCEDURE update_into_planetensystem(
+    p_planetensystem_id IN NUMBER,
+    p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.PLANETENSYSTEM
+    SET GALAXIE_ID = p_galaxie_id,
+        NAME = p_name,
+        INFORMATIONEN = p_informationen
+    WHERE PLANETENSYSTEM_ID = p_planetensystem_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20001, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_planetensystem;
+/
 
 
 CREATE OR REPLACE PROCEDURE insert_into_planet(
