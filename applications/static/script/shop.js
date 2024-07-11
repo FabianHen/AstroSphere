@@ -493,7 +493,11 @@ async function getSnacks(filter) {
 
         if (response.ok) {
             const data = await response.json();
-            processSnacks(data)
+            if (filter.includes('size')) {
+                processSizeChange(data, filter, document.getElementById(filter).value)
+            } else {
+                processSnacks(data)
+            }
             return data;
         } else {
             console.error('Server error:', response.status);
@@ -528,7 +532,7 @@ function processSnacks(data) {
                       `
             if (!specialItems.includes(snack.BEZEICHNUNG)) {
                 tempHTML += `
-                            <select class="product_size" name="Size" id="size_${snack.ID}">
+                            <select class="product_size" name="Size" id="size_${snack.ID}" onchange="getSnacks(this.id)">
                             <optgroup label="Size">
                                 <option value="M">M</option>
                                 <option value="L">L</option>
@@ -549,6 +553,30 @@ function processSnacks(data) {
     });
 
     products.innerHTML = tempHTML;
+}
+
+
+/**
+ * Overrides HTML Item for the given snack/merch and displays it on the shop screen
+ * @param {*} data all the snacks/merch that are displayed on the shop screen
+ * @param {*} sizeID the snack/merch ID of the snack/merch card with the changed size 
+ * @param {*} size the new size that is selected
+ */
+function processSizeChange(data, sizeID, size) {
+    var product_card = document.getElementById(sizeID).parentElement.parentElement;
+    var bezeichnung = product_card.querySelector('.product_name').innerHTML;
+    data.forEach(article => {
+        if(article.BEZEICHNUNG == bezeichnung && article.GROESSE == size){
+            console.log(article.ID, article.BEZEICHNUNG, article.GROESSE)
+            product_card.querySelector('.product_image').setAttribute('src', `${article.IMAGE_PATH}`);
+            product_card.querySelector('.product_image').setAttribute('alt', `${article.BEZEICHNUNG}`);
+            product_card.querySelector('.product_name').innerHTML = `${article.BEZEICHNUNG}`;
+            product_card.querySelector('.product_price').innerHTML = `${article.VERKAUF_PREIS_STK}`;
+            product_card.querySelector('.product_size').id = `size_${article.ID}`;
+            product_card.querySelector('.product_size').value = `${article.GROESSE}`;
+            product_card.querySelector('button').setAttribute('onclick',`add('${article.ID}', '${article.BEZEICHNUNG}', '${article.BESCHREIBUNG}', document.getElementById('size_${article.ID}').value, '${article.VERKAUF_PREIS_STK}', 1, '${article.IMAGE_PATH}')`);
+        }
+    });
 }
 
 /**
@@ -582,7 +610,11 @@ async function getMerch(filter) {
 
         if (response.ok) {
             const data = await response.json();
-            processMerch(data)
+            if (filter.includes('size')) {
+                processSizeChange(data, filter, document.getElementById(filter).value)
+            } else {
+                processMerch(data)
+            }
             return data;
         } else {
             console.error('Server error:', response.status);

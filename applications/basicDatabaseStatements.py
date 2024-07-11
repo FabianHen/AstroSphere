@@ -1493,6 +1493,32 @@ END GET_FREIE_RAUME_DATUM;
 
 
 
+
+CREATE OR REPLACE PROCEDURE Get_Free_Event_Rooms (
+    p_start_time IN DATE,
+    p_end_time OUT DATE,
+    p_available_rooms OUT SYS_REFCURSOR
+) AS
+BEGIN
+    -- Berechne die Endzeit basierend auf der Startzeit
+    p_end_time := p_start_time + INTERVAL '1' HOUR;
+
+    -- Öffne einen Cursor für die verfügbaren Räume
+    OPEN p_available_rooms FOR
+        SELECT r.id, r.kapazitat, r.miet_preis, r.abteilung_id, r.bezeichnung
+        FROM Raum r
+        LEFT JOIN (
+            SELECT raum_id
+            FROM Veranstaltung
+            WHERE datum BETWEEN p_start_time AND p_end_time
+        ) v ON r.id = v.raum_id
+        WHERE v.raum_id IS NULL AND r.abteilung_id = 5;
+END;
+
+
+
+
+
 -- Stored Procedure zum Suchen aller Medien einer Veranstaltung
 CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
     p_veranstaltung_id IN VERANSTALTUNG.id%TYPE,
@@ -1744,6 +1770,26 @@ BEGIN
 END insert_into_sternenbild;
 /
 
+CREATE OR REPLACE PROCEDURE update_into_sternenbild(
+    p_sternenbild_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_anzahl_sterne IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.STERNENBILD
+    SET NAME = p_name,
+        ANZAHL_STERNE = p_anzahl_sterne,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_sternenbild_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20004, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_sternenbild;
+/
 
 
 CREATE OR REPLACE PROCEDURE insert_into_stern(
@@ -1787,6 +1833,36 @@ BEGIN
 END insert_into_stern;
 /
 
+CREATE OR REPLACE PROCEDURE update_into_stern(
+    p_stern_id IN NUMBER,
+    p_sternenbild_id IN NUMBER,
+    p_planetensystem_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_typ IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_entfernung_lj IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.STERN
+    SET STERNENBILD_ID = p_sternenbild_id,
+        PLANETENSYSTEM_ID = p_planetensystem_id,
+        NAME = p_name,
+        TYP = p_typ,
+        DURCHMESSER_KM = p_durchmesser_km,
+        MASSE_KG = p_masse_kg,
+        ENTFERNUNG_LJ = p_entfernung_lj,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_stern_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20005, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_stern;
+/
 
 
 CREATE OR REPLACE PROCEDURE insert_into_komet(
@@ -1823,6 +1899,34 @@ BEGIN
     END;
 END insert_into_komet;
 /
+
+CREATE OR REPLACE PROCEDURE update_into_komet(
+    p_komet_id IN NUMBER,
+    p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_umlaufzeit_j IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.KOMET
+    SET GALAXIE_ID = p_galaxie_id,
+        NAME = p_name,
+        DURCHMESSER_KM = p_durchmesser_km,
+        MASSE_KG = p_masse_kg,
+        UMLAUFZEIT_J = p_umlaufzeit_j,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_komet_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20006, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_komet;
+/
+
 
 
 
