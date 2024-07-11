@@ -1466,21 +1466,16 @@ CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
     pVeranstaltungID Veranstaltung.id%TYPE;
     media_id NUMBER;
 BEGIN
-    -- Insert into Veranstaltung table
-    INSERT INTO Veranstaltung (name, beschreibung, raum_id, datum)
-    VALUES (p_name, p_beschreibung, p_raum_id, p_datum)
-    RETURNING id INTO pVeranstaltungID; -- RETURNING-Klausel verwenden, um die ID zu erhalten
+    -- Veranstaltung verbuchen
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
+    (p_raum_id, p_veranstaltung_name, p_veranstaltung_datum, p_veranstaltung_beschreibung);
     
-    -- Insert into Veranstaltung_Mitarbeiter table (Dummy-Daten für Mitarbeiter)
-    INSERT INTO Veranstaltung_Angestellter (veranstaltung_id, angestellter_id)
-    VALUES (pVeranstaltungID, 2); -- Dummy-Wert für Mitarbeiter-ID
+    COMMIT;
     
-    -- Iterate through the Medien IDs and insert into Veranstaltung_Medium table
-    FOR i IN 0..JSON_ARRAY_T(p_media_ids).GET_SIZE()-1 LOOP
-        media_id := TO_NUMBER(JSON_QUERY(p_media_ids, '$[' || i || ']'));
-        INSERT INTO Veranstaltung_Medium (veranstaltung_id, medium_id)
-        VALUES (pVeranstaltungID, media_id);
-    END LOOP;
+    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
+    (veranstaltung_id, 2);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
@@ -1492,6 +1487,24 @@ END BUCHE_VERANSTALTUNG;
 /
 
 
+
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
+CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
+    p_medium_id IN NUMBER
+) AS
+BEGIN
+    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+
+    INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
+    VALUES (veranstaltung_id, p_medium_id);
+
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen des Mediums für die Veranstaltung.');
+END BUCHE_VERANSTALTUNG_MEDIUM;
 
 
 
