@@ -1137,7 +1137,7 @@ async function addChanges(object) {
         formData.forEach((value, key) => {
             dataObject[key] = value;
         });
-        response = responseChanges(object, dataObject);
+        response = responseAddedChanges(object, dataObject);
 
     } catch (error) {
         console.error('Error:', error);
@@ -1146,10 +1146,77 @@ async function addChanges(object) {
 }
 
 async function saveChanges(object) {
-    //test
+    try {
+        const form = document.getElementById('editForm');
+        const formData = new FormData(form);
+
+        let dataObject = {};
+        formData.forEach((value, key) => {
+            dataObject[key] = value;
+        });
+        response = responseSavedChanges(object, dataObject);
+
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
-async function responseChanges(object, dataObject){
+async function responseAddedChanges(object, dataObject){
+    let response;
+    switch (object) {
+        case 'Planetensystem':
+            response = await fetch('/intern/planets/add_changes_planetsystem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Planet':
+            response = await fetch('/intern/planets/add_changes_planet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Sternenbild':
+            response = await fetch('/intern/planets/add_changes_starimage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Stern':
+            response = await fetch('/intern/planets/add_changes_star', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Komet':
+            response = await fetch('/intern/planets/add_changes_comet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        default:
+            
+      }
+      return response;
+}
+
+async function responseSavedChanges(object, dataObject){
     let response;
     switch (object) {
         case 'Planetensystem':
