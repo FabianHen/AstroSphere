@@ -282,7 +282,7 @@ create table SNACK (
    BEZEICHNUNG          VARCHAR2(100)         not null,
    BESCHREIBUNG         VARCHAR2(200)         not null,
    VERKAUF_PREIS_STK     NUMBER(5,2)           not null,
-   GROESSE              CHAR(3)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
+   GROESSE              CHAR(1)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    IMAGE_PATH           VARCHAR(100)           not null,
    constraint PK_SNACK primary key (ID)
 );
@@ -294,7 +294,7 @@ create table MERCHARTIKEL (
    ID                   NUMBER(8)            GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 2 MINVALUE 1) not null,
    BEZEICHNUNG          VARCHAR2(100)         not null,
    BESCHREIBUNG         VARCHAR(200)          not null,
-   GROESSE              CHAR(3)               check ((GROESSE in ('XS','S','M','L','XL','XXL') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
+   GROESSE              CHAR(1)               check ((GROESSE in ('S','M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    VERKAUF_PREIS_STK    NUMBER(5,2)           not null,
    IMAGE_PATH           VARCHAR(100)             not null,
    constraint PK_MERCHARTIKEL primary key (ID)
@@ -836,6 +836,65 @@ create index RAUM_WIRD_GEMIETET_FK on VERMIETUNG_RAUM (
 /*==============================================================*/
 create index MIETET_RAUM_FK on VERMIETUNG_RAUM (
    RAUM_ID ASC
+);
+
+
+/*==============================================================*/
+/* Table: VERMIETUNG_RAUM_AN_MITARBEITER                        */
+/*==============================================================*/
+create table VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID             NUMBER(8)             not null,
+   RAUM_ID              NUMBER(8)             not null,
+   DATUM                DATE                  not null,
+   DAUER_TAGE           INTEGER               default 1 check (DAUER_TAGE between 1 and 7) not null,
+   constraint PK_VERMIETUNG_RAUM_AN_MITARBEITER primary key (ANGESTELLTER_ID, RAUM_ID),
+   constraint "FK_VERMIETU_RAUM WIRD_ANGESTELLTER" foreign key (ANGESTELLTER_ID)
+         references ANGESTELLTER (ID),
+   constraint FK_VERMIETUNG_MIETET_RAUM foreign key (RAUM_ID)
+         references RAUM (ID)
+);
+
+/*==============================================================*/
+/* Index: RAUM_WIRD_GEMIETET_MITARBEITER_FK                     */
+/*==============================================================*/
+create index RAUM_WIRD_GEMIETET_MITARBEITER_FK on VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Index: ANGESTELLTER_MIETET_RAUM_FK                                        */
+/*==============================================================*/
+create index ANGESTELLTER_MIETET_RAUM_FK on VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Table: VERMIETUNG_TELESKOP_AN_MITARBEITER                    */
+/*==============================================================*/
+create table VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   ANGESTELLTER_ID             NUMBER(8)             not null,
+   TELESKOP_ID          NUMBER(8)             not null,
+   DATUM                DATE                  not null,
+   DAUER_TAGE           INTEGER               default 1 check (DAUER_TAGE between 1 and 7) not null,
+   constraint PK_VERMIETUNG_TELESKOP primary key (ANGESTELLTER_ID, TELESKOP_ID),
+   constraint "FK_VERMIETU_TELESKOP _ANGESTELLTER" foreign key (ANGESTELLTER_ID)
+         references ANGESTELLTER (ID),
+   constraint FK_VERMIETU_MIETET_TELESKOP foreign key (TELESKOP_ID)
+         references TELESKOP (ID)
+);
+
+/*==============================================================*/
+/* Index: WIRD_GEMIETET_FK                                      */
+/*==============================================================*/
+create index WIRD_GEMIETET_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Index: MIETET_TELESKOP_FK                                    */
+/*==============================================================*/
+create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   TELESKOP_ID ASC
 );
 
 /*==============================================================*/
@@ -1488,8 +1547,24 @@ EXCEPTION
 END BUCHE_VERANSTALTUNG;
 /
 
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+CREATE OR REPLACE PROCEDURE BUCHE_RAUM (
+    p_raum_id in RAUM.id%TYPE
+    p_date in VERMIETUNG_RAUM_AN_MITARBEITER.datum%Type
+) AS
+BEGIN
+    -- Veranstaltung verbuchen
+    INSERT INTO ASTROSPHERE.VERMIETUNG_RAUM_AN_MITARBEITER(ANGESTELLTER_ID, RAUM_ID, DATUM) VALUES
+    (2, p_raum_id, p_veranstaltung_datum);
 
-
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END BUCHE_RAUM;
+/
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
