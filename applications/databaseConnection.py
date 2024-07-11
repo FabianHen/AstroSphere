@@ -132,7 +132,13 @@ def execute_procedure_list_of_dicts(procedure_name: str, params):
         # Daten abrufen und in eine Liste von Dictionaries schreiben
         result = []
         for row in result_cursor:
-            row_dict = dict(zip(columns, row))
+            processed_row = {}
+            for col_name, col_value in zip(columns, row):
+                if isinstance(col_value, cx_Oracle.LOB):
+                    processed_row[col_name] = col_value.read()  # Read LOB content
+                else:
+                    processed_row[col_name] = col_value
+            row_dict = dict(processed_row)
             result.append(row_dict)
 
         return result

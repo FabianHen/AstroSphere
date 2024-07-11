@@ -27,6 +27,12 @@ function getCurrentDateTime() {
 document.addEventListener('DOMContentLoaded', async function() {
     if ( document.getElementById('nav-events')){
         initEventsPage();
+    } else if ( document.getElementById('nav-rooms')){
+        await getRooms();
+    } else if ( document.getElementById('nav-planets')){
+        await getPlanetsystems();
+    } else if ( document.getElementById('nav-telescopes')){
+        await getTelescopes();
     }
 });
 
@@ -273,13 +279,6 @@ function goToTelescopes() {
 function goBackHome() {
     window.location.href = '/';
 }
-
-// Event-Listener für DOMContentLoaded
-document.addEventListener('DOMContentLoaded', async function() {
-    if ( document.getElementById('nav-rooms')){
-        await getRooms();
-    }
-});
 
 async function getRooms() {
     try {
@@ -555,8 +554,8 @@ async function getPlanetsystems() {
 function processPlanetsystems(data) {
     var table = document.getElementById("planetsystemTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -564,8 +563,8 @@ function processPlanetsystems(data) {
     data.forEach(planetsystem => {
         tempHTML += `
                 <tr>
-                    <td>${planetsystem.NAME}</td>
                     <td>${planetsystem.ID}</td>
+                    <td>${planetsystem.NAME}</td>
                     <td>${planetsystem.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planetsystem).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
@@ -619,8 +618,8 @@ async function getPlanets() {
 function processPlanets(data) {
     var table = document.getElementById("planetTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -628,14 +627,39 @@ function processPlanets(data) {
     data.forEach(planet => {
         tempHTML += `
                 <tr>
-                    <td>${planet.NAME}</td>
                     <td>${planet.ID}</td>
+                    <td>${planet.NAME}</td>
                     <td>${planet.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planet).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
     table.innerHTML = tempHTML;
+}
+
+async function searchPlanetByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchPlanetBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_planet_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processPlanets(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function getStarimages() {
@@ -658,8 +682,8 @@ async function getStarimages() {
 function processStarimages(data) {
     var table = document.getElementById("starimageTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -667,14 +691,39 @@ function processStarimages(data) {
     data.forEach(starimage => {
         tempHTML += `
                 <tr>
-                    <td>${starimage.NAME}</td>
                     <td>${starimage.ID}</td>
+                    <td>${starimage.NAME}</td>
                     <td>${starimage.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(starimage).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
     table.innerHTML = tempHTML;
+}
+
+async function searchSternenbildByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchSternenbildBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_starimage_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processStarimages(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function getStars() {
@@ -697,8 +746,8 @@ async function getStars() {
 function processStars(data) {
     var table = document.getElementById("starTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -706,14 +755,39 @@ function processStars(data) {
     data.forEach(star => {
         tempHTML += `
                 <tr>
-                    <td>${star.NAME}</td>
                     <td>${star.ID}</td>
+                    <td>${star.NAME}</td>
                     <td>${star.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(star).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
         }
     );
     table.innerHTML = tempHTML;
+}
+
+async function searchSternByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchSternBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_star_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processStars(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function getComets() {
@@ -736,8 +810,8 @@ async function getComets() {
 function processComets(data) {
     var table = document.getElementById("cometTable");
     var tempHTML = `<tr>
-                        <th>Bezeichnung</th>
                         <th>ID</th>
+                        <th>Bezeichnung</th>
                         <th>Informationen</th>
                         <th>Action</th>
                     </tr>`;
@@ -745,8 +819,8 @@ function processComets(data) {
     data.forEach(comet => {
         tempHTML += `
                 <tr>
-                    <td>${comet.NAME}</td>
                     <td>${comet.ID}</td>
+                    <td>${comet.NAME}</td>
                     <td>${comet.INFORMATIONEN}</td>
                     <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(comet).replace(/"/g, '&quot;')})">Edit</button></td>
                 </tr>`;
@@ -755,6 +829,30 @@ function processComets(data) {
     table.innerHTML = tempHTML;
 }
 
+async function searchKometByBezeichnung(){
+    try {
+        const bezeichnung = document.getElementById('searchKometBezeichnungInput').value;
+        const response = await fetch('/intern/planets/search_comet_bezeichnung', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processComets(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
 
 async function saveEvent(roomID) {
     try {
@@ -776,19 +874,14 @@ async function saveEvent(roomID) {
     }
 }
 
-// Event-Listener für DOMContentLoaded
-document.addEventListener('DOMContentLoaded', async function() {
-    if ( document.getElementById('nav-telescopes')){
-        await getTelescopes();
-    }
-});
+var globalDataTelescopes = [];
 
 async function getTelescopes() {
     try {
         response = await fetch("/intern/telescopes/telescopeList");
         if (response.ok) {
             const data = await response.json();
-            processPlanets(data)
+            processTelescopes(data)
             return data
         } else {
             console.error('Server error:', response.status);
@@ -802,31 +895,29 @@ async function getTelescopes() {
 
 function processTelescopes(data) {
     var table = document.getElementById("telescopesTable");
-
+    globalDataTelescopes = data;
         var tempHTML = `<tr>
                             <th class="roomName">Name</th>
-                            <th>Id</th>
                             <th>Typ</th>
-                            <th>Beschreibung</th>
-                            <th>Auswahl</th>
+                            <th>Action</th>
                         </tr>`;
 
-    data.forEach(telescope => {
+    data.forEach((telescope, index) => {
         
             tempHTML += `
                 <tr>
                     <td class="roomName">${telescope.BEZEICHNUNG}</td>
-                    <td>${telescope.ID}</td>
                     <td>${telescope.TYP}</td>
+                    <td><button class"save-btn" onclick="showTelescopeDetails(${index}), filter('', 'teslescope-details')">Mehr</button></td>
                 </tr>`;
-        });
+});
     table.innerHTML = tempHTML;
 }
 
 async function searchTelescopeByName(){
     try {
         const bezeichnung = document.getElementById('searchTelescopeByNameInput').value;
-        const response = await fetch('/intern/telescopes/search_teescop_by_name', {
+        const response = await fetch('/intern/telescopes/search_telescope_by_name', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -848,18 +939,140 @@ async function searchTelescopeByName(){
     }
 }
 
+ function showTelescopeDetails(index) {
+    const telescope = globalDataTelescopes[index];
+    console.log(telescope);
+    const mainContent = document.getElementById('teslescope-details');
+
+    mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${telescope.BEZEICHNUNG}</h2>
+                            <div class="text-box">
+                                ${telescope.BESCHREIBUNG}
+                            </div>
+                            <h3 style="margin: 5px auto 0px 30px;">Details:</h3>
+                            <p style="margin: 5px auto 0px 60px;">ID: ${telescope.ID}</p>
+                            <p style="margin: 5px auto 0px 60px;">Typ: ${telescope.TYP}</p>
+                            <p style="margin: 5px auto 0px 60px;">Tagesmietpreis: ${telescope.TAGES_MIET_PREIS}</p>
+                            </div>`;
+}
+
 async function openModal(id, object) {
     var modal = document.getElementById(id);
     modal.style.display = "block";
+    const form = modal.querySelector("#editForm");
+    form.innerHTML = '';
+
     if(id === "editObject") {
-        modal.querySelector("#bezeichnung").value = object.NAME;
-        modal.querySelector("#id").value = object.ID;
-        modal.querySelector("#informationen").value = object.INFORMATIONEN;
+        for (const key in object) {
+            if (object.hasOwnProperty(key)) {
+                const label = document.createElement('label');
+                label.setAttribute('for', key);
+                label.textContent = key + ' ';
+
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('id', key);
+                input.setAttribute('name', key);
+                input.value = object[key];
+
+                form.appendChild(label);
+                form.appendChild(input);
+                form.appendChild(document.createElement('br'));
+                form.appendChild(document.createElement('br'));
+            }
+        }
+
+        modal.style.display = "block";
     }
     
     if(id === "addObject") {
-        //object wird Objektart die angelegt wird
+        switch (object) {
+            case 'Planetensystem':
+                try {
+                    const data = await getPlanetsystems();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No planet systems found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching planetsystems:', error);
+                }
+                break;
+            case 'Planet':
+                try {
+                    const data = await getPlanets();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No planets found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching planets:', error);
+                }
+                break;
+            case 'Sternenbild':
+                try {
+                    const data = await getStarimages();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No starimages found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching starimages:', error);
+                }
+                break;
+            case 'Stern':
+                try {
+                    const data = await getStars();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No stars found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching stars:', error);
+                }
+                break;
+            case 'Komet':
+                try {
+                    const data = await getComets();
+                    if (data && data.length > 0) {
+                        generateModal(data, form)
+                    } else {
+                        console.error('No comets found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching comets:', error);
+                }
+                break;
+            default:
+                const label = document.createElement('label');
+                label.textContent = 'Default';
+                form.appendChild(label);
+          }
     }
+}
+
+function generateModal(data, form){
+    const fetched_object = data[0];
+        for (const key in fetched_object) {
+            if (fetched_object.hasOwnProperty(key)) {
+                const label = document.createElement('label');
+                label.setAttribute('for', key);
+                label.textContent = key + ' ';
+
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('id', key);
+                input.setAttribute('name', key);
+
+                form.appendChild(label);
+                form.appendChild(input);
+                form.appendChild(document.createElement('br'));
+                form.appendChild(document.createElement('br'));
+            }
+        }
 }
 
 async function closeModal(id) {
@@ -868,6 +1081,82 @@ async function closeModal(id) {
 
 }
 
-async function saveChanges() {
+async function saveChanges(object) {
+    try {
+        const form = document.getElementById('editForm');
+        const formData = new FormData(form);
 
+        let dataObject = {};
+        formData.forEach((value, key) => {
+            dataObject[key] = value;
+        });
+
+        response = responseChanges(object);
+
+        if (response.ok) {
+            const result = await response.json();
+            processComets(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function responseChanges(object){
+    let response;
+    switch (object) {
+        case 'Planetensystem':
+            response = await fetch('/intern/planets/save_changes_planetsystem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Planet':
+            response = await fetch('/intern/planets/save_changes_planet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Sternenbild':
+            response = await fetch('/intern/planets/save_changes_starimage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Stern':
+            response = await fetch('/intern/planets/save_changes_star', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Komet':
+            response = await fetch('/intern/planets/save_changes_comet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        default:
+            
+      }
+      return response;
 }
