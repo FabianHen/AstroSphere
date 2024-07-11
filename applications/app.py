@@ -1,6 +1,12 @@
+import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import random
 from databaseConnection import *
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 app = Flask(__name__)
 
@@ -127,7 +133,10 @@ def get_medium():
 def book_event():
     try:
         data = request.json
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", data)
+        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung']]
+
+        print(params)
+        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -136,7 +145,9 @@ def book_event():
 def book_event_medium():
     try:
         data = request.json
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG_MEDIUM", data)
+        params = list(data.values())
+        print(data)
+        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG_MEDIUM", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -421,12 +432,18 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['SNACK_ID']), 7]
+                        print(int(databaseItem['BESTAND']))
+                    if int(databaseItem['BESTAND'])<=10:
+                        snack_id = str(databaseItem['SNACK_ID'])
+                        quantity = str(7)
+                        params = [databaseItem['SNACK_ID'], 7]
                         execute_procedure("nachbestellung_snack", params)
+                        emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
+                        send_email(emailText)
 
         else:
             for databaseItem in itemNumMerch:
+
                 if int(databaseItem['MERCHARTIKEL_ID'])==int(shoppingItem[0]):
                     if databaseItem['BESTAND']==None:
                         available.append(False)
@@ -434,9 +451,17 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['MERCHARTIKEL_ID']), 7]
-                        execute_procedure("nachbestellen_merch", params)
+
+                    if int(databaseItem['BESTAND']) <= 10:
+                        params = [databaseItem['MERCHARTIKEL_ID'], 7]
+                        print(params)
+                        execute_procedure("nachbestellung_merch", params)
+
+                    merch_id = str(databaseItem['MERCHARTIKEL_ID'])
+                    quantity = str(7)
+                    emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
+                    send_email(emailText)
+
     return available
 
 OrderNum=0
@@ -465,6 +490,35 @@ def buyShoppingCart(data):
             else:
                 execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
+
+
+
+
+def send_email(message):
+    print("send Email: ", message)
+    sender_email = "astrosphere.intern@gmail.com"
+    receiver_email = "astrosphere.intern@gmail.com"
+    password = "astrosphere!123"
+    name = "AstroSphere"
+
+    msg = MIMEMultipart()
+    msg['From'] = f"{name} <{sender_email}>"
+    msg['To'] = receiver_email
+    msg['Subject'] = "Shop Nachbestellung"
+
+    msg.attach(MIMEText(message, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, password)
+
+    server.sendmail(sender_email, receiver_email, msg.as_string())
+    print("E-Mail erfolgreich gesendet!")
+
+    server.quit()
+
+
+
 
 
 if __name__ == '__main__':
