@@ -133,10 +133,10 @@ def get_medium():
 def book_event():
     try:
         data = request.json
-        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung']]
+        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung'], '[2]']
 
         print(params)
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", params)
+        procedure_result = execute_procedure("BUCHE_VERANSTALTUNG", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -512,7 +512,7 @@ def check_data(data):
                         params = [databaseItem['SNACK_ID'], 7]
                         execute_procedure("nachbestellung_snack", params)
                         emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
-                        send_email(emailText)
+                        #send_email(emailText)
 
         else:
             for databaseItem in itemNumMerch:
@@ -533,7 +533,7 @@ def check_data(data):
                     merch_id = str(databaseItem['MERCHARTIKEL_ID'])
                     quantity = str(7)
                     emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
-                    send_email(emailText)
+                    #send_email(emailText)
 
     return available
 

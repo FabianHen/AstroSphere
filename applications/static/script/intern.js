@@ -892,21 +892,12 @@ async function saveEvent(roomID) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ datum: formattedDate, raum_id: roomID, name: name.value, beschreibung: beschreibung.value})
+            body: JSON.stringify({ datum: formattedDate, raum_id: roomID, name: name.value, beschreibung: beschreibung.value, media_ids: activeMedia})
         });
 
         if (response.ok) {
             const result = await response.json();
             console.log('Event booked successfully:', result);
-            for (medium_id in activeMedia) {
-                const response_medium = await fetch('/intern/events/book_medium', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ veranstaltung_id: result.id, medium_id: medium_id})
-                });
-            }
         } else {
             console.error('Server error:', response.status);
         }
