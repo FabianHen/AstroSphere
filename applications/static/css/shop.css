@@ -302,9 +302,9 @@ button:hover {
 #shoppingCart {
     display: none;
     position: absolute;
-    top: 110px;
+    top: 0;
     left: 0;
-    height: 80vh;
+    height: 100vh;
     width: 100%;
     background-color: #888888;
 }
