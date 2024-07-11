@@ -285,7 +285,7 @@ def save_changes():
             galaxie_id = data_object['GALAXIE_ID']
             name = data_object['NAME']
             informationen = data_object['INFORMATIONEN']
-            execute_procedure_list_of_dicts("InsertData", id, galaxie_id, name, informationen)
+            execute_procedure_list_of_dicts("insert_into_planetensystem", id, galaxie_id, name, informationen)
         return jsonify(True)
     except Exception as e:
         print(f"Fehler: {e}")
