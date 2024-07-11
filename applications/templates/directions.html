@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <script>
+        function goBack() {
+            window.location.href = window.location.href.split('/', window.location.href.split('/').length - 1).join('/');
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            height: 90%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        button {
+            width: 100%;
+            height: 10%;
+            font-size: 2em;
+            background: linear-gradient(to left, #d30da4, #4204b0);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="../static/images/directions.png" alt="Directions">
+    </div>
+    <button onclick="goBack()">Verstanden</button>
+</body>
+
+</html>

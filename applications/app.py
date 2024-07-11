@@ -17,6 +17,10 @@ def terminal():
 def shop():
     return render_template('shop.html')
 
+@app.route('/terminal/directions')
+def directions():
+    return render_template('directions.html')
+
 @app.route('/terminal/shop/snacks', methods=['GET'])
 def get_snacks():
     query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse "+
@@ -210,10 +214,9 @@ def intern_planets():
 @app.route('/intern/planets/planetsystemlist', methods=['GET'])
 def intern_planetsystemlist():
     query_result=execute_sql_query("Select * from planetensysteme")
-    print(query_result)
     return jsonify(query_result)
 
-@app.route('/intern/rooms/search_planetsystem_bezeichnung', methods=['POST'])
+@app.route('/intern/planets/search_planetsystem_bezeichnung', methods=['POST'])
 def get_planetsystem_by_bezeichnung():
     try:
         bezeichnung = request.json.get('bezeichnung')
@@ -226,26 +229,77 @@ def get_planetsystem_by_bezeichnung():
 @app.route('/intern/planets/planetlist', methods=['GET'])
 def intern_planetlist():
     query_result=execute_sql_query("Select * from planeten")
-    print(query_result)
     return jsonify(query_result)
+
+@app.route('/intern/planets/search_planet_bezeichnung', methods=['POST'])
+def get_planet_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_PLANET_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
 
 @app.route('/intern/planets/starimagelist', methods=['GET'])
 def intern_starimagelist():
     query_result=execute_sql_query("Select * from sternenbilder")
-    print(query_result)
     return jsonify(query_result)
+
+@app.route('/intern/planets/search_starimage_bezeichnung', methods=['POST'])
+def get_starimage_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_STERNENBILD_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
 
 @app.route('/intern/planets/starlist', methods=['GET'])
 def intern_starlist():
     query_result=execute_sql_query("Select * from sterne")
-    print(query_result)
     return jsonify(query_result)
+
+@app.route('/intern/planets/search_star_bezeichnung', methods=['POST'])
+def get_star_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_STERN_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
 
 @app.route('/intern/planets/cometlist', methods=['GET'])
 def intern_cometlist():
     query_result=execute_sql_query("Select * from kometen")
-    print(query_result)
     return jsonify(query_result)
+
+@app.route('/intern/planets/search_comet_bezeichnung', methods=['POST'])
+def get_comet_by_bezeichnung():
+    try:
+        bezeichnung = request.json.get('bezeichnung')
+        procedure_result = execute_procedure_list_of_dicts("SUCHE_KOMET_BEZEICHNUNG", bezeichnung)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
+@app.route('/intern/planets/save_changes_planetsystem', methods=['POST'])
+def save_changes():
+    try:
+        data_objects = request.json
+        for data_object in data_objects:
+            id = data_object['ID']
+            galaxie_id = data_object['GALAXIE_ID']
+            name = data_object['NAME']
+            informationen = data_object['INFORMATIONEN']
+            execute_procedure_list_of_dicts("InsertData", id, galaxie_id, name, informationen)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
 
 @app.route('/intern/telescopes')
 def intern_telescopes():
@@ -253,10 +307,10 @@ def intern_telescopes():
 
 @app.route('/intern/telescopes/telescopeList', methods=['GET'])
 def telescope_list():
-    query_result = execute_sql_query_list_of_dicts("SELECT * FROM TELESKOP")
+    query_result = execute_sql_query("SELECT * FROM TELESKOP")
     return jsonify(query_result)
 
-@app.route('/intern/telescopes/search_teescop_by_name', methods=['POST'])
+@app.route('/intern/telescopes/search_telescope_by_name', methods=['POST'])
 def teleskop_by_name():
     try:
         bezeichnung = request.json.get('bezeichnung')
@@ -285,8 +339,8 @@ def buyOrCheck():
         elif action == "buyShoppingCart":
             result=[buyShoppingCart(data)]
             if newKunde!=None:
-                params=[newKunde['vorname'], newKunde['nachname'], newKunde['email'], newKunde['telefonnummer']]
-                #execute_procedure("NEUER_KUNDE", params)
+                params=[newKunde['nachname'], newKunde['vorname'], newKunde['email'], newKunde['telefonnummer']]
+                execute_procedure("new_customer", params)
 
         return jsonify(success=result)
     except Exception as e:
@@ -310,7 +364,7 @@ def check_data(data):
             available.append(True)
         elif int(shoppingItem[0])%2==0:
             for databaseItem in itemNumSnack:
-                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                if int(databaseItem['SNACK_ID'])==int(shoppingItem[0]):
                     if databaseItem['BESTAND']==None:
                         available.append(False)
                     elif int(databaseItem['BESTAND']<int(shoppingItem[3])):
@@ -318,13 +372,12 @@ def check_data(data):
                     else:
                         available.append(True)
                     if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['ID']), 7]
-                        print(params)
+                        params=[int(databaseItem['SNACK_ID']), 7]
                         execute_procedure("nachbestellung_snack", params)
 
         else:
             for databaseItem in itemNumMerch:
-                if int(databaseItem['ID'])==int(shoppingItem[0]):
+                if int(databaseItem['MERCHARTIKEL_ID'])==int(shoppingItem[0]):
                     if databaseItem['BESTAND']==None:
                         available.append(False)
                     elif int(databaseItem['BESTAND'])<int(shoppingItem[3]):
@@ -332,8 +385,7 @@ def check_data(data):
                     else:
                         available.append(True)
                     if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['ID']), 7]
-                        print(params)
+                        params=[int(databaseItem['MERCHARTIKEL_ID']), 7]
                         execute_procedure("nachbestellen_merch", params)
     return available
 
@@ -357,13 +409,10 @@ def buyShoppingCart(data):
                     params[0]="Monat"
                 else:
                     params[0]="Jahr"
-                print("update Database with ticket")
                 execute_procedure("VERKAUFEN_TICKET", params)
             elif int(aktItem['id'])%2==0:
-                print("update Database with snack")
                 execute_procedure("VERKAUFEN_SNACK", params)
             else:
-                print("update Database with merch")
                 execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
 
