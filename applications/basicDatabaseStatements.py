@@ -1492,24 +1492,6 @@ END BUCHE_VERANSTALTUNG;
 /
 
 
--- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
-CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
-    p_veranstaltung_id IN NUMBER,
-    p_medium_id IN NUMBER
-) AS
-BEGIN
-    INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
-    VALUES (p_veranstaltung_id, p_medium_id);
-
-    COMMIT; -- Transaktion abschließen
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen des Mediums für die Veranstaltung.');
-END BUCHE_VERANSTALTUNG_MEDIUM;
-/
-
 
 
 
