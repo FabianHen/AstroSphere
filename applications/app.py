@@ -189,7 +189,7 @@ def book_room():
     try:
         data = request.json
         params= [int(data['raum_id']), data['date']]
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_RAUM", params)
+        procedure_result = execute_procedure("BUCHE_RAUM", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")

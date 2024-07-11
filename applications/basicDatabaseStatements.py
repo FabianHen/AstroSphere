@@ -877,23 +877,23 @@ create table VERMIETUNG_TELESKOP_AN_MITARBEITER (
    DATUM                DATE                  not null,
    DAUER_TAGE           INTEGER               default 1 check (DAUER_TAGE between 1 and 7) not null,
    constraint PK_VERMIETUNG_TELESKOP primary key (ANGESTELLTER_ID, TELESKOP_ID),
-   constraint "FK_VERMIETU_TELESKOP _ANGESTELLTER" foreign key (ANGESTELLTER_ID)
+   constraint "FK_VERMIETU_TELESKOP_ANGESTELLTER _ANGESTELLTER" foreign key (ANGESTELLTER_ID)
          references ANGESTELLTER (ID),
-   constraint FK_VERMIETU_MIETET_TELESKOP foreign key (TELESKOP_ID)
+   constraint FK_VERMIETU_MIETET_TELESKOP_ANGESTELLTER foreign key (TELESKOP_ID)
          references TELESKOP (ID)
 );
 
 /*==============================================================*/
-/* Index: WIRD_GEMIETET_FK                                      */
+/* Index: FK_VERMIETU_TELESKOP_ANGESTELLTER                     */
 /*==============================================================*/
-create index WIRD_GEMIETET_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+create index FK_VERMIETU_TELESKOP_ANGESTELLTER on VERMIETUNG_TELESKOP_AN_MITARBEITER (
    ANGESTELLTER_ID ASC
 );
 
 /*==============================================================*/
-/* Index: MIETET_TELESKOP_FK                                    */
+/* Index: FK_VERMIETU_MIETET_TELESKOP_ANGESTELLTER              */
 /*==============================================================*/
-create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+create index FK_VERMIETU_MIETET_TELESKOP_ANGESTELLTER on VERMIETUNG_TELESKOP_AN_MITARBEITER (
    TELESKOP_ID ASC
 );
 
