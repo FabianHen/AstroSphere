@@ -282,7 +282,7 @@ create table SNACK (
    BEZEICHNUNG          VARCHAR2(100)         not null,
    BESCHREIBUNG         VARCHAR2(200)         not null,
    VERKAUF_PREIS_STK     NUMBER(5,2)           not null,
-   GROESSE              CHAR(3)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
+   GROESSE              CHAR(1)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    IMAGE_PATH           VARCHAR(100)           not null,
    constraint PK_SNACK primary key (ID)
 );
@@ -294,7 +294,7 @@ create table MERCHARTIKEL (
    ID                   NUMBER(8)            GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 2 MINVALUE 1) not null,
    BEZEICHNUNG          VARCHAR2(100)         not null,
    BESCHREIBUNG         VARCHAR(200)          not null,
-   GROESSE              CHAR(3)               check ((GROESSE in ('XS','S','M','L','XL','XXL') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
+   GROESSE              CHAR(1)               check ((GROESSE in ('S','M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    VERKAUF_PREIS_STK    NUMBER(5,2)           not null,
    IMAGE_PATH           VARCHAR(100)             not null,
    constraint PK_MERCHARTIKEL primary key (ID)
@@ -836,6 +836,65 @@ create index RAUM_WIRD_GEMIETET_FK on VERMIETUNG_RAUM (
 /*==============================================================*/
 create index MIETET_RAUM_FK on VERMIETUNG_RAUM (
    RAUM_ID ASC
+);
+
+
+/*==============================================================*/
+/* Table: VERMIETUNG_RAUM_AN_MITARBEITER                        */
+/*==============================================================*/
+create table VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID             NUMBER(8)             not null,
+   RAUM_ID              NUMBER(8)             not null,
+   DATUM                DATE                  not null,
+   DAUER_TAGE           INTEGER               default 1 check (DAUER_TAGE between 1 and 7) not null,
+   constraint PK_VERMIETUNG_RAUM_AN_MITARBEITER primary key (ANGESTELLTER_ID, RAUM_ID),
+   constraint "FK_VERMIETU_RAUM WIRD_ANGESTELLTER" foreign key (ANGESTELLTER_ID)
+         references ANGESTELLTER (ID),
+   constraint FK_VERMIETUNG_MIETET_RAUM foreign key (RAUM_ID)
+         references RAUM (ID)
+);
+
+/*==============================================================*/
+/* Index: RAUM_WIRD_GEMIETET_MITARBEITER_FK                     */
+/*==============================================================*/
+create index RAUM_WIRD_GEMIETET_MITARBEITER_FK on VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Index: ANGESTELLTER_MIETET_RAUM_FK                                        */
+/*==============================================================*/
+create index ANGESTELLTER_MIETET_RAUM_FK on VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Table: VERMIETUNG_TELESKOP_AN_MITARBEITER                    */
+/*==============================================================*/
+create table VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   ANGESTELLTER_ID             NUMBER(8)             not null,
+   TELESKOP_ID          NUMBER(8)             not null,
+   DATUM                DATE                  not null,
+   DAUER_TAGE           INTEGER               default 1 check (DAUER_TAGE between 1 and 7) not null,
+   constraint PK_VERMIETUNG_TELESKOP primary key (ANGESTELLTER_ID, TELESKOP_ID),
+   constraint "FK_VERMIETU_TELESKOP _ANGESTELLTER" foreign key (ANGESTELLTER_ID)
+         references ANGESTELLTER (ID),
+   constraint FK_VERMIETU_MIETET_TELESKOP foreign key (TELESKOP_ID)
+         references TELESKOP (ID)
+);
+
+/*==============================================================*/
+/* Index: WIRD_GEMIETET_FK                                      */
+/*==============================================================*/
+create index WIRD_GEMIETET_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Index: MIETET_TELESKOP_FK                                    */
+/*==============================================================*/
+create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   TELESKOP_ID ASC
 );
 
 /*==============================================================*/
@@ -1457,21 +1516,46 @@ END VERANSTALTUNG_MEDIUM_DETAILS;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
-    p_veranstaltung_datum in VERANSTALTUNG.datum%TYPE,
-    p_raum_id in NUMBER,
-    p_veranstaltung_name in VERANSTALTUNG.name%TYPE,
-    p_veranstaltung_beschreibung in VERANSTALTUNG.beschreibung%TYPE
+    p_datum IN Veranstaltung.datum%TYPE,
+    p_raum_id IN NUMBER,
+    p_name IN Veranstaltung.name%TYPE,
+    p_beschreibung IN Veranstaltung.beschreibung%TYPE,
+    p_media_ids IN VARCHAR2
 ) AS
-    veranstaltung_id ASTROSPHERE.VERANSTALTUNG.id%TYPE;
+    p_veranstaltung_id Veranstaltung.id%TYPE; -- Korrekte Deklaration der Variable
 BEGIN
     -- Veranstaltung verbuchen
     INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-    (p_raum_id, p_veranstaltung_name, p_veranstaltung_datum, p_veranstaltung_beschreibung);
-
-    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
-
+    (p_raum_id, p_name, p_datum, p_beschreibung); -- Korrekte Verwendung der Parameter
+    
+    COMMIT;
+    
+    -- Holen der zuletzt eingefügten Veranstaltungs-ID
+    SELECT MAX(id) INTO p_veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+    
+    -- Beispielhaftes Einfügen eines Eintrags in eine Verknüpfungstabelle (hier Mitarbeiter hinzufügen)
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
-    (veranstaltung_id, 2);
+    (p_veranstaltung_id, 2); -- Angestellter ID 2 als Beispiel
+    
+    COMMIT; -- Transaktion abschließen
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen der Veranstaltung.');
+END BUCHE_VERANSTALTUNG;
+/
+
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+CREATE OR REPLACE PROCEDURE BUCHE_RAUM (
+    p_raum_id in RAUM.id%TYPE
+    p_date in VERMIETUNG_RAUM_AN_MITARBEITER.datum%Type
+) AS
+BEGIN
+    -- Veranstaltung verbuchen
+    INSERT INTO ASTROSPHERE.VERMIETUNG_RAUM_AN_MITARBEITER(ANGESTELLTER_ID, RAUM_ID, DATUM) VALUES
+    (2, p_raum_id, p_veranstaltung_datum);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
@@ -1479,19 +1563,24 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
-END BUCHE_VERANSTALTUNG;
+END BUCHE_RAUM;
 /
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
-    p_veranstaltung_id IN NUMBER,
     p_medium_id IN NUMBER
 ) AS
+    veranstaltung_id ASTROSPHERE.VERANSTALTUNG.ID%TYPE; -- Korrekte Deklaration der Variable
 BEGIN
+    -- Holen der letzten Veranstaltungs-ID
+    SELECT MAX(id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+
+    -- Einfügen des Mediums für die Veranstaltung
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
-    VALUES (p_veranstaltung_id, p_medium_id);
+    VALUES (veranstaltung_id, p_medium_id);
 
     COMMIT; -- Transaktion abschließen
+
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
@@ -1525,6 +1614,28 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20001, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
     END;
 END insert_into_planetensystem;
+/
+
+CREATE OR REPLACE PROCEDURE update_into_planetensystem(
+    p_planetensystem_id IN NUMBER,
+    p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.PLANETENSYSTEM
+    SET GALAXIE_ID = p_galaxie_id,
+        NAME = p_name,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_planetensystem_id; 
+
+    COMMIT;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20001, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_planetensystem;
 /
 
 
@@ -1573,6 +1684,38 @@ BEGIN
 END insert_into_planet;
 /
 
+CREATE OR REPLACE PROCEDURE update_into_planet(
+    p_planet_id IN NUMBER,
+    p_planetensystem_id IN NUMBER,
+    p_zentrumsplanet_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_umlaufzeit_tage IN NUMBER,
+    p_temperatur_celsius IN NUMBER,
+    p_fallbeschleunigung IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.PLANET
+    SET PLANETENSYSTEM_ID = p_planetensystem_id,
+        ZENTRUMSPLANET_ID = p_zentrumsplanet_id,
+        NAME = p_name,
+        DURCHMESSER_KM = p_durchmesser_km,
+        MASSE_KG = p_masse_kg,
+        UMLAUFZEIT_TAGE = p_umlaufzeit_tage,
+        TEMPERATUR_CELSIUS = p_temperatur_celsius,
+        FALLBESCHLEUNIGUNG = p_fallbeschleunigung,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_planet_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20002, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_planet;
+/
 
 
 CREATE OR REPLACE PROCEDURE insert_into_sternenbild(
@@ -1601,6 +1744,26 @@ BEGIN
 END insert_into_sternenbild;
 /
 
+CREATE OR REPLACE PROCEDURE update_into_sternenbild(
+    p_sternenbild_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_anzahl_sterne IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.STERNENBILD
+    SET NAME = p_name,
+        ANZAHL_STERNE = p_anzahl_sterne,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_sternenbild_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20004, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_sternenbild;
+/
 
 
 CREATE OR REPLACE PROCEDURE insert_into_stern(
@@ -1644,11 +1807,41 @@ BEGIN
 END insert_into_stern;
 /
 
+CREATE OR REPLACE PROCEDURE update_into_stern(
+    p_stern_id IN NUMBER,
+    p_sternenbild_id IN NUMBER,
+    p_planetensystem_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_typ IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_entfernung_lj IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.STERN
+    SET STERNENBILD_ID = p_sternenbild_id,
+        PLANETENSYSTEM_ID = p_planetensystem_id,
+        NAME = p_name,
+        TYP = p_typ,
+        DURCHMESSER_KM = p_durchmesser_km,
+        MASSE_KG = p_masse_kg,
+        ENTFERNUNG_LJ = p_entfernung_lj,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_stern_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20005, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_stern;
+/
 
 
 CREATE OR REPLACE PROCEDURE insert_into_komet(
-    p_name IN VARCHAR2,
     p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
     p_durchmesser_km IN NUMBER,
     p_masse_kg IN NUMBER,
     p_umlaufzeit_j IN NUMBER,
@@ -1657,15 +1850,15 @@ CREATE OR REPLACE PROCEDURE insert_into_komet(
 BEGIN
     BEGIN
         INSERT INTO ASTROSPHERE.KOMET (
-            NAME, 
-            GALAXIE_ID, 
+            GALAXIE_ID,
+            NAME,  
             DURCHMESSER_KM, 
             MASSE_KG, 
             UMLAUFZEIT_J, 
             INFORMATIONEN
         ) VALUES (
-            p_name, 
-            p_galaxie_id, 
+            p_galaxie_id,
+            p_name,  
             p_durchmesser_km, 
             p_masse_kg, 
             p_umlaufzeit_j, 
@@ -1680,6 +1873,34 @@ BEGIN
     END;
 END insert_into_komet;
 /
+
+CREATE OR REPLACE PROCEDURE update_into_komet(
+    p_komet_id IN NUMBER,
+    p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_umlaufzeit_j IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.KOMET
+    SET GALAXIE_ID = p_galaxie_id,
+        NAME = p_name,
+        DURCHMESSER_KM = p_durchmesser_km,
+        MASSE_KG = p_masse_kg,
+        UMLAUFZEIT_J = p_umlaufzeit_j,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_komet_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20006, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_komet;
+/
+
 
 
 

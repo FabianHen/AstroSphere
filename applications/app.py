@@ -1,6 +1,12 @@
+import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import random
 from databaseConnection import *
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 app = Flask(__name__)
 
@@ -127,7 +133,10 @@ def get_medium():
 def book_event():
     try:
         data = request.json
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", data)
+        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung']]
+
+        print(params)
+        procedure_result = execute_procedure("BUCHE_VERANSTALTUNG", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -136,7 +145,9 @@ def book_event():
 def book_event_medium():
     try:
         data = request.json
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG_MEDIUM", data)
+        params = [data['medium_id']]
+        print(params)
+        procedure_result = execute_procedure("BUCHE_VERANSTALTUNG_MEDIUM", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -148,10 +159,6 @@ def get_all_events():
 @app.route('/intern/events/mineEvents', methods=['GET'])
 def get_mine_events():
     return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE id IN (SELECT veranstaltung_id FROM VERANSTALTUNG_ANGESTELLTER WHERE angestellter_id = 2) ORDER BY datum ASC")
-
-@app.route('/intern/events/details', methods=['POST'])
-def get_event_details():
-    return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
 
 @app.route('/intern/rooms')
 def intern_rooms():
@@ -172,6 +179,17 @@ def get_room_by_capacity():
     try:
         capacity = request.json.get('capacity')
         procedure_result = execute_procedure_list_of_dicts("SUCHE_RAUM_KAPAZITAET", capacity)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
+@app.route('/intern/rooms/book_room', methods=['POST'])
+def book_room():
+    try:
+        data = request.json
+        params= [int(data['raum_id']), data['date']]
+        procedure_result = execute_procedure_list_of_dicts("BUCHE_RAUM", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -216,6 +234,35 @@ def get_planetsystem_by_bezeichnung():
         print(f"Fehler: {e}")
         return jsonify(False), 500
 
+@app.route('/intern/planets/add_changes_planetsystem', methods=['POST'])
+def add_changes_planetsystem():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
+        execute_procedure("insert_into_planetensystem", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
+@app.route('/intern/planets/save_changes_planetsystem', methods=['POST'])
+def save_changes_planetsystem():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+        print(data_objects)
+        params = [int(data_objects['ID']), int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("update_into_planetensystem", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
 @app.route('/intern/planets/planetlist', methods=['GET'])
 def intern_planetlist():
     query_result=execute_sql_query("Select * from planeten")
@@ -231,6 +278,36 @@ def get_planet_by_bezeichnung():
         print(f"Fehler: {e}")
         return jsonify(False), 500
 
+@app.route('/intern/planets/add_changes_planet', methods=['POST'])
+def add_changes_planet():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['PLANETENSYSTEM_ID']), int(data_objects['ZENTRUMSPLANET_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_TAGE']), float(data_objects['TEMPERATUR_CELSIUS']), float(data_objects['FALLBESCHLEUNIGUNG']), data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("insert_into_planet", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
+@app.route('/intern/planets/save_changes_planet', methods=['POST'])
+def save_changes_planet():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['ID']), int(data_objects['PLANETENSYSTEM_ID']), int(data_objects['ZENTRUMSPLANET_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_TAGE']), float(data_objects['TEMPERATUR_CELSIUS']), float(data_objects['FALLBESCHLEUNIGUNG']), data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("update_into_planet", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
 @app.route('/intern/planets/starimagelist', methods=['GET'])
 def intern_starimagelist():
     query_result=execute_sql_query("Select * from sternenbilder")
@@ -242,6 +319,36 @@ def get_starimage_by_bezeichnung():
         bezeichnung = request.json.get('bezeichnung')
         procedure_result = execute_procedure_list_of_dicts("SUCHE_STERNENBILD_BEZEICHNUNG", bezeichnung)
         return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+
+@app.route('/intern/planets/add_changes_starimage', methods=['POST'])
+def add_changes_starimage():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [data_objects['NAME'], int(data_objects['ANZAHL_STERNE']), data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("insert_into_sternenbild", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
+app.route('/intern/planets/save_changes_starimage', methods=['POST'])
+def save_changes_starimage():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['ID']), data_objects['NAME'], int(data_objects['ANZAHL_STERNE']), data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("update_into_sternenbild", params)
+        return jsonify(True)
     except Exception as e:
         print(f"Fehler: {e}")
         return jsonify(False), 500
@@ -261,6 +368,36 @@ def get_star_by_bezeichnung():
         print(f"Fehler: {e}")
         return jsonify(False), 500
 
+@app.route('/intern/planets/add_changes_star', methods=['POST'])
+def add_changes_star():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['STERNENBILD_ID']), int(data_objects['PLANETENSYSTEM_ID']),data_objects['NAME'], data_objects['TYP'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['ENTFERNUNG_LJ']), data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("insert_into_stern", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
+@app.route('/intern/planets/save_changes_star', methods=['POST'])
+def save_changes_star():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['ID']), int(data_objects['STERNENBILD_ID']), int(data_objects['PLANETENSYSTEM_ID']),data_objects['NAME'], data_objects['TYP'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['ENTFERNUNG_LJ']), data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("update_into_stern", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+ 
 @app.route('/intern/planets/cometlist', methods=['GET'])
 def intern_cometlist():
     query_result=execute_sql_query("Select * from kometen")
@@ -276,16 +413,31 @@ def get_comet_by_bezeichnung():
         print(f"Fehler: {e}")
         return jsonify(False), 500
 
-@app.route('/intern/planets/save_changes_planetsystem', methods=['POST'])
-def save_changes_planetsystem():
+@app.route('/intern/planets/add_changes_comet', methods=['POST'])
+def add_changes_comet():
     try:
         data_objects = request.json
         if not data_objects:
             return jsonify({"error": "No data provided"}), 400
 
-        params = [int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
+        params = [int(data_objects['GALAXIE_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_J']), data_objects['INFORMATIONEN']]
         print(params)
-        execute_procedure("insert_into_planetensystem", params)
+        execute_procedure("insert_into_komet", params)
+        return jsonify(True)
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return jsonify(False), 500
+    
+@app.route('/intern/planets/save_changes_comet', methods=['POST'])
+def save_changes_comet():
+    try:
+        data_objects = request.json
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['ID']), int(data_objects['GALAXIE_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_J']), data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("update_into_komet", params)
         return jsonify(True)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -310,7 +462,6 @@ def teleskop_by_name():
         print(f"Fehler: {e}")
         return jsonify(False), 500
     
-
 @app.route('/back_to_home')
 def back_to_home():
     return redirect(url_for('homepage'))
@@ -337,7 +488,6 @@ def buyOrCheck():
         print(f"Fehler: {e}")
         return jsonify(success=False), 500
 
-
 def check_data(data):
     available=[]
     shoppingCartItems=[]
@@ -361,12 +511,18 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['SNACK_ID']), 7]
+                        print(int(databaseItem['BESTAND']))
+                    if int(databaseItem['BESTAND'])<=10:
+                        snack_id = str(databaseItem['SNACK_ID'])
+                        quantity = str(7)
+                        params = [databaseItem['SNACK_ID'], 7]
                         execute_procedure("nachbestellung_snack", params)
+                        emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
+                        #send_email(emailText)
 
         else:
             for databaseItem in itemNumMerch:
+
                 if int(databaseItem['MERCHARTIKEL_ID'])==int(shoppingItem[0]):
                     if databaseItem['BESTAND']==None:
                         available.append(False)
@@ -374,9 +530,17 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['MERCHARTIKEL_ID']), 7]
-                        execute_procedure("nachbestellen_merch", params)
+
+                    if int(databaseItem['BESTAND']) <= 10:
+                        params = [databaseItem['MERCHARTIKEL_ID'], 7]
+                        print(params)
+                        execute_procedure("nachbestellung_merch", params)
+
+                    merch_id = str(databaseItem['MERCHARTIKEL_ID'])
+                    quantity = str(7)
+                    emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
+                    #send_email(emailText)
+
     return available
 
 OrderNum=0
@@ -405,6 +569,35 @@ def buyShoppingCart(data):
             else:
                 execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
+
+
+
+
+def send_email(message):
+    print("send Email: ", message)
+    sender_email = "astrosphere.intern@gmail.com"
+    receiver_email = "astrosphere.intern@gmail.com"
+    password = "astrosphere!123"
+    name = "AstroSphere"
+
+    msg = MIMEMultipart()
+    msg['From'] = f"{name} <{sender_email}>"
+    msg['To'] = receiver_email
+    msg['Subject'] = "Shop Nachbestellung"
+
+    msg.attach(MIMEText(message, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, password)
+
+    server.sendmail(sender_email, receiver_email, msg.as_string())
+    print("E-Mail erfolgreich gesendet!")
+
+    server.quit()
+
+
+
 
 
 if __name__ == '__main__':

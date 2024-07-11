@@ -1,4 +1,5 @@
 
+let activeMedia = [];
 function showSection(sectionId) {
     // Alle Inhaltsbereiche ausblenden
     var sections = document.querySelectorAll('.mainContent');
@@ -44,13 +45,15 @@ async function initEventsPage() {
         let mediaItems = document.querySelectorAll('.media-item');
         mediaItems.forEach(mediaItem => { 
             mediaItem.addEventListener('click', function() {
-                if (mediaItem.classList.contains('active')) {
+                if (activeMedia.length > 0) {
                     nav_date.classList.remove('disabled');
                     save_media.disabled = false;
+                    return
                 }
                 else {
                     nav_date.classList.add('disabled');
                     save_media.disabled = true;
+
                 }
             });
         });
@@ -181,7 +184,8 @@ function showEventDetails(event, media) {
 function loadMedia(elem, medien) {
     // Datenbank lesen
     medien.forEach(medium => {
-        var htmlElem =  "<a href='#' class='media-item' onclick='mediaPressed(this)'>"
+        console.log(medium.ID)
+        var htmlElem =  `<a href='#' class='media-item' onclick='mediaPressed(this, ${medium.ID})'>`
         htmlElem += `<img src="${medium.IMAGE_PATH}" alt="Media 1" width="150" height="150">`
         if(medium.GALAXIE_NAME) {
             htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>"
@@ -256,8 +260,18 @@ async function getMedium(mediaItem) {
       }
 }
 
-function mediaPressed(elem){
+function mediaPressed(elem, id){
     elem.classList.toggle('active');
+    console.log(id)
+    const index = activeMedia.indexOf(id);
+    if (index === -1) {
+        // Element ist nicht vorhanden, füge es hinzu
+        activeMedia.push(id);
+    } else {
+        // Element ist vorhanden, entferne es
+        activeMedia.splice(index, 1);
+    }
+    console.log('Active Media', activeMedia)
 }
 
 function goToEvents() {
@@ -280,12 +294,15 @@ function goBackHome() {
     window.location.href = '/';
 }
 
+var globalDataRooms = [];
+
 async function getRooms() {
     try {
         response = await fetch("/intern/rooms/roomlist");
         if (response.ok) {
             const data = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(data, freeRooms)
             return data
         } else {
@@ -364,10 +381,12 @@ function processRooms(data,freeRooms, button) {
                             <th>Id</th>
                             <th>Kapazität</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>`;
     }
 
-    data.forEach(raum => {
+    data.forEach((raum, index) => {
+        console.log(raum);
         let status = "besetzt";
         if (raum.MIET_PREIS == null) {
             status = "Abteilungsraum";
@@ -385,19 +404,52 @@ function processRooms(data,freeRooms, button) {
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
-                    <td><button class"save-btn" onclick="saveEvent(${raum.ID})">Wälen</button></td>
+                    <td><button class"save-btn" onclick="saveEvent(${raum.ID}), filter('nav-all', 'events-container'), changeLeftComponent()">Wälen</button></td>
                 </tr>`;
         } else {
+            if(raum.ABTEILUNG_ID == null || raum.ABTEILUNG_ID === 5 || raum.ABTEILUNG_ID === 7){
+                tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITAT}</td>
+                    <td class="${status}">${status}</td>
+                    <td><input type="date" id="bookRoomInput"><button class"save-btn" onclick="bookRoom(${index})">buchen</button></td>
+                </tr>`;
+            } else {
             tempHTML += `
                 <tr>
                     <td class="roomName">${raum.BEZEICHNUNG}</td>
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
+                    <td></td>
                 </tr>`;
+            }
         }
     });
     table.innerHTML = tempHTML;
+}
+
+
+async function bookRoom(index){
+    try {
+        const room = globalDataRooms[index];
+        const dateInput = document.getElementById('bookRoomInput').value;
+        if(searchForFreeRooms(dateInput, index)){
+            console.log(helloooo);
+        }
+        const response = await fetch('/intern/rooms/book_room', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ raum_id: room.ID, date: dateInput})
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function searchRaumByBezeichnung(){
@@ -414,6 +466,7 @@ async function searchRaumByBezeichnung(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(result, freeRooms);
             return result;
         } else {
@@ -440,6 +493,7 @@ async function searchRaumByCapacity(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(result, freeRooms);
             return result;
         } else {
@@ -452,10 +506,17 @@ async function searchRaumByCapacity(){
     }
 }
 
-async function searchForFreeRooms(){
+async function searchForFreeRooms(booking,index){
     try {
-        // Datum vom Eingabefeld abrufen
-        const dateInput = document.getElementById('eventTime').value;
+        let dateInput;
+        let room;
+        if(booking){
+             dateInput = document.getElementById('bookRoomInput').value;
+            room = globalDataRooms[index];
+        }else {
+            // Datum vom Eingabefeld abrufen
+             dateInput = document.getElementById('eventTime').value;
+        }
 
         // Eingabedatum in ein Date-Objekt konvertieren
         const date = new Date(dateInput);
@@ -476,8 +537,14 @@ async function searchForFreeRooms(){
         
         if (response.ok) {
             const result = await response.json()
-            console.log(result);
-            processRooms(result, true);
+            const freeRooms = await getFreeRooms();
+            if(booking){
+                return result.forEach((r) => {
+                    if(room.ID === r.ID) return true;
+                });
+            } else {
+                processRooms(result, freeRooms, true);
+            }
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -860,14 +927,42 @@ async function saveEvent(roomID) {
         const beschreibung = document.getElementById('description');
         const date = document.getElementById('eventTime');
         const mediaItems = document.querySelectorAll('.media-item active');
+        console.log("Name: " + name.value);
+        console.log("Beschreibung: " + beschreibung.value);
+        console.log("Datum: " + date.value);
+        // Eingabedatum in ein Date-Objekt konvertieren
+        const elem_date = new Date(date.value);
 
+        // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
+        const formattedDate = ('0' + elem_date.getDate()).slice(-2) + '/' +
+            ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
+            elem_date.getFullYear() + ' ' +
+            ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
+
+        console.log(formattedDate);
         const response = await fetch('/intern/events/book_event', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ datum: date, raum_id: roomID, name: name, beschreibung: beschreibung})
+            body: JSON.stringify({ datum: formattedDate, raum_id: roomID, name: name.value, beschreibung: beschreibung.value})
         });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Event booked successfully:', result);
+            for (const medium_id of activeMedia) {
+                const response_medium = await fetch('/intern/events/book_medium', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ medium_id: parseInt(medium_id)})
+                });
+            }
+        } else {
+            console.error('Server error:', response.status);
+        }
     } catch (error) {
         console.error('Error:', error);
         return null;
@@ -958,13 +1053,13 @@ async function searchTelescopeByName(){
 async function openModal(id, object, type) {
     var modal = document.getElementById(id);
     modal.style.display = "block";
-    const form = modal.querySelector("#editForm");
-    form.innerHTML = '';
 
     if(id === "editObject") {
+        const form = document.getElementById('editForm2');
+        form.innerHTML = '';
         for (const key in object) {
             if (object.hasOwnProperty(key)) {
-                if(key != 'ID'){
+                
                     const label = document.createElement('label');
                     label.setAttribute('for', key);
                     label.textContent = key + ' ';
@@ -974,18 +1069,21 @@ async function openModal(id, object, type) {
                     input.setAttribute('id', key);
                     input.setAttribute('name', key);
                     input.value = object[key];
+                    if (key === 'ID') {
+                        input.setAttribute('readonly', 'true');
+                    }
 
                     form.appendChild(label);
                     form.appendChild(input);
                     form.appendChild(document.createElement('br'));
                     form.appendChild(document.createElement('br'));
-                }
+                
             }
         }
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
         button.setAttribute('class', 'button round');
-        button.setAttribute('onclick', `saveChanges('${type}')`);
+        button.setAttribute('onclick', `saveChanges('${type}'), closeModal('editObject')`);
         button.textContent = 'Speichern';
         form.appendChild(button);
 
@@ -993,6 +1091,8 @@ async function openModal(id, object, type) {
     }
     
     if(id === "addObject") {
+        const form = document.getElementById('editForm1');
+        form.innerHTML = '';
         switch (object) {
             case 'Planetensystem':
                 try {
@@ -1084,7 +1184,7 @@ function generateModal(data, form, type){
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
     button.setAttribute('class', 'button round');
-    button.setAttribute('onclick', `addChanges('${type}')`);
+    button.setAttribute('onclick', `addChanges('${type}'), closeModal('addObject')`);
     button.textContent = 'Speichern';
     form.appendChild(button);
 }
@@ -1097,30 +1197,93 @@ async function closeModal(id) {
 
 async function addChanges(object) {
     try {
-        const form = document.getElementById('editForm');
+        const form = document.getElementById('editForm1');
         const formData = new FormData(form);
 
         let dataObject = {};
         formData.forEach((value, key) => {
             dataObject[key] = value;
         });
-        response = responseChanges(object, dataObject);
+        response = responseAddedChanges(object, dataObject);
 
-        // if (response.ok) {
-        //     const result = await response.json();
-        //     processComets(result);
-        //     return result;
-        // } else {
-        //     console.error('Server error:', response.status);
-        //     return null;
-        // }
     } catch (error) {
         console.error('Error:', error);
         return null;
     }
 }
 
-async function responseChanges(object, dataObject){
+async function saveChanges(object) {
+    try {
+        const form = document.getElementById('editForm2');
+        const formData = new FormData(form);
+
+        let dataObject = {};
+        formData.forEach((value, key) => {
+            dataObject[key] = value;
+        });
+        response = responseSavedChanges(object, dataObject);
+
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function responseAddedChanges(object, dataObject){
+    let response;
+    switch (object) {
+        case 'Planetensystem':
+            response = await fetch('/intern/planets/add_changes_planetsystem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Planet':
+            response = await fetch('/intern/planets/add_changes_planet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Sternenbild':
+            response = await fetch('/intern/planets/add_changes_starimage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Stern':
+            response = await fetch('/intern/planets/add_changes_star', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        case 'Komet':
+            response = await fetch('/intern/planets/add_changes_comet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataObject)
+            });
+            break;
+        default:
+            
+      }
+      return response;
+}
+
+async function responseSavedChanges(object, dataObject){
     let response;
     switch (object) {
         case 'Planetensystem':
