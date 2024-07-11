@@ -127,9 +127,10 @@ async function getEventDetails(eventId) {
         });
         if (response.ok && responseMedia.ok) {
             const data = await response.json();
+            const mediaData = await responseMedia.json();
             data.forEach(event => {
                 if (event.ID === eventId) {
-                    showEventDetails(event, responseMedia);
+                    showEventDetails(event, mediaData);
                 }
             });
             // showEventDetails(event);
@@ -166,8 +167,10 @@ function showEventDetails(event, media) {
                                 </table>
                             </div>`;
     
+    var table = document.getElementById('media-table');
+
     media.forEach(medium => {
-        mainContent.innerHTML += `<tr>
+        table.innerHTML += `<tr>
                                     <td>${medium.ID}</td>
                                     <td>${medium.FORMAT}</td>
                                     <td>${medium.TYP}</td>
@@ -203,6 +206,7 @@ function loadMedia(elem, medien) {
         }
 
         htmlElem += "<p>" + medium.FORMAT + "</p>"
+        htmlElem += "<p sytle='display: none'>" + medium.ID + "</p>"
         htmlElem += "</a>"
 
         elem.innerHTML += htmlElem;
@@ -381,7 +385,7 @@ function processRooms(data,freeRooms, button) {
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
-                    <td><button class"save-btn" onclick="saveEvent()">Wälen</button></td>
+                    <td><button class"save-btn" onclick="saveEvent(${raum.ID})">Wälen</button></td>
                 </tr>`;
         } else {
             tempHTML += `
@@ -850,8 +854,24 @@ async function searchKometByBezeichnung(){
     }
 }
 
-function saveEvent() {
-    console.log("Not implemented")
+async function saveEvent(roomID) {
+    try {
+        const name = document.getElementById('name');
+        const beschreibung = document.getElementById('description');
+        const date = document.getElementById('eventTime');
+        const mediaItems = document.querySelectorAll('.media-item active');
+
+        const response = await fetch('/intern/events/book_event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ datum: date, raum_id: roomID, name: name, beschreibung: beschreibung})
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 var globalDataTelescopes = [];
