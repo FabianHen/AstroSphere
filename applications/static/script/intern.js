@@ -436,6 +436,9 @@ async function bookRoom(index){
     try {
         const room = globalDataRooms[index];
         const dateInput = document.getElementById('bookRoomInput').value;
+        if(searchForFreeRooms(dateInput, index)){
+            console.log(helloooo);
+        }
         const response = await fetch('/intern/rooms/book_room', {
             method: 'POST',
             headers: {
@@ -506,9 +509,10 @@ async function searchRaumByCapacity(){
 async function searchForFreeRooms(booking,index){
     try {
         let dateInput;
+        let room;
         if(booking){
              dateInput = document.getElementById('bookRoomInput').value;
-            const room = globalDataRooms[index];
+            room = globalDataRooms[index];
         }else {
             // Datum vom Eingabefeld abrufen
              dateInput = document.getElementById('eventTime').value;
