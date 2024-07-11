@@ -280,12 +280,15 @@ function goBackHome() {
     window.location.href = '/';
 }
 
+var globalDataRooms = [];
+
 async function getRooms() {
     try {
         response = await fetch("/intern/rooms/roomlist");
         if (response.ok) {
             const data = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(data, freeRooms)
             return data
         } else {
@@ -364,10 +367,12 @@ function processRooms(data,freeRooms, button) {
                             <th>Id</th>
                             <th>Kapazität</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>`;
     }
 
-    data.forEach(raum => {
+    data.forEach((raum, index) => {
+        console.log(raum);
         let status = "besetzt";
         if (raum.MIET_PREIS == null) {
             status = "Abteilungsraum";
@@ -388,16 +393,46 @@ function processRooms(data,freeRooms, button) {
                     <td><button class"save-btn" onclick="saveEvent(${raum.ID})">Wälen</button></td>
                 </tr>`;
         } else {
+            if(raum.ABTEILUNG_ID == null || raum.ABTEILUNG_ID === 5 || raum.ABTEILUNG_ID === 7){
+                tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITAT}</td>
+                    <td class="${status}">${status}</td>
+                    <td><input type="date" id="bookRoomInput"><button class"save-btn" onclick="bookRoom(${index})">buchen</button></td>
+                </tr>`;
+            } else {
             tempHTML += `
                 <tr>
                     <td class="roomName">${raum.BEZEICHNUNG}</td>
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
+                    <td></td>
                 </tr>`;
+            }
         }
     });
     table.innerHTML = tempHTML;
+}
+
+
+async function bookRoom(index){
+    try {
+        const room = globalDataRooms[index];
+        const dateInput = document.getElementById('bookRoomInput').value;
+        const response = await fetch('/intern/rooms/book_room', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ raum_id: room.ID, date: dateInput})
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function searchRaumByBezeichnung(){
@@ -414,6 +449,7 @@ async function searchRaumByBezeichnung(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(result, freeRooms);
             return result;
         } else {
@@ -440,6 +476,7 @@ async function searchRaumByCapacity(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(result, freeRooms);
             return result;
         } else {
@@ -452,10 +489,16 @@ async function searchRaumByCapacity(){
     }
 }
 
-async function searchForFreeRooms(){
+async function searchForFreeRooms(booking,index){
     try {
-        // Datum vom Eingabefeld abrufen
-        const dateInput = document.getElementById('eventTime').value;
+        let dateInput;
+        if(booking){
+             dateInput = document.getElementById('bookRoomInput').value;
+            const room = globalDataRooms[index];
+        }else {
+            // Datum vom Eingabefeld abrufen
+             dateInput = document.getElementById('eventTime').value;
+        }
 
         // Eingabedatum in ein Date-Objekt konvertieren
         const date = new Date(dateInput);
@@ -477,7 +520,13 @@ async function searchForFreeRooms(){
         if (response.ok) {
             const result = await response.json()
             console.log(result);
-            processRooms(result, true);
+            if(booking){
+                return result.forEach((r) => {
+                    if(room.ID === r.ID) return true;
+                });
+            } else {
+                processRooms(result, true);
+            }
             return result;
         } else {
             console.error('Server error:', response.status);

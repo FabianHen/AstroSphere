@@ -1541,6 +1541,25 @@ EXCEPTION
 END BUCHE_VERANSTALTUNG;
 /
 
+-- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
+CREATE OR REPLACE PROCEDURE BUCHE_RAUM (
+    p_raum_id in RAUM.id%TYPE
+    p_date in VERMIETUNG_RAUM_AN_MITARBEITER.datum%Type
+) AS
+BEGIN
+    -- Veranstaltung verbuchen
+    INSERT INTO ASTROSPHERE.VERMIETUNG_RAUM_AN_MITARBEITER(ANGESTELLTER_ID, RAUM_ID, DATUM) VALUES
+    (2, p_raum_id, p_veranstaltung_datum);
+
+    COMMIT; -- Transaktion abschließen
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+END BUCHE_RAUM;
+/
+
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
     p_veranstaltung_id IN NUMBER,
