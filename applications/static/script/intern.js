@@ -991,13 +991,13 @@ async function searchTelescopeByName(){
 async function openModal(id, object, type) {
     var modal = document.getElementById(id);
     modal.style.display = "block";
-    const form = modal.querySelector("#editForm");
-    form.innerHTML = '';
 
     if(id === "editObject") {
+        const form = document.getElementById('editForm2');
+        form.innerHTML = '';
         for (const key in object) {
             if (object.hasOwnProperty(key)) {
-                if(key != 'ID'){
+                
                     const label = document.createElement('label');
                     label.setAttribute('for', key);
                     label.textContent = key + ' ';
@@ -1007,12 +1007,15 @@ async function openModal(id, object, type) {
                     input.setAttribute('id', key);
                     input.setAttribute('name', key);
                     input.value = object[key];
+                    if (key === 'ID') {
+                        input.setAttribute('readonly', 'true');
+                    }
 
                     form.appendChild(label);
                     form.appendChild(input);
                     form.appendChild(document.createElement('br'));
                     form.appendChild(document.createElement('br'));
-                }
+                
             }
         }
         const button = document.createElement('button');
@@ -1026,6 +1029,8 @@ async function openModal(id, object, type) {
     }
     
     if(id === "addObject") {
+        const form = document.getElementById('editForm1');
+        form.innerHTML = '';
         switch (object) {
             case 'Planetensystem':
                 try {
@@ -1130,7 +1135,7 @@ async function closeModal(id) {
 
 async function addChanges(object) {
     try {
-        const form = document.getElementById('editForm');
+        const form = document.getElementById('editForm1');
         const formData = new FormData(form);
 
         let dataObject = {};
@@ -1147,7 +1152,7 @@ async function addChanges(object) {
 
 async function saveChanges(object) {
     try {
-        const form = document.getElementById('editForm');
+        const form = document.getElementById('editForm2');
         const formData = new FormData(form);
 
         let dataObject = {};
