@@ -3,6 +3,11 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 import random
 from databaseConnection import *
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -24,7 +29,7 @@ def directions():
 @app.route('/terminal/shop/snacks', methods=['GET'])
 def get_snacks():
     query_result = execute_sql_query_list_of_dicts("SELECT SNACK.id, SNACK.bezeichnung, SNACK.beschreibung, SNACK.verkauf_preis_stk, SNACK.image_path, SNACK.groesse "+
-                                "FROM SNACK LEFT JOIN BESTAENDE_SNACK ON SNACK.id = BESTAENDE_SNACK.id "+
+                                "FROM SNACK LEFT JOIN BESTAENDE_SNACK ON SNACK.id = BESTAENDE_SNACK.SNACK_id "+
                                 "WHERE BESTAENDE_SNACK.BESTAND > 0 "+
                                 "ORDER BY SNACK.id")
     #for testing with every item
@@ -55,7 +60,7 @@ def get_salty():
 @app.route('/terminal/shop/merch', methods=['GET'])
 def get_merch():
     query_result = execute_sql_query_list_of_dicts("SELECT MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung, MERCHARTIKEL.groesse " +
-                                "FROM MERCHARTIKEL LEFT JOIN BESTAENDE_MERCH ON MERCHARTIKEL.id = BESTAENDE_MERCH.id "+
+                                "FROM MERCHARTIKEL LEFT JOIN BESTAENDE_MERCH ON MERCHARTIKEL.id = BESTAENDE_MERCH.MERCHARTIKEL_id "+
                                 "WHERE BESTAENDE_MERCH.BESTAND > 0 "+
                                 "GROUP BY MERCHARTIKEL.groesse, MERCHARTIKEL.id, MERCHARTIKEL.bezeichnung, MERCHARTIKEL.verkauf_preis_stk, MERCHARTIKEL.image_path, MERCHARTIKEL.beschreibung "+
                                 "ORDER BY MERCHARTIKEL.groesse")
@@ -283,15 +288,15 @@ def get_comet_by_bezeichnung():
         return jsonify(False), 500
 
 @app.route('/intern/planets/save_changes_planetsystem', methods=['POST'])
-def save_changes():
+def save_changes_planetsystem():
     try:
         data_objects = request.json
-        for data_object in data_objects:
-            id = data_object['ID']
-            galaxie_id = data_object['GALAXIE_ID']
-            name = data_object['NAME']
-            informationen = data_object['INFORMATIONEN']
-            execute_procedure_list_of_dicts("InsertData", id, galaxie_id, name, informationen)
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("insert_into_planetensystem", params)
         return jsonify(True)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -367,12 +372,18 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['SNACK_ID']), 7]
+                        print(int(databaseItem['BESTAND']))
+                    if int(databaseItem['BESTAND'])<=10:
+                        snack_id = str(databaseItem['SNACK_ID'])
+                        quantity = str(7)
+                        params = [databaseItem['SNACK_ID'], 7]
                         execute_procedure("nachbestellung_snack", params)
+                        emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
+                        send_email(emailText)
 
         else:
             for databaseItem in itemNumMerch:
+
                 if int(databaseItem['MERCHARTIKEL_ID'])==int(shoppingItem[0]):
                     if databaseItem['BESTAND']==None:
                         available.append(False)
@@ -380,9 +391,17 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-                    if int(databaseItem['BESTAND'])<10:
-                        params=[int(databaseItem['MERCHARTIKEL_ID']), 7]
-                        execute_procedure("nachbestellen_merch", params)
+
+                    if int(databaseItem['BESTAND']) <= 10:
+                        params = [databaseItem['MERCHARTIKEL_ID'], 7]
+                        print(params)
+                        execute_procedure("nachbestellung_merch", params)
+
+                    merch_id = str(databaseItem['MERCHARTIKEL_ID'])
+                    quantity = str(7)
+                    emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
+                    send_email(emailText)
+
     return available
 
 OrderNum=0
@@ -411,6 +430,35 @@ def buyShoppingCart(data):
             else:
                 execute_procedure("VERKAUFEN_MERCH", params)
         return True,OrderNum
+
+
+
+
+def send_email(message):
+    print("send Email: ", message)
+    sender_email = "astrosphere.intern@gmail.com"
+    receiver_email = "astrosphere.intern@gmail.com"
+    password = "astrosphere!123"
+    name = "AstroSphere"
+
+    msg = MIMEMultipart()
+    msg['From'] = f"{name} <{sender_email}>"
+    msg['To'] = receiver_email
+    msg['Subject'] = "Shop Nachbestellung"
+
+    msg.attach(MIMEText(message, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, password)
+
+    server.sendmail(sender_email, receiver_email, msg.as_string())
+    print("E-Mail erfolgreich gesendet!")
+
+    server.quit()
+
+
+
 
 
 if __name__ == '__main__':

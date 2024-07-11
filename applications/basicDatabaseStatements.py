@@ -1511,6 +1511,189 @@ EXCEPTION
 END BUCHE_VERANSTALTUNG_MEDIUM;
 /
 
+
+
+
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE insert_into_planetensystem(
+    p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    BEGIN
+        INSERT INTO ASTROSPHERE.PLANETENSYSTEM (GALAXIE_ID, NAME, INFORMATIONEN)
+        VALUES (p_galaxie_id, p_name, p_informationen);
+
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR(-20001, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+    END;
+END insert_into_planetensystem;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE insert_into_planet(
+    p_planetensystem_id IN NUMBER,
+    p_zentrumsplanet_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_umlaufzeit_tage IN NUMBER,
+    p_temperatur_celsius IN NUMBER,
+    p_fallbeschleunigung IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    BEGIN
+        INSERT INTO ASTROSPHERE.PLANET (
+            PLANETENSYSTEM_ID, 
+            ZENTRUMSPLANET_ID, 
+            NAME, 
+            DURCHMESSER_KM, 
+            MASSE_KG, 
+            UMLAUFZEIT_TAGE, 
+            TEMPERATUR_CELSIUS, 
+            FALLBESCHLEUNIGUNG, 
+            INFORMATIONEN
+        ) VALUES (
+            p_planetensystem_id, 
+            p_zentrumsplanet_id, 
+            p_name, 
+            p_durchmesser_km, 
+            p_masse_kg, 
+            p_umlaufzeit_tage, 
+            p_temperatur_celsius, 
+            p_fallbeschleunigung, 
+            p_informationen
+        );
+
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR(-20002, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+    END;
+END insert_into_planet;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE insert_into_sternenbild(
+    p_name IN VARCHAR2,
+    p_anzahl_sterne IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    BEGIN
+        INSERT INTO ASTROSPHERE.STERNENBILD (
+            NAME, 
+            ANZAHL_STERNE, 
+            INFORMATIONEN
+        ) VALUES (
+            p_name, 
+            p_anzahl_sterne, 
+            p_informationen
+        );
+
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR(-20003, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+    END;
+END insert_into_sternenbild;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE insert_into_stern(
+    p_sternenbild_id IN NUMBER,
+    p_planetensystem_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_typ IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_entfernung_lj IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    BEGIN
+        INSERT INTO ASTROSPHERE.STERN (
+            STERNENBILD_ID, 
+            PLANETENSYSTEM_ID, 
+            NAME, 
+            TYP, 
+            DURCHMESSER_KM, 
+            MASSE_KG, 
+            ENTFERNUNG_LJ, 
+            INFORMATIONEN
+        ) VALUES (
+            p_sternenbild_id, 
+            p_planetensystem_id, 
+            p_name, 
+            p_typ, 
+            p_durchmesser_km, 
+            p_masse_kg, 
+            p_entfernung_lj, 
+            p_informationen
+        );
+
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR(-20004, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+    END;
+END insert_into_stern;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE insert_into_komet(
+    p_name IN VARCHAR2,
+    p_galaxie_id IN NUMBER,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_umlaufzeit_j IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    BEGIN
+        INSERT INTO ASTROSPHERE.KOMET (
+            NAME, 
+            GALAXIE_ID, 
+            DURCHMESSER_KM, 
+            MASSE_KG, 
+            UMLAUFZEIT_J, 
+            INFORMATIONEN
+        ) VALUES (
+            p_name, 
+            p_galaxie_id, 
+            p_durchmesser_km, 
+            p_masse_kg, 
+            p_umlaufzeit_j, 
+            p_informationen
+        );
+
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR(-20005, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+    END;
+END insert_into_komet;
+/
+
+
+
 """
 
 sql_configuration="""
