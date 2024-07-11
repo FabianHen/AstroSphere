@@ -838,6 +838,65 @@ create index MIETET_RAUM_FK on VERMIETUNG_RAUM (
    RAUM_ID ASC
 );
 
+
+/*==============================================================*/
+/* Table: VERMIETUNG_RAUM_AN_MITARBEITER                        */
+/*==============================================================*/
+create table VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID             NUMBER(8)             not null,
+   RAUM_ID              NUMBER(8)             not null,
+   DATUM                DATE                  not null,
+   DAUER_TAGE           INTEGER               default 1 check (DAUER_TAGE between 1 and 7) not null,
+   constraint PK_VERMIETUNG_RAUM_AN_MITARBEITER primary key (ANGESTELLTER_ID, RAUM_ID),
+   constraint "FK_VERMIETU_RAUM WIRD_ANGESTELLTER" foreign key (ANGESTELLTER_ID)
+         references ANGESTELLTER (ID),
+   constraint FK_VERMIETUNG_MIETET_RAUM foreign key (RAUM_ID)
+         references RAUM (ID)
+);
+
+/*==============================================================*/
+/* Index: RAUM_WIRD_GEMIETET_MITARBEITER_FK                     */
+/*==============================================================*/
+create index RAUM_WIRD_GEMIETET_MITARBEITER_FK on VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Index: ANGESTELLTER_MIETET_RAUM_FK                                        */
+/*==============================================================*/
+create index ANGESTELLTER_MIETET_RAUM_FK on VERMIETUNG_RAUM_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Table: VERMIETUNG_TELESKOP_AN_MITARBEITER                    */
+/*==============================================================*/
+create table VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   ANGESTELLTER_ID             NUMBER(8)             not null,
+   TELESKOP_ID          NUMBER(8)             not null,
+   DATUM                DATE                  not null,
+   DAUER_TAGE           INTEGER               default 1 check (DAUER_TAGE between 1 and 7) not null,
+   constraint PK_VERMIETUNG_TELESKOP primary key (ANGESTELLTER_ID, TELESKOP_ID),
+   constraint "FK_VERMIETU_TELESKOP _ANGESTELLTER" foreign key (ANGESTELLTER_ID)
+         references ANGESTELLTER (ID),
+   constraint FK_VERMIETU_MIETET_TELESKOP foreign key (TELESKOP_ID)
+         references TELESKOP (ID)
+);
+
+/*==============================================================*/
+/* Index: WIRD_GEMIETET_FK                                      */
+/*==============================================================*/
+create index WIRD_GEMIETET_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   ANGESTELLTER_ID ASC
+);
+
+/*==============================================================*/
+/* Index: MIETET_TELESKOP_FK                                    */
+/*==============================================================*/
+create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP_AN_MITARBEITER (
+   TELESKOP_ID ASC
+);
+
 /*==============================================================*/
 /* Table: VERMIETUNG_TELESKOP                                   */
 /*==============================================================*/
