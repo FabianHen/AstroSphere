@@ -1609,6 +1609,38 @@ BEGIN
 END insert_into_planet;
 /
 
+CREATE OR REPLACE PROCEDURE update_into_planet(
+    p_planet_id IN NUMBER,
+    p_planetensystem_id IN NUMBER,
+    p_zentrumsplanet_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_durchmesser_km IN NUMBER,
+    p_masse_kg IN NUMBER,
+    p_umlaufzeit_tage IN NUMBER,
+    p_temperatur_celsius IN NUMBER,
+    p_fallbeschleunigung IN NUMBER,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.PLANET
+    SET PLANETENSYSTEM_ID = p_planetensystem_id,
+        ZENTRUMSPLANET_ID = p_zentrumsplanet_id,
+        NAME = p_name,
+        DURCHMESSER_KM = p_durchmesser_km,
+        MASSE_KG = p_masse_kg,
+        UMLAUFZEIT_TAGE = p_umlaufzeit_tage,
+        TEMPERATUR_CELSIUS = p_temperatur_celsius,
+        FALLBESCHLEUNIGUNG = p_fallbeschleunigung,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_planet_id;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20002, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_planet;
+/
 
 
 CREATE OR REPLACE PROCEDURE insert_into_sternenbild(
