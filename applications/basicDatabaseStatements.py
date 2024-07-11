@@ -1552,15 +1552,17 @@ BEGIN
     SET GALAXIE_ID = p_galaxie_id,
         NAME = p_name,
         INFORMATIONEN = p_informationen
-    WHERE PLANETENSYSTEM_ID = p_planetensystem_id;
+    WHERE ID = p_planetensystem_id; 
 
     COMMIT;
+
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE_APPLICATION_ERROR(-20001, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
 END update_into_planetensystem;
 /
+
 
 
 CREATE OR REPLACE PROCEDURE insert_into_planet(
