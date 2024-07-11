@@ -1572,13 +1572,13 @@ END BUCHE_VERANSTALTUNG;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_RAUM (
-    p_raum_id in RAUM.id%TYPE
-    p_date in VERMIETUNG_RAUM_AN_MITARBEITER.datum%Type
+    p_raum_id IN RAUM.id%TYPE,
+    p_date IN VERMIETUNG_RAUM_AN_MITARBEITER.datum%TYPE
 ) AS
 BEGIN
     -- Veranstaltung verbuchen
-    INSERT INTO ASTROSPHERE.VERMIETUNG_RAUM_AN_MITARBEITER(ANGESTELLTER_ID, RAUM_ID, DATUM) VALUES
-    (2, p_raum_id, p_veranstaltung_datum);
+    INSERT INTO ASTROSPHERE.VERMIETUNG_RAUM_AN_MITARBEITER (ANGESTELLTER_ID, RAUM_ID, DATUM) 
+    VALUES (2, p_raum_id, p_date);
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
@@ -1588,6 +1588,7 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
 END BUCHE_RAUM;
 /
+
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
