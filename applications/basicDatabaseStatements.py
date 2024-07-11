@@ -1486,21 +1486,23 @@ CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
     p_beschreibung IN Veranstaltung.beschreibung%TYPE,
     p_media_ids IN VARCHAR2
 ) AS
-    pVeranstaltungID Veranstaltung.id%TYPE;
-    media_id NUMBER;
+    p_veranstaltung_id Veranstaltung.id%TYPE; -- Korrekte Deklaration der Variable
 BEGIN
     -- Veranstaltung verbuchen
     INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-    (p_raum_id, p_veranstaltung_name, p_veranstaltung_datum, p_veranstaltung_beschreibung);
+    (p_raum_id, p_name, p_datum, p_beschreibung); -- Korrekte Verwendung der Parameter
     
     COMMIT;
     
-    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
-
+    -- Holen der zuletzt eingefügten Veranstaltungs-ID
+    SELECT MAX(id) INTO p_veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+    
+    -- Beispielhaftes Einfügen eines Eintrags in eine Verknüpfungstabelle (hier Mitarbeiter hinzufügen)
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
-    (veranstaltung_id, 2);
-
+    (p_veranstaltung_id, 2); -- Angestellter ID 2 als Beispiel
+    
     COMMIT; -- Transaktion abschließen
+
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
@@ -1511,23 +1513,30 @@ END BUCHE_VERANSTALTUNG;
 
 
 
+
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
     p_medium_id IN NUMBER
 ) AS
+    veranstaltung_id ASTROSPHERE.VERANSTALTUNG.ID%TYPE; -- Korrekte Deklaration der Variable
 BEGIN
-    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+    -- Holen der letzten Veranstaltungs-ID
+    SELECT MAX(id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
 
+    -- Einfügen des Mediums für die Veranstaltung
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
     VALUES (veranstaltung_id, p_medium_id);
 
     COMMIT; -- Transaktion abschließen
+
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen des Mediums für die Veranstaltung.');
 END BUCHE_VERANSTALTUNG_MEDIUM;
+/
+
 
 
 
