@@ -1652,8 +1652,8 @@ END insert_into_stern;
 
 
 CREATE OR REPLACE PROCEDURE insert_into_komet(
-    p_name IN VARCHAR2,
     p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
     p_durchmesser_km IN NUMBER,
     p_masse_kg IN NUMBER,
     p_umlaufzeit_j IN NUMBER,
@@ -1662,15 +1662,15 @@ CREATE OR REPLACE PROCEDURE insert_into_komet(
 BEGIN
     BEGIN
         INSERT INTO ASTROSPHERE.KOMET (
-            NAME, 
-            GALAXIE_ID, 
+            GALAXIE_ID,
+            NAME,  
             DURCHMESSER_KM, 
             MASSE_KG, 
             UMLAUFZEIT_J, 
             INFORMATIONEN
         ) VALUES (
-            p_name, 
-            p_galaxie_id, 
+            p_galaxie_id,
+            p_name,  
             p_durchmesser_km, 
             p_masse_kg, 
             p_umlaufzeit_j, 

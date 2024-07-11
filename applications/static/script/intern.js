@@ -1018,7 +1018,7 @@ async function openModal(id, object, type) {
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
         button.setAttribute('class', 'button round');
-        button.setAttribute('onclick', `saveChanges('${type}')`);
+        button.setAttribute('onclick', `saveChanges('${type}'), closeModal('editObject')`);
         button.textContent = 'Speichern';
         form.appendChild(button);
 
@@ -1117,7 +1117,7 @@ function generateModal(data, form, type){
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
     button.setAttribute('class', 'button round');
-    button.setAttribute('onclick', `addChanges('${type}')`);
+    button.setAttribute('onclick', `addChanges('${type}'), closeModal('addObject')`);
     button.textContent = 'Speichern';
     form.appendChild(button);
 }
@@ -1139,18 +1139,14 @@ async function addChanges(object) {
         });
         response = responseChanges(object, dataObject);
 
-        // if (response.ok) {
-        //     const result = await response.json();
-        //     processComets(result);
-        //     return result;
-        // } else {
-        //     console.error('Server error:', response.status);
-        //     return null;
-        // }
     } catch (error) {
         console.error('Error:', error);
         return null;
     }
+}
+
+async function saveChanges(object) {
+    //test
 }
 
 async function responseChanges(object, dataObject){
