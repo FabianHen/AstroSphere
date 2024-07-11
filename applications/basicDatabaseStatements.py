@@ -282,7 +282,7 @@ create table SNACK (
    BEZEICHNUNG          VARCHAR2(100)         not null,
    BESCHREIBUNG         VARCHAR2(200)         not null,
    VERKAUF_PREIS_STK     NUMBER(5,2)           not null,
-   GROESSE              CHAR(3)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
+   GROESSE              CHAR(1)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    IMAGE_PATH           VARCHAR(100)           not null,
    constraint PK_SNACK primary key (ID)
 );
@@ -294,7 +294,7 @@ create table MERCHARTIKEL (
    ID                   NUMBER(8)            GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 2 MINVALUE 1) not null,
    BEZEICHNUNG          VARCHAR2(100)         not null,
    BESCHREIBUNG         VARCHAR(200)          not null,
-   GROESSE              CHAR(3)               check ((GROESSE in ('XS','S','M','L','XL','XXL') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
+   GROESSE              CHAR(1)               check ((GROESSE in ('S','M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    VERKAUF_PREIS_STK    NUMBER(5,2)           not null,
    IMAGE_PATH           VARCHAR(100)             not null,
    constraint PK_MERCHARTIKEL primary key (ID)
