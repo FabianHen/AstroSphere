@@ -1104,8 +1104,8 @@ async function addChanges(object) {
         formData.forEach((value, key) => {
             dataObject[key] = value;
         });
-
-        response = responseChanges(object);
+        console.log(dataObject)
+        response = responseChanges(object, dataObject);
 
         // if (response.ok) {
         //     const result = await response.json();
@@ -1121,7 +1121,7 @@ async function addChanges(object) {
     }
 }
 
-async function responseChanges(object){
+async function responseChanges(object, dataObject){
     let response;
     switch (object) {
         case 'Planetensystem':

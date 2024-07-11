@@ -279,7 +279,10 @@ def get_comet_by_bezeichnung():
 @app.route('/intern/planets/save_changes_planetsystem', methods=['POST'])
 def save_changes():
     try:
-        data_objects = request.json
+        data_objects = request.json.get('data_object')
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+        
         for data_object in data_objects:
             id = data_object['ID']
             galaxie_id = data_object['GALAXIE_ID']
