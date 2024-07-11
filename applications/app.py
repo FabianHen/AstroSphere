@@ -133,10 +133,10 @@ def get_medium():
 def book_event():
     try:
         data = request.json
-        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung']]
+        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung'], '[2]']
 
         print(params)
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", params)
+        procedure_result = execute_procedure("BUCHE_VERANSTALTUNG", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
