@@ -128,6 +128,15 @@ def get_medium():
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
+        
+@app.route('/intern/events/freeRooms', methods=['POST'])
+def intern_free_event_rooms():
+    try:
+        date = request.json.get('date')
+        procedure_result = execute_procedure_list_of_dicts("Get_Free_Event_Rooms", date)
+        return jsonify(procedure_result)
+    except Exception as e:
+        print(f"Fehler: {e}")
 
 @app.route('/intern/events/book_event', methods=['POST'])
 def book_event():
