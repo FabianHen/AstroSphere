@@ -1315,7 +1315,7 @@ END VERANSTALTUNG_MEDIUM_DETAILS;
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
     p_veranstaltung_datum in VERANSTALTUNG.datum%TYPE,
-    p_raum_id in RAUM.id%TYPE,
+    p_raum_id in NUMBER,
     p_veranstaltung_name in VERANSTALTUNG.name%TYPE,
     p_veranstaltung_beschreibung in VERANSTALTUNG.beschreibung%TYPE
 ) AS
