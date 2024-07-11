@@ -1457,59 +1457,40 @@ END VERANSTALTUNG_MEDIUM_DETAILS;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
-    p_datum in VERANSTALTUNG.datum%TYPE,
-    p_raum_id in NUMBER,
-    p_name in VERANSTALTUNG.name%TYPE,
-    p_beschreibung in VERANSTALTUNG.beschreibung%TYPE
-    p_media_ids JSON
+    p_datum IN Veranstaltung.datum%TYPE,
+    p_raum_id IN NUMBER,
+    p_name IN Veranstaltung.name%TYPE,
+    p_beschreibung IN Veranstaltung.beschreibung%TYPE,
+    p_media_ids IN VARCHAR2
 ) AS
-    veranstaltung_id ASTROSPHERE.VERANSTALTUNG.id%TYPE;
+    pVeranstaltungID Veranstaltung.id%TYPE;
+    media_id NUMBER;
 BEGIN
     -- Insert into Veranstaltung table
     INSERT INTO Veranstaltung (name, beschreibung, raum_id, datum)
-    VALUES (p_name, p_beschreibung, p_raum_id, p_datum);
+    VALUES (p_name, p_beschreibung, p_raum_id, p_datum)
+    RETURNING id INTO pVeranstaltungID; -- RETURNING-Klausel verwenden, um die ID zu erhalten
     
-    -- Get the last inserted Veranstaltung ID
-    SET pVeranstaltungID = LAST_INSERT_ID();
+    -- Insert into Veranstaltung_Mitarbeiter table (Dummy-Daten für Mitarbeiter)
+    INSERT INTO Veranstaltung_Angestellter (veranstaltung_id, angestellter_id)
+    VALUES (pVeranstaltungID, 2); -- Dummy-Wert für Mitarbeiter-ID
     
-    -- Insert into Veranstaltung_Mitarbeiter table
-    INSERT INTO Veranstaltung_ANGESTELLTER (veranstaltung_id, mitarbeiter_id)
-    VALUES (pVeranstaltungID, 2);
-
     -- Iterate through the Medien IDs and insert into Veranstaltung_Medium table
-    SET @i = 0;
-    WHILE @i < JSON_LENGTH(p_media_ids) DO
+    FOR i IN 0..JSON_ARRAY_T(p_media_ids).GET_SIZE()-1 LOOP
+        media_id := TO_NUMBER(JSON_QUERY(p_media_ids, '$[' || i || ']'));
         INSERT INTO Veranstaltung_Medium (veranstaltung_id, medium_id)
-        VALUES (pVeranstaltungID, JSON_EXTRACT(p_media_ids, CONCAT('$[', @i, ']')));
-        SET @i = @i + 1;
-    END WHILE;
+        VALUES (pVeranstaltungID, media_id);
+    END LOOP;
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen der Veranstaltung.');
 END BUCHE_VERANSTALTUNG;
 /
 
--- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
-CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
-    p_veranstaltung_id IN NUMBER,
-    p_medium_id IN NUMBER
-) AS
-BEGIN
-    INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
-    VALUES (p_veranstaltung_id, p_medium_id);
-
-    COMMIT; -- Transaktion abschließen
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen des Mediums für die Veranstaltung.');
-END BUCHE_VERANSTALTUNG_MEDIUM;
-/
 
 
 
