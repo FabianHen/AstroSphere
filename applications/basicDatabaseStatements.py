@@ -1492,6 +1492,29 @@ END GET_FREIE_RAUME_DATUM;
 
 
 
+CREATE OR REPLACE PROCEDURE Get_Free_Event_Rooms (
+    p_start_time IN DATE,
+    p_end_time OUT DATE,
+    p_available_rooms OUT SYS_REFCURSOR
+) AS
+BEGIN
+    -- Berechne die Endzeit basierend auf der Startzeit
+    p_end_time := p_start_time + INTERVAL '1' HOUR;
+
+    -- Öffne einen Cursor für die verfügbaren Räume
+    OPEN p_available_rooms FOR
+        SELECT r.id, r.kapazität, r.miet_preis, r.abteilungs_id, r.bezeichnung
+        FROM Raum r
+        LEFT JOIN (
+            SELECT raum_id
+            FROM Veranstaltung
+            WHERE datum BETWEEN p_start_time AND p_end_time
+        ) v ON r.id = v.raum_id
+        WHERE v.raum_id IS NULL AND r.abteilungs_id = 5;
+END;
+
+
+
 
 -- Stored Procedure zum Suchen aller Medien einer Veranstaltung
 CREATE OR REPLACE PROCEDURE VERANSTALTUNG_MEDIUM_DETAILS (
