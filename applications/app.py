@@ -133,7 +133,7 @@ def get_medium():
 def book_event():
     try:
         data = request.json
-        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung'], '[2]']
+        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung']]
 
         print(params)
         procedure_result = execute_procedure("BUCHE_VERANSTALTUNG", params)
@@ -145,9 +145,9 @@ def book_event():
 def book_event_medium():
     try:
         data = request.json
-        params = list(data.values())
-        print(data)
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG_MEDIUM", params)
+        params = [data['medium_id']]
+        print(params)
+        procedure_result = execute_procedure("BUCHE_VERANSTALTUNG_MEDIUM", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -159,10 +159,6 @@ def get_all_events():
 @app.route('/intern/events/mineEvents', methods=['GET'])
 def get_mine_events():
     return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE id IN (SELECT veranstaltung_id FROM VERANSTALTUNG_ANGESTELLTER WHERE angestellter_id = 2) ORDER BY datum ASC")
-
-@app.route('/intern/events/details', methods=['POST'])
-def get_event_details():
-    return execute_sql_query("SELECT * FROM VERANSTALTUNG WHERE datum > current_date")
 
 @app.route('/intern/rooms')
 def intern_rooms():
