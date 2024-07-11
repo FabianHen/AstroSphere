@@ -292,7 +292,6 @@ def add_changes_planet():
         data_objects = request.json
         if not data_objects:
             return jsonify({"error": "No data provided"}), 400
-
         params = [int(data_objects['PLANETENSYSTEM_ID']), int(data_objects['ZENTRUMSPLANET_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_TAGE']), float(data_objects['TEMPERATUR_CELSIUS']), float(data_objects['FALLBESCHLEUNIGUNG']), data_objects['INFORMATIONEN']]
         execute_procedure("insert_into_planet", params)
         return jsonify(True)
