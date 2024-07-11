@@ -439,7 +439,7 @@ def check_data(data):
                         params = [databaseItem['SNACK_ID'], 7]
                         execute_procedure("nachbestellung_snack", params)
                         emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
-                        send_email(emailText)
+                        #send_email(emailText)
 
         else:
             for databaseItem in itemNumMerch:
@@ -460,7 +460,7 @@ def check_data(data):
                     merch_id = str(databaseItem['MERCHARTIKEL_ID'])
                     quantity = str(7)
                     emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
-                    send_email(emailText)
+                    #send_email(emailText)
 
     return available
 
