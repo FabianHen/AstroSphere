@@ -1104,7 +1104,6 @@ async function addChanges(object) {
         formData.forEach((value, key) => {
             dataObject[key] = value;
         });
-        console.log(dataObject)
         response = responseChanges(object, dataObject);
 
         // if (response.ok) {
