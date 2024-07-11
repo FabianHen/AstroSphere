@@ -294,12 +294,15 @@ function goBackHome() {
     window.location.href = '/';
 }
 
+var globalDataRooms = [];
+
 async function getRooms() {
     try {
         response = await fetch("/intern/rooms/roomlist");
         if (response.ok) {
             const data = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(data, freeRooms)
             return data
         } else {
@@ -378,10 +381,12 @@ function processRooms(data,freeRooms, button) {
                             <th>Id</th>
                             <th>Kapazität</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>`;
     }
 
-    data.forEach(raum => {
+    data.forEach((raum, index) => {
+        console.log(raum);
         let status = "besetzt";
         if (raum.MIET_PREIS == null) {
             status = "Abteilungsraum";
@@ -402,16 +407,49 @@ function processRooms(data,freeRooms, button) {
                     <td><button class"save-btn" onclick="saveEvent(${raum.ID}), filter('nav-all', 'events-container'), changeLeftComponent()">Wälen</button></td>
                 </tr>`;
         } else {
+            if(raum.ABTEILUNG_ID == null || raum.ABTEILUNG_ID === 5 || raum.ABTEILUNG_ID === 7){
+                tempHTML += `
+                <tr>
+                    <td class="roomName">${raum.BEZEICHNUNG}</td>
+                    <td>${raum.ID}</td>
+                    <td>${raum.KAPAZITAT}</td>
+                    <td class="${status}">${status}</td>
+                    <td><input type="date" id="bookRoomInput"><button class"save-btn" onclick="bookRoom(${index})">buchen</button></td>
+                </tr>`;
+            } else {
             tempHTML += `
                 <tr>
                     <td class="roomName">${raum.BEZEICHNUNG}</td>
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
+                    <td></td>
                 </tr>`;
+            }
         }
     });
     table.innerHTML = tempHTML;
+}
+
+
+async function bookRoom(index){
+    try {
+        const room = globalDataRooms[index];
+        const dateInput = document.getElementById('bookRoomInput').value;
+        if(searchForFreeRooms(dateInput, index)){
+            console.log(helloooo);
+        }
+        const response = await fetch('/intern/rooms/book_room', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ raum_id: room.ID, date: dateInput})
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 async function searchRaumByBezeichnung(){
@@ -428,6 +466,7 @@ async function searchRaumByBezeichnung(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(result, freeRooms);
             return result;
         } else {
@@ -454,6 +493,7 @@ async function searchRaumByCapacity(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
+            globalDataRooms = data;
             processRooms(result, freeRooms);
             return result;
         } else {
@@ -466,10 +506,17 @@ async function searchRaumByCapacity(){
     }
 }
 
-async function searchForFreeRooms(){
+async function searchForFreeRooms(booking,index){
     try {
-        // Datum vom Eingabefeld abrufen
-        const dateInput = document.getElementById('eventTime').value;
+        let dateInput;
+        let room;
+        if(booking){
+             dateInput = document.getElementById('bookRoomInput').value;
+            room = globalDataRooms[index];
+        }else {
+            // Datum vom Eingabefeld abrufen
+             dateInput = document.getElementById('eventTime').value;
+        }
 
         // Eingabedatum in ein Date-Objekt konvertieren
         const date = new Date(dateInput);
@@ -491,7 +538,13 @@ async function searchForFreeRooms(){
         if (response.ok) {
             const result = await response.json()
             const freeRooms = await getFreeRooms();
-            processRooms(result, freeRooms, true);
+            if(booking){
+                return result.forEach((r) => {
+                    if(room.ID === r.ID) return true;
+                });
+            } else {
+                processRooms(result, freeRooms, true);
+            }
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -1000,13 +1053,13 @@ async function searchTelescopeByName(){
 async function openModal(id, object, type) {
     var modal = document.getElementById(id);
     modal.style.display = "block";
-    const form = modal.querySelector("#editForm");
-    form.innerHTML = '';
 
     if(id === "editObject") {
+        const form = document.getElementById('editForm2');
+        form.innerHTML = '';
         for (const key in object) {
             if (object.hasOwnProperty(key)) {
-                if(key != 'ID'){
+                
                     const label = document.createElement('label');
                     label.setAttribute('for', key);
                     label.textContent = key + ' ';
@@ -1016,12 +1069,15 @@ async function openModal(id, object, type) {
                     input.setAttribute('id', key);
                     input.setAttribute('name', key);
                     input.value = object[key];
+                    if (key === 'ID') {
+                        input.setAttribute('readonly', 'true');
+                    }
 
                     form.appendChild(label);
                     form.appendChild(input);
                     form.appendChild(document.createElement('br'));
                     form.appendChild(document.createElement('br'));
-                }
+                
             }
         }
         const button = document.createElement('button');
@@ -1035,6 +1091,8 @@ async function openModal(id, object, type) {
     }
     
     if(id === "addObject") {
+        const form = document.getElementById('editForm1');
+        form.innerHTML = '';
         switch (object) {
             case 'Planetensystem':
                 try {
@@ -1139,7 +1197,7 @@ async function closeModal(id) {
 
 async function addChanges(object) {
     try {
-        const form = document.getElementById('editForm');
+        const form = document.getElementById('editForm1');
         const formData = new FormData(form);
 
         let dataObject = {};
@@ -1156,7 +1214,7 @@ async function addChanges(object) {
 
 async function saveChanges(object) {
     try {
-        const form = document.getElementById('editForm');
+        const form = document.getElementById('editForm2');
         const formData = new FormData(form);
 
         let dataObject = {};
