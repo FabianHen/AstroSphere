@@ -437,8 +437,7 @@ async function bookRoom(index){
         const room = globalDataRooms[index];
         const dateInput = document.getElementById('bookRoomInput').value;
         if(searchForFreeRooms(dateInput, index)){
-            console.log(helloooo);
-        }
+            console.log("helloooo");
         const response = await fetch('/intern/rooms/book_room', {
             method: 'POST',
             headers: {
@@ -446,6 +445,16 @@ async function bookRoom(index){
             },
             body: JSON.stringify({ raum_id: room.ID, date: dateInput})
         });
+        if (response.ok) {
+            const result = await response.json();
+            console.log(`booked room ${result}`);
+            getRooms();
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    }
     } catch (error) {
         console.error('Error:', error);
         return null;
