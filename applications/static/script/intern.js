@@ -566,7 +566,7 @@ function processPlanetsystems(data) {
                     <td>${planetsystem.ID}</td>
                     <td>${planetsystem.NAME}</td>
                     <td>${planetsystem.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planetsystem).replace(/"/g, '&quot;')})">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planetsystem).replace(/"/g, '&quot;')},'Planetensystem')">Edit</button></td>
                 </tr>`;
         }
     );
@@ -630,7 +630,7 @@ function processPlanets(data) {
                     <td>${planet.ID}</td>
                     <td>${planet.NAME}</td>
                     <td>${planet.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planet).replace(/"/g, '&quot;')})">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(planet).replace(/"/g, '&quot;')},'Planet')">Edit</button></td>
                 </tr>`;
         }
     );
@@ -694,7 +694,7 @@ function processStarimages(data) {
                     <td>${starimage.ID}</td>
                     <td>${starimage.NAME}</td>
                     <td>${starimage.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(starimage).replace(/"/g, '&quot;')})">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(starimage).replace(/"/g, '&quot;')},'Sternenbild')">Edit</button></td>
                 </tr>`;
         }
     );
@@ -758,7 +758,7 @@ function processStars(data) {
                     <td>${star.ID}</td>
                     <td>${star.NAME}</td>
                     <td>${star.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(star).replace(/"/g, '&quot;')})">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(star).replace(/"/g, '&quot;')},'Stern')">Edit</button></td>
                 </tr>`;
         }
     );
@@ -822,7 +822,7 @@ function processComets(data) {
                     <td>${comet.ID}</td>
                     <td>${comet.NAME}</td>
                     <td>${comet.INFORMATIONEN}</td>
-                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(comet).replace(/"/g, '&quot;')})">Edit</button></td>
+                    <td><button class"save-btn" onclick="openModal('editObject', ${JSON.stringify(comet).replace(/"/g, '&quot;')},'Komet')">Edit</button></td>
                 </tr>`;
         }
     );
@@ -955,7 +955,7 @@ async function searchTelescopeByName(){
                             </div>`;
 }
 
-async function openModal(id, object) {
+async function openModal(id, object, type) {
     var modal = document.getElementById(id);
     modal.style.display = "block";
     const form = modal.querySelector("#editForm");
@@ -964,22 +964,30 @@ async function openModal(id, object) {
     if(id === "editObject") {
         for (const key in object) {
             if (object.hasOwnProperty(key)) {
-                const label = document.createElement('label');
-                label.setAttribute('for', key);
-                label.textContent = key + ' ';
+                if(key != 'ID'){
+                    const label = document.createElement('label');
+                    label.setAttribute('for', key);
+                    label.textContent = key + ' ';
 
-                const input = document.createElement('input');
-                input.setAttribute('type', 'text');
-                input.setAttribute('id', key);
-                input.setAttribute('name', key);
-                input.value = object[key];
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'text');
+                    input.setAttribute('id', key);
+                    input.setAttribute('name', key);
+                    input.value = object[key];
 
-                form.appendChild(label);
-                form.appendChild(input);
-                form.appendChild(document.createElement('br'));
-                form.appendChild(document.createElement('br'));
+                    form.appendChild(label);
+                    form.appendChild(input);
+                    form.appendChild(document.createElement('br'));
+                    form.appendChild(document.createElement('br'));
+                }
             }
         }
+        const button = document.createElement('button');
+        button.setAttribute('type', 'button');
+        button.setAttribute('class', 'button round');
+        button.setAttribute('onclick', `saveChanges('${type}')`);
+        button.textContent = 'Speichern';
+        form.appendChild(button);
 
         modal.style.display = "block";
     }
@@ -990,7 +998,7 @@ async function openModal(id, object) {
                 try {
                     const data = await getPlanetsystems();
                     if (data && data.length > 0) {
-                        generateModal(data, form)
+                        generateModal(data, form, type)
                     } else {
                         console.error('No planet systems found.');
                     }
@@ -1002,7 +1010,7 @@ async function openModal(id, object) {
                 try {
                     const data = await getPlanets();
                     if (data && data.length > 0) {
-                        generateModal(data, form)
+                        generateModal(data, form, type)
                     } else {
                         console.error('No planets found.');
                     }
@@ -1014,7 +1022,7 @@ async function openModal(id, object) {
                 try {
                     const data = await getStarimages();
                     if (data && data.length > 0) {
-                        generateModal(data, form)
+                        generateModal(data, form, type)
                     } else {
                         console.error('No starimages found.');
                     }
@@ -1026,7 +1034,7 @@ async function openModal(id, object) {
                 try {
                     const data = await getStars();
                     if (data && data.length > 0) {
-                        generateModal(data, form)
+                        generateModal(data, form, type)
                     } else {
                         console.error('No stars found.');
                     }
@@ -1038,7 +1046,7 @@ async function openModal(id, object) {
                 try {
                     const data = await getComets();
                     if (data && data.length > 0) {
-                        generateModal(data, form)
+                        generateModal(data, form, type)
                     } else {
                         console.error('No comets found.');
                     }
@@ -1054,25 +1062,31 @@ async function openModal(id, object) {
     }
 }
 
-function generateModal(data, form){
+function generateModal(data, form, type){
     const fetched_object = data[0];
-        for (const key in fetched_object) {
-            if (fetched_object.hasOwnProperty(key)) {
+    for (const key in fetched_object) {
+        if (fetched_object.hasOwnProperty(key)) {
+            if(key != 'ID'){
                 const label = document.createElement('label');
                 label.setAttribute('for', key);
                 label.textContent = key + ' ';
-
                 const input = document.createElement('input');
                 input.setAttribute('type', 'text');
                 input.setAttribute('id', key);
                 input.setAttribute('name', key);
-
                 form.appendChild(label);
                 form.appendChild(input);
                 form.appendChild(document.createElement('br'));
                 form.appendChild(document.createElement('br'));
             }
         }
+    }
+    const button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.setAttribute('class', 'button round');
+    button.setAttribute('onclick', `addChanges('${type}')`);
+    button.textContent = 'Speichern';
+    form.appendChild(button);
 }
 
 async function closeModal(id) {
@@ -1081,7 +1095,7 @@ async function closeModal(id) {
 
 }
 
-async function saveChanges(object) {
+async function addChanges(object) {
     try {
         const form = document.getElementById('editForm');
         const formData = new FormData(form);
@@ -1090,24 +1104,23 @@ async function saveChanges(object) {
         formData.forEach((value, key) => {
             dataObject[key] = value;
         });
+        response = responseChanges(object, dataObject);
 
-        response = responseChanges(object);
-
-        if (response.ok) {
-            const result = await response.json();
-            processComets(result);
-            return result;
-        } else {
-            console.error('Server error:', response.status);
-            return null;
-        }
+        // if (response.ok) {
+        //     const result = await response.json();
+        //     processComets(result);
+        //     return result;
+        // } else {
+        //     console.error('Server error:', response.status);
+        //     return null;
+        // }
     } catch (error) {
         console.error('Error:', error);
         return null;
     }
 }
 
-async function responseChanges(object){
+async function responseChanges(object, dataObject){
     let response;
     switch (object) {
         case 'Planetensystem':

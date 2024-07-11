@@ -282,15 +282,15 @@ def get_comet_by_bezeichnung():
         return jsonify(False), 500
 
 @app.route('/intern/planets/save_changes_planetsystem', methods=['POST'])
-def save_changes():
+def save_changes_planetsystem():
     try:
         data_objects = request.json
-        for data_object in data_objects:
-            id = data_object['ID']
-            galaxie_id = data_object['GALAXIE_ID']
-            name = data_object['NAME']
-            informationen = data_object['INFORMATIONEN']
-            execute_procedure_list_of_dicts("InsertData", id, galaxie_id, name, informationen)
+        if not data_objects:
+            return jsonify({"error": "No data provided"}), 400
+
+        params = [int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("insert_into_planetensystem", params)
         return jsonify(True)
     except Exception as e:
         print(f"Fehler: {e}")
