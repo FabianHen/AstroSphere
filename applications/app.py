@@ -282,12 +282,10 @@ def save_changes_planetsystem():
         data_objects = request.json
         if not data_objects:
             return jsonify({"error": "No data provided"}), 400
-        
-        for data_object in data_objects:
-            galaxie_id = data_object['GALAXIE_ID']
-            name = data_object['NAME']
-            informationen = data_object['INFORMATIONEN']
-            execute_procedure_list_of_dicts("insert_into_planetensystem", galaxie_id, name, informationen)
+
+        params = [int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
+        print(params)
+        execute_procedure("insert_into_planetensystem", params)
         return jsonify(True)
     except Exception as e:
         print(f"Fehler: {e}")
