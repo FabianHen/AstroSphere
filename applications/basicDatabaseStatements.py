@@ -1516,28 +1516,34 @@ END VERANSTALTUNG_MEDIUM_DETAILS;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
-    p_veranstaltung_datum in VERANSTALTUNG.datum%TYPE,
-    p_raum_id in NUMBER,
-    p_veranstaltung_name in VERANSTALTUNG.name%TYPE,
-    p_veranstaltung_beschreibung in VERANSTALTUNG.beschreibung%TYPE
+    p_datum IN Veranstaltung.datum%TYPE,
+    p_raum_id IN NUMBER,
+    p_name IN Veranstaltung.name%TYPE,
+    p_beschreibung IN Veranstaltung.beschreibung%TYPE,
+    p_media_ids IN VARCHAR2
 ) AS
-    veranstaltung_id ASTROSPHERE.VERANSTALTUNG.id%TYPE;
+    p_veranstaltung_id Veranstaltung.id%TYPE; -- Korrekte Deklaration der Variable
 BEGIN
     -- Veranstaltung verbuchen
     INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-    (p_raum_id, p_veranstaltung_name, p_veranstaltung_datum, p_veranstaltung_beschreibung);
-
-    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
-
+    (p_raum_id, p_name, p_datum, p_beschreibung); -- Korrekte Verwendung der Parameter
+    
+    COMMIT;
+    
+    -- Holen der zuletzt eingefügten Veranstaltungs-ID
+    SELECT MAX(id) INTO p_veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+    
+    -- Beispielhaftes Einfügen eines Eintrags in eine Verknüpfungstabelle (hier Mitarbeiter hinzufügen)
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
-    (veranstaltung_id, 2);
-
+    (p_veranstaltung_id, 2); -- Angestellter ID 2 als Beispiel
+    
     COMMIT; -- Transaktion abschließen
+
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Raum ID nicht gefunden.');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Verkauf.');
+        RAISE_APPLICATION_ERROR(-20002, 'Fehler beim Buchen der Veranstaltung.');
 END BUCHE_VERANSTALTUNG;
 /
 
@@ -1562,14 +1568,19 @@ END BUCHE_RAUM;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG_MEDIUM (
-    p_veranstaltung_id IN NUMBER,
     p_medium_id IN NUMBER
 ) AS
+    veranstaltung_id ASTROSPHERE.VERANSTALTUNG.ID%TYPE; -- Korrekte Deklaration der Variable
 BEGIN
+    -- Holen der letzten Veranstaltungs-ID
+    SELECT MAX(id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
+
+    -- Einfügen des Mediums für die Veranstaltung
     INSERT INTO ASTROSPHERE.VERANSTALTUNG_MEDIUM (veranstaltung_id, medium_id) 
-    VALUES (p_veranstaltung_id, p_medium_id);
+    VALUES (veranstaltung_id, p_medium_id);
 
     COMMIT; -- Transaktion abschließen
+
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20001, 'Veranstaltungs ID nicht gefunden.');
@@ -1603,6 +1614,28 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20001, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
     END;
 END insert_into_planetensystem;
+/
+
+CREATE OR REPLACE PROCEDURE update_into_planetensystem(
+    p_planetensystem_id IN NUMBER,
+    p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
+    p_informationen IN VARCHAR2
+) AS
+BEGIN
+    UPDATE ASTROSPHERE.PLANETENSYSTEM
+    SET GALAXIE_ID = p_galaxie_id,
+        NAME = p_name,
+        INFORMATIONEN = p_informationen
+    WHERE ID = p_planetensystem_id; 
+
+    COMMIT;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20001, 'Ein Fehler ist aufgetreten: ' || SQLERRM);
+END update_into_planetensystem;
 /
 
 
@@ -1725,8 +1758,8 @@ END insert_into_stern;
 
 
 CREATE OR REPLACE PROCEDURE insert_into_komet(
-    p_name IN VARCHAR2,
     p_galaxie_id IN NUMBER,
+    p_name IN VARCHAR2,
     p_durchmesser_km IN NUMBER,
     p_masse_kg IN NUMBER,
     p_umlaufzeit_j IN NUMBER,
@@ -1735,15 +1768,15 @@ CREATE OR REPLACE PROCEDURE insert_into_komet(
 BEGIN
     BEGIN
         INSERT INTO ASTROSPHERE.KOMET (
-            NAME, 
-            GALAXIE_ID, 
+            GALAXIE_ID,
+            NAME,  
             DURCHMESSER_KM, 
             MASSE_KG, 
             UMLAUFZEIT_J, 
             INFORMATIONEN
         ) VALUES (
-            p_name, 
-            p_galaxie_id, 
+            p_galaxie_id,
+            p_name,  
             p_durchmesser_km, 
             p_masse_kg, 
             p_umlaufzeit_j, 
