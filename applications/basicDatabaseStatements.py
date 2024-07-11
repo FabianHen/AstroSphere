@@ -1457,21 +1457,32 @@ END VERANSTALTUNG_MEDIUM_DETAILS;
 
 -- Stored Procedure zur Verbuchung von erstellten Veranstaltungen (ohen Medien)
 CREATE OR REPLACE PROCEDURE BUCHE_VERANSTALTUNG (
-    p_veranstaltung_datum in VERANSTALTUNG.datum%TYPE,
+    p_datum in VERANSTALTUNG.datum%TYPE,
     p_raum_id in NUMBER,
-    p_veranstaltung_name in VERANSTALTUNG.name%TYPE,
-    p_veranstaltung_beschreibung in VERANSTALTUNG.beschreibung%TYPE
+    p_name in VERANSTALTUNG.name%TYPE,
+    p_beschreibung in VERANSTALTUNG.beschreibung%TYPE
+    p_media_ids JSON
 ) AS
     veranstaltung_id ASTROSPHERE.VERANSTALTUNG.id%TYPE;
 BEGIN
-    -- Veranstaltung verbuchen
-    INSERT INTO ASTROSPHERE.VERANSTALTUNG(RAUM_ID, NAME, DATUM, BESCHREIBUNG) VALUES
-    (p_raum_id, p_veranstaltung_name, p_veranstaltung_datum, p_veranstaltung_beschreibung);
+    -- Insert into Veranstaltung table
+    INSERT INTO Veranstaltung (name, beschreibung, raum_id, datum)
+    VALUES (p_name, p_beschreibung, p_raum_id, p_datum);
+    
+    -- Get the last inserted Veranstaltung ID
+    SET pVeranstaltungID = LAST_INSERT_ID();
+    
+    -- Insert into Veranstaltung_Mitarbeiter table
+    INSERT INTO Veranstaltung_ANGESTELLTER (veranstaltung_id, mitarbeiter_id)
+    VALUES (pVeranstaltungID, 2);
 
-    SELECT MAX(VERANSTALTUNG.id) INTO veranstaltung_id FROM ASTROSPHERE.VERANSTALTUNG;
-
-    INSERT INTO ASTROSPHERE.VERANSTALTUNG_ANGESTELLTER(veranstaltung_id, angestellter_id) VALUES
-    (veranstaltung_id, 2);
+    -- Iterate through the Medien IDs and insert into Veranstaltung_Medium table
+    SET @i = 0;
+    WHILE @i < JSON_LENGTH(p_media_ids) DO
+        INSERT INTO Veranstaltung_Medium (veranstaltung_id, medium_id)
+        VALUES (pVeranstaltungID, JSON_EXTRACT(p_media_ids, CONCAT('$[', @i, ']')));
+        SET @i = @i + 1;
+    END WHILE;
 
     COMMIT; -- Transaktion abschließen
 EXCEPTION

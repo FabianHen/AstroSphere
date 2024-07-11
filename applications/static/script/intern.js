@@ -1,4 +1,5 @@
 
+let activeMedia = [];
 function showSection(sectionId) {
     // Alle Inhaltsbereiche ausblenden
     var sections = document.querySelectorAll('.mainContent');
@@ -44,13 +45,15 @@ async function initEventsPage() {
         let mediaItems = document.querySelectorAll('.media-item');
         mediaItems.forEach(mediaItem => { 
             mediaItem.addEventListener('click', function() {
-                if (mediaItem.classList.contains('active')) {
+                if (activeMedia.length > 0) {
                     nav_date.classList.remove('disabled');
                     save_media.disabled = false;
+                    return
                 }
                 else {
                     nav_date.classList.add('disabled');
                     save_media.disabled = true;
+
                 }
             });
         });
@@ -181,7 +184,8 @@ function showEventDetails(event, media) {
 function loadMedia(elem, medien) {
     // Datenbank lesen
     medien.forEach(medium => {
-        var htmlElem =  "<a href='#' class='media-item' onclick='mediaPressed(this)'>"
+        console.log(medium.ID)
+        var htmlElem =  `<a href='#' class='media-item' onclick='mediaPressed(this, ${medium.ID})'>`
         htmlElem += `<img src="${medium.IMAGE_PATH}" alt="Media 1" width="150" height="150">`
         if(medium.GALAXIE_NAME) {
             htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>"
@@ -256,8 +260,18 @@ async function getMedium(mediaItem) {
       }
 }
 
-function mediaPressed(elem){
+function mediaPressed(elem, id){
     elem.classList.toggle('active');
+    console.log(id)
+    const index = activeMedia.indexOf(id);
+    if (index === -1) {
+        // Element ist nicht vorhanden, füge es hinzu
+        activeMedia.push(id);
+    } else {
+        // Element ist vorhanden, entferne es
+        activeMedia.splice(index, 1);
+    }
+    console.log('Active Media', activeMedia)
 }
 
 function goToEvents() {
@@ -385,7 +399,7 @@ function processRooms(data,freeRooms, button) {
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
-                    <td><button class"save-btn" onclick="saveEvent(${raum.ID})">Wälen</button></td>
+                    <td><button class"save-btn" onclick="saveEvent(${raum.ID}), filter('nav-all', 'events-container'), changeLeftComponent()">Wälen</button></td>
                 </tr>`;
         } else {
             tempHTML += `
@@ -476,8 +490,8 @@ async function searchForFreeRooms(){
         
         if (response.ok) {
             const result = await response.json()
-            console.log(result);
-            processRooms(result, true);
+            const freeRooms = await getFreeRooms();
+            processRooms(result, freeRooms, true);
             return result;
         } else {
             console.error('Server error:', response.status);
@@ -860,14 +874,42 @@ async function saveEvent(roomID) {
         const beschreibung = document.getElementById('description');
         const date = document.getElementById('eventTime');
         const mediaItems = document.querySelectorAll('.media-item active');
+        console.log("Name: " + name.value);
+        console.log("Beschreibung: " + beschreibung.value);
+        console.log("Datum: " + date.value);
+        // Eingabedatum in ein Date-Objekt konvertieren
+        const elem_date = new Date(date.value);
 
+        // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
+        const formattedDate = ('0' + elem_date.getDate()).slice(-2) + '/' +
+            ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
+            elem_date.getFullYear() + ' ' +
+            ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
+
+        console.log(formattedDate);
         const response = await fetch('/intern/events/book_event', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ datum: date, raum_id: roomID, name: name, beschreibung: beschreibung})
+            body: JSON.stringify({ datum: formattedDate, raum_id: roomID, name: name.value, beschreibung: beschreibung.value})
         });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Event booked successfully:', result);
+            for (medium_id in activeMedia) {
+                const response_medium = await fetch('/intern/events/book_medium', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ veranstaltung_id: result.id, medium_id: medium_id})
+                });
+            }
+        } else {
+            console.error('Server error:', response.status);
+        }
     } catch (error) {
         console.error('Error:', error);
         return null;

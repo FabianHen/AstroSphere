@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import random
 from databaseConnection import *
@@ -132,7 +133,10 @@ def get_medium():
 def book_event():
     try:
         data = request.json
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", data)
+        params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung']]
+
+        print(params)
+        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -141,7 +145,9 @@ def book_event():
 def book_event_medium():
     try:
         data = request.json
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG_MEDIUM", data)
+        params = list(data.values())
+        print(data)
+        procedure_result = execute_procedure_list_of_dicts("BUCHE_VERANSTALTUNG_MEDIUM", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
