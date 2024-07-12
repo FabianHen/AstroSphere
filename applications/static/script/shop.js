@@ -19,6 +19,7 @@ function goBack() {
  */
 function collapseFilter(filter) {
     if (filter) {
+        // Clears the timers used for updating the ticket events
         clearInterval(event_day_timer)
         clearInterval(event_month_timer)
         clearInterval(event_year_timer)
@@ -28,11 +29,12 @@ function collapseFilter(filter) {
         }
         let content = document.getElementById(filter);
         if (content) {
+            // hide filters if they are open
             if (content.style.display == 'flex') {
                 content.style.display = 'none';
                 history.replaceState(null, '', document.location.origin + document.location.pathname);
+                //Show filters if they are not open and display corresponding items
             } else {
-                // document.getElementsByClassName('filter_content').forEach(f => { f.style.display = 'none'; });
                 content.style.display = 'flex';
                 history.replaceState(null, '', `?selected=${filter}`);
                 switch (filter) {
@@ -58,6 +60,7 @@ let sleep_timeout;
  */
 function resetTimers() {
     let sleepDiv = document.getElementById("sleepTimer")
+    // clear sleep timer if it has already been activated
     if (sleepDiv && sleepDiv.style.display == "flex") {
         sleepDiv.style.display = "none";
         clearTimeout(sleep_timeout);
@@ -73,15 +76,18 @@ function resetTimers() {
  */
 function sleepTimer() {
     clearTimeout(idle_timeout);
+    // one round = one second
     let rounds_total = SLEEPTIMER / 1000;
     let current_round = rounds_total;
     document.getElementById("sleepTimer").style.display = "flex";
     sleep_timeout = setInterval(function () {
         current_round--;
         const factor = 1 - (current_round / rounds_total);
+        // Calculate the current color of the timer
         const interpolatedColor = interpolateColor(STARTCOLOR, ENDCOLOR, factor);
         document.getElementById("timer").style.color = rgbToHex(interpolatedColor.r, interpolatedColor.g, interpolatedColor.b);
         document.getElementById("timer").innerHTML = current_round
+        // Send user back to home if the timer has finished
         if (current_round < 0) {
             clearInterval(sleep_timeout);
             document.getElementById("sleepTimer").style.display = "none";
@@ -160,6 +166,7 @@ class Customer {
  */
 function addItemToCart(id, type, description, size, price, amount, imagePath) {
     aktItem = new Article(id, type, description, size, price, amount, imagePath);
+    // Check if given article is already part of the shoppingcart
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
         if (item.type == aktItem.type && item.size == aktItem.size) {
@@ -188,11 +195,13 @@ function removeItemFromCart(type, size, num) {
         const item = shoppingCart[i];
         if (item.type === type && item.size == size) {
             item.amount - num;
+            // Remove item from shoppingcart if none are left
             if (item.amount <= 0) {
                 shoppingCart.splice(i, 1);
             }
             var cart_badge = document.querySelector('.cart_badge');
             cart_badge.innerHTML = shoppingCart.length;
+            // Hide NUmber over shoppingcart icon if the shoppingcart is empty
             if (shoppingCart.length == 0) {
                 cart_badge.style.display = 'none';
             }
@@ -243,14 +252,13 @@ function updateShoppingCart(updateNum) {
         const item = shoppingCart[i];
         const itemID = "item_" + i;
         const itemNumId = itemID + "Num";
-
+        // Removes Item from cart if there are none left
         if (updateNum == true) {
             item.amount = document.getElementById(itemNumId).value;
             if (item.amount <= 0) {
                 removeItemFromCart(item.type, item.size, item.amount);
             }
         }
-
         document.getElementById(itemID + 'Num').value = item.amount;
 
         if (!(item.amount * item.price <= 0)) {
@@ -259,6 +267,7 @@ function updateShoppingCart(updateNum) {
     }
     createItems();
     checkIfAvailable();
+    // Update number above shoppincart icon
     document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
     var cart_badge = document.querySelector('.cart_badge');
     cart_badge.innerHTML = shoppingCart.length;
@@ -283,6 +292,7 @@ function deleteItem(id) {
 function showOrder() {
     var htmlList = "";
     var price = 0;
+    // Creates an entry for every item bought
     for (let i = 0; i < shoppingCart.length; i++) {
         const aktItem = shoppingCart[i];
         if (aktItem.amount > 0) {
@@ -367,6 +377,7 @@ function handleUserData(event) {
  */
 async function buy_Order() {
     const paymentMethod = document.getElementById('payment-method').value;
+    //Show Error if no payment message is selected
     if (paymentMethod === "") {
         document.getElementById('purchaseN').innerHTML = "<h1>Sie haben noch keine Zahlungsmethode ausgewählt!</h1>";
         document.getElementById('purchaseN').style.display = "flex";
@@ -375,8 +386,8 @@ async function buy_Order() {
             document.getElementById('purchaseN').innerHTML = "<h1>Fehler: Bestellvorgang wurde abgebrochen!</h1>";
         }, 2500);
         return;
-    }
-
+    } S
+    // Ask for personal information if month or year ticket is selected
     for (var i = 0; i < shoppingCart.length; i++) {
         if (shoppingCart[i]['type'].includes("Ticket") && !shoppingCart[i]['type'].includes('Tag')) {
             document.getElementById('personalInformation').style.display = "block";
@@ -420,7 +431,7 @@ async function checkIfAvailable() {
     var result = await buyOrCheck("checkAvailableItems", { shoppingCart }, null);
     var boolArray = result.success;
     var everythingIsAvailable = true
-
+    //Gos through the list and display the available and not available tag to every article
     for (var i = 0; i < boolArray.length; i++) {
         var aktItemId = "item_" + i;
 
@@ -751,7 +762,7 @@ async function setEventInfo() {
     const events_day = await getEvents("tag")
     const events_month = await getEvents("monat")
     const events_year = await getEvents("jahr")
-
+    // Events are update at different frequency because of the suspected amount of events of each ticket
     addEvents(events_day.slice(0, 5), display_day)
     if (events_day.length > 5) {
         event_day_timer = eventUpdateTimer(events_day, 8000, display_day)

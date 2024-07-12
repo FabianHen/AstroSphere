@@ -23,6 +23,7 @@ function goToDirections() {
 document.addEventListener("DOMContentLoaded", function () {
     var advertisement = document.getElementById("advertisement");
     var adImage = document.getElementById("adImage");
+    //Ad images
     var imageSources = [
         "../static/images/advertisement_1.png",
         "../static/images/advertisement_2.png",
