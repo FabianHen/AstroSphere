@@ -184,7 +184,6 @@ function showEventDetails(event, media) {
 function loadMedia(elem, medien) {
     // Datenbank lesen
     medien.forEach(medium => {
-        console.log(medium.ID)
         var htmlElem =  `<a href='#' class='media-item' onclick='mediaPressed(this, ${medium.ID})'>`
         htmlElem += `<img src="${medium.IMAGE_PATH}" alt="Media 1" width="150" height="150">`
         if(medium.GALAXIE_NAME) {
@@ -262,7 +261,6 @@ async function getMedium(mediaItem) {
 
 function mediaPressed(elem, id){
     elem.classList.toggle('active');
-    console.log(id)
     const index = activeMedia.indexOf(id);
     if (index === -1) {
         // Element ist nicht vorhanden, füge es hinzu
@@ -271,7 +269,6 @@ function mediaPressed(elem, id){
         // Element ist vorhanden, entferne es
         activeMedia.splice(index, 1);
     }
-    console.log('Active Media', activeMedia)
 }
 
 function goToEvents() {
@@ -371,7 +368,6 @@ function toDateInputValue(dateObject){
 
 function processRooms(data,freeRooms, button) {
     var table = document.getElementById("roomTable");
-    console.log(data);
 
     if(button) {
         var tempHTML = `<tr>
@@ -452,7 +448,6 @@ async function bookRoom(index){
             ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
 
         if(searchForFreeRooms(dateInput, index)){
-            console.log("helloooo");
         const response = await fetch('/intern/rooms/book_room', {
             method: 'POST',
             headers: {
@@ -462,7 +457,6 @@ async function bookRoom(index){
         });
         if (response.ok) {
             const result = await response.json();
-            console.log(`booked room ${result}`);
             getRooms();
             return result;
         } else {
@@ -608,7 +602,6 @@ async function generateEventTable(fromAll, all){
             var data = await response.json();
             if (!all) {
                 data = data.filter(event => {
-                    console.log(event)
                     var currentDate = new Date();
                     var eventDate = new Date(event.DATUM);
                     return eventDate >= currentDate;
@@ -963,7 +956,6 @@ async function saveEvent(roomID) {
             elem_date.getFullYear() + ' ' +
             ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
 
-        console.log(formattedDate);
         const response = await fetch('/intern/events/book_event', {
             method: 'POST',
             headers: {
@@ -1060,7 +1052,6 @@ async function searchTelescopeByName(){
 
  function showTelescopeDetails(index) {
     const telescope = globalDataTelescopes[index];
-    console.log(telescope);
     const mainContent = document.getElementById('teslescope-details');
 
     mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${telescope.BEZEICHNUNG}</h2>
