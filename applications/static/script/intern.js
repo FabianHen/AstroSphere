@@ -366,6 +366,7 @@ function processEvents(data, all) {
 
 function processRooms(data,freeRooms, button) {
     var table = document.getElementById("roomTable");
+    console.log(data);
 
     if(button) {
         var tempHTML = `<tr>
@@ -386,9 +387,8 @@ function processRooms(data,freeRooms, button) {
     }
 
     data.forEach((raum, index) => {
-        console.log(raum);
         let status = "besetzt";
-        if (raum.MIET_PREIS == null) {
+        if (raum.ABTEILUNG_ID !== null && raum.ABTEILUNG_ID !== 5 && raum.ABTEILUNG_ID !== 7) {
             status = "Abteilungsraum";
         }
         if(status === "besetzt"){
@@ -414,7 +414,7 @@ function processRooms(data,freeRooms, button) {
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
-                    <td><input type="date" id="bookRoomInput"><button class"save-btn" onclick="bookRoom(${index})">buchen</button></td>
+                    <td><input type="date" id="bookRoomInput"><button class"save-btn"  onclick="bookRoom(${index})">buchen</button></td>
                 </tr>`;
             } else {
             tempHTML += `
@@ -436,6 +436,14 @@ async function bookRoom(index){
     try {
         const room = globalDataRooms[index];
         const dateInput = document.getElementById('bookRoomInput').value;
+         const elem_date = new Date(dateInput);
+
+        // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
+        const formattedDate = ('0' + elem_date.getDate()).slice(-2) + '/' +
+            ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
+            elem_date.getFullYear() + ' ' +
+            ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
+
         if(searchForFreeRooms(dateInput, index)){
             console.log("helloooo");
         const response = await fetch('/intern/rooms/book_room', {
@@ -443,7 +451,7 @@ async function bookRoom(index){
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ raum_id: room.ID, date: dateInput})
+            body: JSON.stringify({ raum_id: room.ID, date: formattedDate})
         });
         if (response.ok) {
             const result = await response.json();
@@ -475,7 +483,7 @@ async function searchRaumByBezeichnung(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
-            globalDataRooms = data;
+            globalDataRooms = result;
             processRooms(result, freeRooms);
             return result;
         } else {
@@ -502,7 +510,7 @@ async function searchRaumByCapacity(){
         if (response.ok) {
             const result = await response.json();
             const freeRooms = await getFreeRooms();
-            globalDataRooms = data;
+            globalDataRooms = result;
             processRooms(result, freeRooms);
             return result;
         } else {
