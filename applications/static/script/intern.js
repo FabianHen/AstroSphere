@@ -363,6 +363,11 @@ function processEvents(data, all) {
     eventTable.innerHTML = tempHTML;
 }
 
+function toDateInputValue(dateObject){
+    const local = new Date(dateObject);
+    local.setMinutes(dateObject.getMinutes() - dateObject.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+};
 
 function processRooms(data,freeRooms, button) {
     var table = document.getElementById("roomTable");
@@ -408,13 +413,15 @@ function processRooms(data,freeRooms, button) {
                 </tr>`;
         } else {
             if(raum.ABTEILUNG_ID == null || raum.ABTEILUNG_ID === 5 || raum.ABTEILUNG_ID === 7){
+                const today = new Date();
+                const defaultValue = toDateInputValue(today);
                 tempHTML += `
                 <tr>
                     <td class="roomName">${raum.BEZEICHNUNG}</td>
                     <td>${raum.ID}</td>
                     <td>${raum.KAPAZITAT}</td>
                     <td class="${status}">${status}</td>
-                    <td><input type="date" id="bookRoomInput"><button class"save-btn"  onclick="bookRoom(${index})">buchen</button></td>
+                    <td><input type="date" id="bookRoomInput" value="${defaultValue}" min="${defaultValue}"><button class"save-btn"  onclick="bookRoom(${index})">buchen</button></td>
                 </tr>`;
             } else {
             tempHTML += `
