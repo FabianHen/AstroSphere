@@ -2080,36 +2080,36 @@ sql_createData="""
 -- Inserting data into table ASTROSPHERE.ABTEILUNG
 --
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Verkauf', 'Die Abteilung Verkauf ist für den direkten Kundenkontakt und die Steigerung der Verkaufszahlen verantwortlich. Sie pflegt Beziehungen zu Kunden und arbeitet eng mit anderen Abteilungen zusammen, um die Bed rfnisse der Kunden zu erf llen.');
+('Verkauf', 'Die Abteilung Verkauf ist für den direkten Kundenkontakt und die Steigerung der Verkaufszahlen verantwortlich. Sie pflegt Beziehungen zu Kunden und arbeitet eng mit anderen Abteilungen zusammen, um die Bedürfnisse der Kunden zu erfüllen.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
 ('Einkauf', 'Die Einkaufsabteilung ist verantwortlich für die Beschaffung von Waren, insbesondere für das Merchandise und die Lebensmittel, die in unserem Planetarium angeboten werden. Ihr Fokus liegt dabei auf der Auswahl qualitativ hochwertiger Produkte, effizienten Kostenverhandlungen mit Lieferanten und der Sicherstellung eines vielfältigen Angebots für unsere Besucher.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Marketing', 'Die Marketingabteilung entwickelt Marketingstrategien, um die Sichtbarkeit des Unternehmens zu erh hen, Produkte oder Dienstleistungen zu bewerben und potenzielle Kunden anzusprechen.');
+('Marketing', 'Die Marketingabteilung entwickelt Marketingstrategien, um die Sichtbarkeit des Unternehmens zu erhöhen, Produkte oder Dienstleistungen zu bewerben und potenzielle Kunden anzusprechen.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('IT', 'Die IT-Abteilung k mmert sich um die Planung, Implementierung und Wartung von Informationstechnologien im Unternehmen, um eine reibungslose digitale Infrastruktur und Anwendungsunterst tzung zu gew hrleisten.');
+('IT', 'Die IT-Abteilung kümmert sich um die Planung, Implementierung und Wartung von Informationstechnologien im Unternehmen, um eine reibungslose digitale Infrastruktur und Anwendungsunterstützung zu gewährleisten.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Veranstaltung', 'Die Veranstaltungsabteilung organisiert Veranstaltungen wie Vortr ge und Veranstaltungen für Kunden und Besucher. Zus tzlich laufen hier auch interne Veranstaltungen wie Mitarbeiterschulungen zusammen.');
+('Veranstaltung', 'Die Veranstaltungsabteilung organisiert Veranstaltungen wie Vorträge und Veranstaltungen für Kunden und Besucher. Zusätzlich laufen hier auch interne Veranstaltungen wie Mitarbeiterschulungen zusammen.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Sicherheit', 'Die Sicherheitsabteilung ist für die Gew hrleistung der physischen Sicherheit von Mitarbeitern, Verm genswerten und Einrichtungen verantwortlich, indem sie Sicherheitsrichtlinien und -ma nahmen implementiert.');
+('Sicherheit', 'Die Sicherheitsabteilung ist für die Gewährleistung der physischen Sicherheit von Mitarbeitern, Vermögenswerten und Einrichtungen verantwortlich, indem sie Sicherheitsrichtlinien und -maßnahmen implementiert.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
 ('Forschung', 'Die Forschungsabteilung widmet sich der Entdeckung neuer Inhalte für Veranstaltungen und wissenschaftlichen Arbeiten.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Vermietung', 'Die Vermietungsabteilung verwaltet VermietungsAktivitäten, sei es von R umlichkeiten oder Ausr stung, um zus tzliche Einnahmen zu generieren.');
+('Vermietung', 'Die Vermietungsabteilung verwaltet Vermietungsaktivitäten, sei es von Räumlichkeiten oder Ausrüstung, um zusätzliche Einnahmen zu generieren.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Personal', 'Die Personalabteilung k mmert sich um die Personalverwaltung, einschlie lich Einstellung, Schulung, Mitarbeiterentwicklung und die Umsetzung von Personalrichtlinien.');
+('Personal', 'Die Personalabteilung kümmert sich um die Personalverwaltung, einschließlich Einstellung, Schulung, Mitarbeiterentwicklung und die Umsetzung von Personalrichtlinien.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Finanzen', 'Die Finanzabteilung ist für die Buchf hrung, Budgetierung, Finanzberichterstattung und finanzielle Planung des Unternehmens zust ndig.');
+('Finanzen', 'Die Finanzabteilung ist für die Buchführung, Budgetierung, Finanzberichterstattung und finanzielle Planung des Unternehmens zuständig.');
 INSERT INTO ASTROSPHERE.ABTEILUNG(NAME, BESCHREIBUNG) VALUES
-('Design', 'Die Designabteilung konzentriert sich auf die kreative Gestaltung von Produkten, Grafiken oder anderen Elementen, um das  sthetische Erscheinungsbild des Unternehmens zu optimieren.');
+('Design', 'Die Designabteilung konzentriert sich auf die kreative Gestaltung von Produkten, Grafiken oder anderen Elementen, um das ästhetische Erscheinungsbild des Unternehmens zu optimieren.');
 
 
 --
 -- Inserting data into table ASTROSPHERE.GALAXIE
 --
 INSERT INTO ASTROSPHERE.GALAXIE(NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-('Milchstraße', 185000, 2.98365E39, 0, 'Die Milchstraße, auch Galaxis, ist die Galaxie, in der sich das Sonnensystem mit der Erde befindet. Entsprechend ihrer Form als flache Scheibe, die aus Hunderten von Milliarden Sternen besteht, ist die Milchstraße von der Erde aus als bandf rmige Aufhellung am Nachthimmel sichtbar, die sich über 360  erstreckt.');
+('Milchstraße', 185000, 2.98365E39, 0, 'Die Milchstraße, auch Galaxis, ist die Galaxie, in der sich das Sonnensystem mit der Erde befindet. Entsprechend ihrer Form als flache Scheibe, die aus Hunderten von Milliarden Sternen besteht, ist die Milchstraße von der Erde aus als bandförmige Aufhellung am Nachthimmel sichtbar, die sich über 360 Grad erstreckt.');
 INSERT INTO ASTROSPHERE.GALAXIE(NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-('Andromeda', 2E6, 2.98365E47, 2.5E6, 'Die Andromedagalaxie, ist mit rund 2,5 Millionen Lichtjahren Entfernung die am nächsten zur Milchstraße gelegene Galaxie. Sie ist zugleich das entfernteste Objekt, das unter guten Bedingungen ohne technische Hilfsmittel mit blo em Auge beobachtet werden kann. Sie liegt im Sternbild Andromeda, von dem sie ihren Namen erbt. H ufig wird sie auch kurz als M31 bezeichnet nach ihrem Eintrag im Messier-Katalog.');
+('Andromeda', 2E6, 2.98365E47, 2.5E6, 'Die Andromedagalaxie, ist mit rund 2,5 Millionen Lichtjahren Entfernung die am nächsten zur Milchstraße gelegene Galaxie. Sie ist zugleich das entfernteste Objekt, das unter guten Bedingungen ohne technische Hilfsmittel mit bloßem Auge beobachtet werden kann. Sie liegt im Sternbild Andromeda, von dem sie ihren Namen erbt. Häufig wird sie auch kurz als M31 bezeichnet nach ihrem Eintrag im Messier-Katalog.');
 
 
 --
@@ -2152,7 +2152,7 @@ INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
 ('Timroth', 'Gabriele', '+44 0145 989243', 'Peek26@nowhere.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
-('Pfl ger', 'Hadassa', '+971 1 630 1009', 'Rubin432@example.com');
+('Pflüger', 'Hadassa', '+971 1 630 1009', 'Rubin432@example.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
 ('Schlechter', 'Mommo', '+44 423 640 6716', 'LalaHough@nowhere.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
@@ -2160,7 +2160,7 @@ INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
 ('Abicht', 'Ottokar', '+380 80 755-192-4', 'Hammett@example.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
-('K chelbecker', 'Dianara', '+52 07 7638 5917', 'YeseniaMyers536@nowhere.com');
+('Köchelbecker', 'Dianara', '+52 07 7638 5917', 'YeseniaMyers536@nowhere.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
 ('Hirschmann', 'Lisiane', '+971 9 691 6739', 'Stack837@nowhere.com');
 INSERT INTO ASTROSPHERE.KUNDE(NAME, VORNAME, TELEFON_NR, EMAIL) VALUES
@@ -2296,48 +2296,48 @@ INSERT INTO ASTROSPHERE.SNACK(BEZEICHNUNG, BESCHREIBUNG, VERKAUF_PREIS_STK, GROE
 -- Inserting data into table ASTROSPHERE.STERNENBILD
 --
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Steinbock', 10, 'Der Steinbock (auch Ziegenfisch, deshalb oft mit Fischschwanz dargestellt) ist ein unscheinbares Sternbild zwischen dem Wassermann und dem Sch tzen.');
+('Steinbock', 10, 'Der Steinbock (auch Ziegenfisch, deshalb oft mit Fischschwanz dargestellt) ist ein unscheinbares Sternbild zwischen dem Wassermann und dem Schützen.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Wassermann', 15, 'Der Wassermann ist ein ausgedehntes, aber wenig auff lliges Sternbild des herbstlichen Sternenhimmels, das sich s dlich des Pegasus befindet.');
+('Wassermann', 15, 'Der Wassermann ist ein ausgedehntes, aber wenig auffälliges Sternbild des herbstlichen Sternenhimmels, das sich südlich des Pegasus befindet.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
 ('Fische', 20, 'Die Fische liegen auf der Ekliptik, daher ziehen Sonne, Mond und die Planeten durch das Sternbild.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Widder', 4, 'Der Widder ist ein kleines, doch markantes Sternbild. Er liegt s dlich des unauff lligen Sternbildes Dreieck und  stlich der Fische.');
+('Widder', 4, 'Der Widder ist ein kleines, doch markantes Sternbild. Er liegt südlich des unauffälligen Sternbildes Dreieck und östlich der Fische.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Stier', 11, 'Der Stier ist ein Sternbild n rdlich des Orion. Es liegt beidseits der Ekliptik.');
+('Stier', 11, 'Der Stier ist ein Sternbild nördlich des Orion. Es liegt beidseits der Ekliptik.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Zwillinge', 17, 'Die Zwillinge bilden ein lang gezogenes Rechteck. Die auff llig hellen Sterne Castor und Pollux bilden die beiden nord stlichen Eckpunkte. Durch den westlichen Teil der Zwillinge zieht sich das Band der Milchstraße, daher findet man in diesem Bereich mehrere offene Sternhaufen.');
+('Zwillinge', 17, 'Die Zwillinge bilden ein lang gezogenes Rechteck. Die auffällig hellen Sterne Castor und Pollux bilden die beiden nordöstlichen Eckpunkte. Durch den westlichen Teil der Zwillinge zieht sich das Band der Milchstraße, daher findet man in diesem Bereich mehrere offene Sternhaufen.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Krebs', 6, 'Der Krebs ist ein unauff lliges Sternbild, das aus relativ lichtschwachen Sternen gebildet wird. Das Sternbild ist daher etwas schwierig zu entdecken. Am besten findet man es, indem man einer gedachten Linie zwischen den markanten Sternbildern Zwillinge und L we folgt. Die Sterne des Krebses formen ein auf dem Kopf stehendes Y.');
+('Krebs', 6, 'Der Krebs ist ein unauffälliges Sternbild, das aus relativ lichtschwachen Sternen gebildet wird. Das Sternbild ist daher etwas schwierig zu entdecken. Am besten findet man es, indem man einer gedachten Linie zwischen den markanten Sternbildern Zwillinge und Löwe folgt. Die Sterne des Krebses formen ein auf dem Kopf stehendes Y.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('L we', 9, 'Der L we ist ein markantes Sternbild, das am Fr hjahrshimmel leicht erkennbar ist. Aufgrund der Form einer gebogene Linie von Sternen wird mitunter auch als  Sichel  bezeichnet.');
+('Löwe', 9, 'Der Löwe ist ein markantes Sternbild, das am Frühjahrshimmel leicht erkennbar ist. Aufgrund der Form einer gebogene Linie von Sternen wird mitunter auch als Sichel bezeichnet.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Jungfrau', 12, 'Die Jungfrau ist (nach der Wasserschlange) das zweitgrößte Sternbild am Himmel. Sie liegt zwischen dem L wen und der Waage. Die hellsten Sterne sollen eine liegende Person darstellen.');
+('Jungfrau', 12, 'Die Jungfrau ist (nach der Wasserschlange) das zweitgrößte Sternbild am Himmel. Sie liegt zwischen dem Löwen und der Waage. Die hellsten Sterne sollen eine liegende Person darstellen.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
 ('Waage', 4, 'Die Waage ist ein Sternbild zwischen dem Skorpion und der Jungfrau. Die Waage liegt auf der Ekliptik, so dass Sonne, Mond und die Planeten durch sie hindurch ziehen.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Skorpion', 14, 'Der Skorpion ist ein imposantes Sternbild am Südhimmel. Eine gewundene, helle Sternenkette bildet den bekannten Asterismus, der die Gestalt eines Skorpions mit Scheren und aufgerichtetem Stachel erkennen lüsst. Aufgrund seiner s dlichen Lage ist das Sternbild von Mitteleuropa aus nur im Sommer, knapp am S dhorizont zu finden. Es liegt in der N he des Zentrums der Milchstraße und enth lt daher eine Vielzahl an Sternhaufen und Nebeln.');
+('Skorpion', 14, 'Der Skorpion ist ein imposantes Sternbild am Südhimmel. Eine gewundene, helle Sternenkette bildet den bekannten Asterismus, der die Gestalt eines Skorpions mit Scheren und aufgerichtetem Stachel erkennen lässt. Aufgrund seiner südlichen Lage ist das Sternbild von Mitteleuropa aus nur im Sommer, knapp am Südhorizont zu finden. Es liegt in der Nähe des Zentrums der Milchstraße und enthält daher eine Vielzahl an Sternhaufen und Nebeln.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Schlangenträger', 8, 'Der Schlangenträger ist ein sehr ausgedehntes, aber wenig auff lliges Sternbild am Sommerhimmel der Nordhalbkugel. Da seine Sterne weit auseinandergezogen und wenig markant sind, ist es nicht ganz einfach, ihn zwischen dem Herkules und dem Skorpion zu identifizieren. Der Schlangenträger besitzt eine ringf rmige Gestalt, von der westlich und  stlich die Sterne der Schlange ausgehen. Durch den westlichen Teil zieht sich das Band der Milchstraße.');
+('Schlangenträger', 8, 'Der Schlangenträger ist ein sehr ausgedehntes, aber wenig auffälliges Sternbild am Sommerhimmel der Nordhalbkugel. Da seine Sterne weit auseinandergezogen und wenig markant sind, ist es nicht ganz einfach, ihn zwischen dem Herkules und dem Skorpion zu identifizieren. Der Schlangenträger besitzt eine ringförmige Gestalt, von der westlich und östlich die Sterne der Schlange ausgehen. Durch den westlichen Teil zieht sich das Band der Milchstraße.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Sch tze', 15, 'Der Sch tze ist das s dlichste Tierkreis-Sternbild, er liegt zwischen dem Skorpion und dem Steinbock. Die hellsten Sterne des Sch tzen bilden eine Form, die an einen Teekessel erinnert. Im englischen Sprachraum wird er daher h ufig als  Teapot  bezeichnet. Der Sch tze liegt in den sternenreichsten Bereichen der Milchstraße; in dieser Richtung befindet sich das galaktische Zentrum.');
+('Schütze', 15, 'Der Schütze ist das südlichste Tierkreis-Sternbild, er liegt zwischen dem Skorpion und dem Steinbock. Die hellsten Sterne des Schützen bilden eine Form, die an einen Teekessel erinnert. Im englischen Sprachraum wird er daher häufig als Teapot bezeichnet. Der Schütze liegt in den sternenreichsten Bereichen der Milchstraße, in dieser Richtung befindet sich das galaktische Zentrum.');
 INSERT INTO ASTROSPHERE.STERNENBILD(NAME, ANZAHL_STERNE, INFORMATIONEN) VALUES
-('Zentaur', 17, 'Der Zentaur ist ein gro es, sehr auff lliges Sternbild des Südhimmels. Es stellt den weisen Cheiron der griechischen Mythologie dar, den Lehrer von Achill und  skulap. Der Zentaur ist ein ausgedehntes Sternbild, das sich s dlich der Wasserschlange erstreckt.');
+('Zentaur', 17, 'Der Zentaur ist ein großes, sehr auffälliges Sternbild des Südhimmels. Es stellt den weisen Cheiron der griechischen Mythologie dar, den Lehrer von Achill und Äskulap. Der Zentaur ist ein ausgedehntes Sternbild, das sich südlich der Wasserschlange erstreckt.');
 
 
 --
 -- Inserting data into table ASTROSPHERE.TELESKOP
 --
 INSERT INTO ASTROSPHERE.TELESKOP(BEZEICHNUNG, TYP, TAGES_MIET_PREIS, BESCHREIBUNG) VALUES
-('E-ELT European Extremely Large Telescope', 'Spiegelteleskop', 150.00, 'Als Teil des European Southern Observatory (ESO) befindet sich das European Extremely Large Telescope, kurz E-ELT, ebenfalls in Chile. Das Spiegelteleskop befindet sich seit 2017 im Bau und soll mit einem Durchmesser von 39 Metern das bisher groesste Spiegel- sowie Nahinfrarot-Teleskop werden. Dadurch ist es laut ESO moeglich, etwa 13 Mal mehr Licht einzufangen als die groessten optischen Instrumente in der Gegenwart');
+('E-ELT European Extremely Large Telescope', 'Spiegelteleskop', 150.00, 'Als Teil des European Southern Observatory (ESO) befindet sich das European Extremely Large Telescope, kurz E-ELT, ebenfalls in Chile. Das Spiegelteleskop befindet sich seit 2017 im Bau und soll mit einem Durchmesser von 39 Metern das bisher größte Spiegel- sowie Nahinfrarot-Teleskop werden. Dadurch ist es laut ESO möglich, etwa 13 Mal mehr Licht einzufangen als die größten optischen Instrumente in der Gegenwart');
 INSERT INTO ASTROSPHERE.TELESKOP(BEZEICHNUNG, TYP, TAGES_MIET_PREIS, BESCHREIBUNG) VALUES
-('SOFIA Stratosphaeren-Observatorium fuer Infrarot-Astronomie', 'Infrarotteleskop', 185.00, 'Die Kombination aus 2,5-Meter-Teleskop und Boeing 747SP (die kurze Langstrecken-Version) erreicht zwar nicht die Aufloesung vieler bodengestuetzter Systeme, eroeffnet aber Projekte, welche vom Boden aus nicht moeglich waeren. Dabei handelt es sich zum Beispiel um die Beobachtung von Infrarot-Wellenlaengen');
+('SOFIA Stratosphaeren-Observatorium für Infrarot-Astronomie', 'Infrarotteleskop', 185.00, 'Die Kombination aus 2,5-Meter-Teleskop und Boeing 747SP (die kurze Langstrecken-Version) erreicht zwar nicht die Auflösung vieler bodengestützter Systeme, eröffnet aber Projekte, welche vom Boden aus nicht möglich wären. Dabei handelt es sich zum Beispiel um die Beobachtung von Infrarot-Wellenlängen');
 INSERT INTO ASTROSPHERE.TELESKOP(BEZEICHNUNG, TYP, TAGES_MIET_PREIS, BESCHREIBUNG) VALUES
-('FAST Five Hundred Meter Aperture Spherical Telescope', 'Radioteleskop', 230.00, 'Das weltweit groesste Einzel-Radioteleskop weist einen Hauptspiegeldurchmesser von rund 520 Metern auf. Eine an Seilen befestigte und manoevrierbare Fokuskabine bietet zudem einen veraenderbaren Parabolspiegelbereich mit einem Durchmesser von 300 Metern und soll die Aufloesung der empfangenen Signale erhoehen');
+('FAST Five Hundred Meter Aperture Spherical Telescope', 'Radioteleskop', 230.00, 'Das weltweit größte Einzel-Radioteleskop weist einen Hauptspiegeldurchmesser von rund 520 Metern auf. Eine an Seilen befestigte und manövrierbare Fokuskabine bietet zudem einen veränderbaren Parabolspiegelbereich mit einem Durchmesser von 300 Metern und soll die Auflösung der empfangenen Signale erhöhen');
 INSERT INTO ASTROSPHERE.TELESKOP(BEZEICHNUNG, TYP, TAGES_MIET_PREIS, BESCHREIBUNG) VALUES
-('LZT Large Zenith Telescope', 'Fluessigspiegelteleskop', NULL, 'Mit nur sechs Metern Spiegeldurchmesser zaehlt das Large Zenith Telescope auf rund 400 Metern ueber dem Meeresspiegel im kanadischen Malcolm Knapp Research Forest zwar nicht zu den groessten Teleskopen ueberhaupt. Im Bereich der Zenit-Teleskope ist es mit einem Gewicht von rund drei Tonnen das weltweit Groesste');
+('LZT Large Zenith Telescope', 'Flüssigspiegelteleskop', NULL, 'Mit nur sechs Metern Spiegeldurchmesser zaehlt das Large Zenith Telescope auf rund 400 Metern über dem Meeresspiegel im kanadischen Malcolm Knapp Research Forest zwar nicht zu den größten Teleskopen überhaupt. Im Bereich der Zenit-Teleskope ist es mit einem Gewicht von rund drei Tonnen das weltweit Größte');
 INSERT INTO ASTROSPHERE.TELESKOP(BEZEICHNUNG, TYP, TAGES_MIET_PREIS, BESCHREIBUNG) VALUES
-('EHT Event Horizon Telescope', 'Radioteleskop', 270.00, 'Ein besonderer Vertreter der Interferometrie (Very Long Baseline Interferometry, VLBI) nutzt einen Verbund aus Radioteleskopen, um schwarze Loecher zu untersuchen. Die einzelnen Antennen des Event Horizon Telescope (EHT) befinden sich ueber den gesamten Globus verteilt, um dadurch eine moeglichst grosse Winkelaufloesung zu erhalten. Die Genauigkeit liegt hier bei einem Vielfachen eines konventionellen Radioteleskops');
+('EHT Event Horizon Telescope', 'Radioteleskop', 270.00, 'Ein besonderer Vertreter der Interferometrie (Very Long Baseline Interferometry, VLBI) nutzt einen Verbund aus Radioteleskopen, um schwarze Löcher zu untersuchen. Die einzelnen Antennen des Event Horizon Telescope (EHT) befinden sich über den gesamten Globus verteilt, um dadurch eine möglichst große Winkelauflösung zu erhalten. Die Genauigkeit liegt hier bei einem Vielfachen eines konventionellen Radioteleskops');
 
 
 --
@@ -2357,7 +2357,7 @@ INSERT INTO ASTROSPHERE.TICKETSTUFE(STUFE, ZEITRAUM, PREIS, IMAGE_PATH) VALUES
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (NULL, 1, 'Terminal', 'Terminal', 0.00);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(2, 10, 'Leist', 'Joerge', 3069.86);
+(2, 10, 'Leist', 'Jörge', 3069.86);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (2, 1, 'Kleinermann', 'Felin', 3013.03);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
@@ -2395,7 +2395,7 @@ INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHAL
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (3, 3, 'Peiper', 'Tius', 3159.57);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(4, 8, 'Meissner', 'J rg', 4648.37);
+(4, 8, 'Meissner', 'Jörg', 4648.37);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (7, 2, 'Schmitz', 'Danja', 4341.74);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
@@ -2403,7 +2403,7 @@ INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHAL
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (9, 7, 'Buchmeyer', 'Deborian', 3636.45);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(8, 3, 'Adler', 'D rtlis', 5558.98);
+(8, 3, 'Adler', 'Dörtlis', 5558.98);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (9, 6, 'Buchner', 'Eligius', 4791.42);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
@@ -2423,13 +2423,13 @@ INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHAL
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (2, 5, 'Scholl', 'Skyla', 5656.05);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(5, 4, 'Lemm', 'B rbel', 3533.38);
+(5, 4, 'Lemm', 'Bärbel', 3533.38);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(9, 6, 'B chner', 'Helmute', 5743.36);
+(9, 6, 'Büchner', 'Helmute', 5743.36);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (10, 9, 'Altmann', 'Eustachius', 3819.31);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(8, 9, 'Tr bner', 'Thees', 3833.11);
+(8, 9, 'Trübner', 'Thees', 3833.11);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (7, 8, 'Kleist', 'Edelgard', 4736.6);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
@@ -2437,7 +2437,7 @@ INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHAL
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (3, 8, 'Klemperer', 'Lusia', 3447.84);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(4, 7, 'Sch n', 'Annafee', 2050.44);
+(4, 7, 'Schön', 'Annafee', 2050.44);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (5, 3, 'Lenz', 'Jolena', 4057.05);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
@@ -2451,7 +2451,7 @@ INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHAL
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (9, 1, 'Klinger', 'Kresandra', 5048);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
-(10, 7, 'Pfeifer', 'R der', 3890.54);
+(10, 7, 'Pfeifer', 'Röder', 3890.54);
 INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHALT) VALUES
 (4, 2, 'Melzer', 'Eyck', 2281.82);
 
@@ -2460,24 +2460,24 @@ INSERT INTO ASTROSPHERE.ANGESTELLTER(CHEF_ID, ABTEILUNG_ID, NAME, VORNAME, GEHAL
 -- Inserting data into table ASTROSPHERE.NEBEL
 --
 INSERT INTO ASTROSPHERE.NEBEL(GALAXIE_ID, NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-(1, 'Ringnebel', 0.9, 3.9782E29, 2300, 'Der Ringnebel ist ein Planetarischer Nebel im Sternbild Leier. Der Nebel ist der überrest eines Sterns, der vor etwa 20.000 Jahren seine äußere Gash lle abgesto en hat. ');
+(1, 'Ringnebel', 0.9, 3.9782E29, 2300, 'Der Ringnebel ist ein Planetarischer Nebel im Sternbild Leier. Der Nebel ist der überrest eines Sterns, der vor etwa 20.000 Jahren seine äußere Gashülle abgesto en hat. ');
 INSERT INTO ASTROSPHERE.NEBEL(GALAXIE_ID, NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-(1, 'S dlicher Ringnebel', 0.5, NULL, 2000, 'Der S dlicher Ringnebel, benannt aufgrund seiner  hnlichkeit zum Ringnebel, ist ein Planetarischer Nebel im Sternbild Segel des Schiffs am S dsternhimmel. Er ist etwa 2000 Lichtjahre von der Sonne entfernt, hat einen Durchmesser von fast einem halben Lichtjahr und expandiert mit einer Geschwindigkeit von rund 15 Kilometern pro Sekunde.');
+(1, 'Südlicher Ringnebel', 0.5, NULL, 2000, 'Der Südlicher Ringnebel, benannt aufgrund seiner Ähnlichkeit zum Ringnebel, ist ein Planetarischer Nebel im Sternbild Segel des Schiffs am Südsternhimmel. Er ist etwa 2000 Lichtjahre von der Sonne entfernt, hat einen Durchmesser von fast einem halben Lichtjahr und expandiert mit einer Geschwindigkeit von rund 15 Kilometern pro Sekunde.');
 INSERT INTO ASTROSPHERE.NEBEL(GALAXIE_ID, NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-(1, 'Orionnebel', 24, 1.39237E33, 1350, 'Der Orionnebel ist ein Emissionsnebel im Sternbild Orion. Er befindet sich   wie das Sonnensystem selbst   im Orionarm der Milchstraße.');
+(1, 'Orionnebel', 24, 1.39237E33, 1350, 'Der Orionnebel ist ein Emissionsnebel im Sternbild Orion. Er befindet sich, wie das Sonnensystem selbst, im Orionarm der Milchstraße.');
 INSERT INTO ASTROSPHERE.NEBEL(GALAXIE_ID, NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-(1, 'Lambda-Centauri-Nebel', NULL, NULL, 6500, 'Der Lambda-Centauri-Nebel ist ein Emissionsnebel mit eingebettetem Sternhaufen im Sternbild Zentaur am S dsternhimmel.');
+(1, 'Lambda-Centauri-Nebel', NULL, NULL, 6500, 'Der Lambda-Centauri-Nebel ist ein Emissionsnebel mit eingebettetem Sternhaufen im Sternbild Zentaur am Südsternhimmel.');
 INSERT INTO ASTROSPHERE.NEBEL(GALAXIE_ID, NAME, DURCHMESSER_LJ, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-(1, 'Carinanebel', 250, NULL, 8500, 'Der Carinanebel, auch Eta-Carinae-Nebel, ist ein Emissionsnebel im Sternbild Kiel des Schiffs. Eine Aufnahme des Carinanebels war unter den ersten fünf Bildern des James-Webb-Weltraumteleskop, die 2022 der  ffentlichkeit vorgestellt wurden.');
+(1, 'Carinanebel', 250, NULL, 8500, 'Der Carinanebel, auch Eta-Carinae-Nebel, ist ein Emissionsnebel im Sternbild Kiel des Schiffs. Eine Aufnahme des Carinanebels war unter den ersten fünf Bildern des James-Webb-Weltraumteleskop, die 2022 der Öffentlichkeit vorgestellt wurden.');
 
 
 --
 -- Inserting data into table ASTROSPHERE.KOMET
 --
 INSERT INTO ASTROSPHERE.KOMET(NAME, GALAXIE_ID, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_J, INFORMATIONEN) VALUES
-('Halley', 1, 7.2, 2E14, 75.32, 'Der Komet Halley, auch Halleyscher Komet, zählt seit langem zu den bekanntesten Kometen. Er ist sehr lichtstark und kehrt im Mittel alle 75,3 Jahre wieder. Zuletzt kam er 1986 in Erdn he; seine nächste Wiederkehr wurde für das Jahr 2061 berechnet.');
+('Halley', 1, 7.2, 2E14, 75.32, 'Der Komet Halley, auch Halleyscher Komet, zählt seit langem zu den bekanntesten Kometen. Er ist sehr lichtstark und kehrt im Mittel alle 75,3 Jahre wieder. Zuletzt kam er 1986 in Erdnähe, seine nächste Wiederkehr wurde für das Jahr 2061 berechnet.');
 INSERT INTO ASTROSPHERE.KOMET(NAME, GALAXIE_ID, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_J, INFORMATIONEN) VALUES
-('Encke', 1, 4.8, NULL, 3.3, 'Der Enckesche Komet ist ein nach Johann Franz Encke benannter kurzperiodischer Komet. Er hat eine der k rzesten Umlaufzeiten aller bekannten Kometen.');
+('Encke', 1, 4.8, NULL, 3.3, 'Der Enckesche Komet ist ein nach Johann Franz Encke benannter kurzperiodischer Komet. Er hat eine der kürzesten Umlaufzeiten aller bekannten Kometen.');
 INSERT INTO ASTROSPHERE.KOMET(NAME, GALAXIE_ID, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_J, INFORMATIONEN) VALUES
 ('Biela', 1, NULL, NULL, 6.65, 'Biela (auch Bielascher Komet genannt) war ein Komet, der zwischen 1772 und 1832 viermal beobachtet worden war. Bei seiner erneuten Wiederkehr 1846 wurde festgestellt, dass er in zwei Teile zerbrochen war, die dann 1852 noch einmal beobachtet werden konnten. Seither wurde nichts mehr von diesem Kometen gesehen, er gilt als verloren.');
 INSERT INTO ASTROSPHERE.KOMET(NAME, GALAXIE_ID, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_J, INFORMATIONEN) VALUES
@@ -2560,7 +2560,7 @@ INSERT INTO ASTROSPHERE.PLANET(PLANETENSYSTEM_ID, ZENTRUMSPLANET_ID, NAME, DURCH
 INSERT INTO ASTROSPHERE.PLANET(PLANETENSYSTEM_ID, ZENTRUMSPLANET_ID, NAME, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_TAGE, TEMPERATUR_CELSIUS, FALLBESCHLEUNIGUNG, INFORMATIONEN) VALUES
 (1, NULL, 'Neptun', 49244, 1.0241E26, 59800, -200, 11.15, 'Der Neptun ist der achte und äußerste bekannte Planet unseres Sonnensystems. Nach Jupiter, Saturn und Uranus ist Neptun der viertgrößte Planet des Sonnensystems. Zusammen mit Uranus bildet Neptun die Untergruppe der Eisriesen.');
 INSERT INTO ASTROSPHERE.PLANET(PLANETENSYSTEM_ID, ZENTRUMSPLANET_ID, NAME, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_TAGE, TEMPERATUR_CELSIUS, FALLBESCHLEUNIGUNG, INFORMATIONEN) VALUES
-(2, NULL, 'Proxima Centauri b', 14016.2, 6.987474E24, 11.184, -39, NULL, 'Proxima Centauri b ist der nach aktuellem Forschungsstand erdnächste erwiesene Exoplanet. Er umkreist den etwa 4,2 Lichtjahre von der Erde entfernten Stern Proxima Centauri innerhalb dessen habitabler Zone und wurde im August 2016 mit der Radialgeschwindigkeitsmethode nachgewiesen. Auf ihm k nnte flüssiges Wasser existieren, eine wichtige Voraussetzung für erdähnliches Leben.');
+(2, NULL, 'Proxima Centauri b', 14016.2, 6.987474E24, 11.184, -39, NULL, 'Proxima Centauri b ist der nach aktuellem Forschungsstand erdnächste erwiesene Exoplanet. Er umkreist den etwa 4,2 Lichtjahre von der Erde entfernten Stern Proxima Centauri innerhalb dessen habitabler Zone und wurde im August 2016 mit der Radialgeschwindigkeitsmethode nachgewiesen. Auf ihm könnte flüssiges Wasser existieren, eine wichtige Voraussetzung für erdähnliches Leben.');
 INSERT INTO ASTROSPHERE.PLANET(PLANETENSYSTEM_ID, ZENTRUMSPLANET_ID, NAME, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_TAGE, TEMPERATUR_CELSIUS, FALLBESCHLEUNIGUNG, INFORMATIONEN) VALUES
 (2, NULL, 'Proxima Centauri c', 22948.932, 4.18054E25, 1928, -234, NULL, 'Proxima Centauri c ist ein Exoplanet, der gemeinsam mit Proxima Centauri b den roten Zwergstern Proxima Centauri, welcher der Sonne am nächsten gelegen und Teil eines Dreifachsternsystems ist, umkreist.');
 INSERT INTO ASTROSPHERE.PLANET(PLANETENSYSTEM_ID, ZENTRUMSPLANET_ID, NAME, DURCHMESSER_KM, MASSE_KG, UMLAUFZEIT_TAGE, TEMPERATUR_CELSIUS, FALLBESCHLEUNIGUNG, INFORMATIONEN) VALUES
@@ -2587,7 +2587,7 @@ INSERT INTO ASTROSPHERE.PLANET(PLANETENSYSTEM_ID, ZENTRUMSPLANET_ID, NAME, DURCH
 INSERT INTO ASTROSPHERE.STERN(STERNENBILD_ID, PLANETENSYSTEM_ID, NAME, TYP, DURCHMESSER_KM, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
 (NULL, 1, 'Sonne', 'Gelber Zwerck', 13926844, 1.9884E30, 1.58E-5, 'Die Sonne ist der Stern, der der Erde am nächsten ist und das Zentrum des Sonnensystems bildet. Sie ist ein durchschnittlich großer Stern im äußeren Drittel der Milchstraße. Die Sonne ist ein Zwergstern, der sich im Entwicklungsstadium der Hauptreihe befindet.');
 INSERT INTO ASTROSPHERE.STERN(STERNENBILD_ID, PLANETENSYSTEM_ID, NAME, TYP, DURCHMESSER_KM, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
-(14, 2, 'Alpha Centauri A', 'Gelber Zwerck', 16990749.68, 2.18801E30, 4.344, 'Alpha Centauri A ist wie die Sonne ein Gelber Zwerg, damit gehört er wie die Sonne zu den hei eren G-Sternen. Da Alpha Centauri A vom gleichen Spektraltyp ist und ähnliche Dimensionen wie die Sonne hat, gilt er als der erdnächste  Sonnenzwilling  (was aber nicht bedeutet, dass sie zusammen entstanden sind). Seine Oberflächentemperatur beträgt etwa 5800 K.');
+(14, 2, 'Alpha Centauri A', 'Gelber Zwerck', 16990749.68, 2.18801E30, 4.344, 'Alpha Centauri A ist wie die Sonne ein Gelber Zwerg, damit gehört er wie die Sonne zu den heißeren G-Sternen. Da Alpha Centauri A vom gleichen Spektraltyp ist und ähnliche Dimensionen wie die Sonne hat, gilt er als der erdnächste Sonnenzwilling (was aber nicht bedeutet, dass sie zusammen entstanden sind). Seine Oberflächentemperatur beträgt etwa 5800 K.');
 INSERT INTO ASTROSPHERE.STERN(STERNENBILD_ID, PLANETENSYSTEM_ID, NAME, TYP, DURCHMESSER_KM, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
 (14, 3, 'Alpha Centauri B', NULL, 11977085.84, 1.849863E30, 4.344, 'Alpha Centauri B ist die Nummer 21 in der Liste der hellsten Sterne am Himmel. Mit einer Oberflächentemperatur von etwa 5300 K ist er nur wenig kühler als die Sonne. Er erreicht wegen der geringeren Temperatur und der kleineren Oberfläche jedoch nur 50 % der Sonnenstrahlungsleistung.');
 INSERT INTO ASTROSPHERE.STERN(STERNENBILD_ID, PLANETENSYSTEM_ID, NAME, TYP, DURCHMESSER_KM, MASSE_KG, ENTFERNUNG_LJ, INFORMATIONEN) VALUES
