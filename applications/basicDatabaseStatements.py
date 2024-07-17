@@ -283,7 +283,7 @@ create table SNACK (
    BESCHREIBUNG         VARCHAR2(200)         not null,
    VERKAUF_PREIS_STK     NUMBER(5,2)           not null,
    GROESSE              CHAR(1)               check ((GROESSE in ('M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
-   IMAGE_PATH           VARCHAR(100)           not null,
+   IMAGE_PATH           VARCHAR2(100)           not null,
    constraint PK_SNACK primary key (ID)
 );
 
@@ -293,10 +293,10 @@ create table SNACK (
 create table MERCHARTIKEL (
    ID                   NUMBER(8)            GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 2 MINVALUE 1) not null,
    BEZEICHNUNG          VARCHAR2(100)         not null,
-   BESCHREIBUNG         VARCHAR(200)          not null,
+   BESCHREIBUNG         VARCHAR2(200)          not null,
    GROESSE              CHAR(1)               check ((GROESSE in ('S','M','L') AND GROESSE = upper(GROESSE)) OR GROESSE is null),
    VERKAUF_PREIS_STK    NUMBER(5,2)           not null,
-   IMAGE_PATH           VARCHAR(100)             not null,
+   IMAGE_PATH           VARCHAR2(100)             not null,
    constraint PK_MERCHARTIKEL primary key (ID)
 );
 
@@ -473,7 +473,7 @@ create table MEDIUM (
    KOMET_ID             NUMBER(8),
    FORMAT               CHAR(6)               not null,
    TYP                  CHAR(10)              check (TYP in ('Video','Bild','Audio','3D-Modell','Dokument')) not null,
-   IMAGE_PATH           VARCHAR(100)             not null,
+   IMAGE_PATH           VARCHAR2(100)             not null,
    constraint PK_MEDIUM primary key (ID),
    constraint FK_MEDIUM_MEDIUM____STERNENB foreign key (STERN_ID)
          references STERNENBILD (ID),
