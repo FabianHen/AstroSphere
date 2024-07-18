@@ -929,14 +929,13 @@ create index MIETET_TELESKOP_FK on VERMIETUNG_TELESKOP (
 
 sql_create_Views="""
 -- View zur Anzeige der aktuell nicht vermieteten Räume
-CREATE VIEW FREIE_RAEUME AS
-SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
-FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
-LEFT JOIN VERMIETUNG_RAUM_AN_MITARBEITER ON RAUM.id = VERMIETUNG_RAUM_AN_MITARBEITER.raum_id
-WHERE (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < current_date OR
-    (VERMIETUNG_RAUM_AN_MITARBEITER.datum < current_date)
-GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
-ORDER BY RAUM.id;
+CREATE VIEW freie_raeume AS
+SELECT raum.id, raum.abteilung_id, raum.bezeichnung, raum.kapazitat, raum.miet_preis
+FROM Raum raum
+LEFT JOIN vermietung_raum_an_mitarbeiter vermietung
+ON raum.id = vermietung.raum_id
+AND TRUNC(SYSDATE) BETWEEN vermietung.datum AND (vermietung.datum + vermietung.dauer_tage - 1)
+WHERE vermietung.raum_id IS NULL;
 
 -- View zur Anzeige der Planetensysteme
 CREATE OR REPLACE VIEW PLANETENSYSTEME AS
