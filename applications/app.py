@@ -470,7 +470,7 @@ def buyOrCheck():
     try:
         action = request.json.get('action')
         data = request.json.get('data')
-        newKunde = request.json.get('kunde')
+        newKunde = request.json.get('Customer')
 
         result = False
 
@@ -495,7 +495,7 @@ def check_data(data):
 
 
     for aktItem in data['shoppingCart']:
-        shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['größe'], aktItem['anzahl']))
+        shoppingCartItems.append((aktItem['id'], aktItem['type'], aktItem['size'], aktItem['amount']))
 
     for shoppingItem in shoppingCartItems:
         itemName=str(shoppingItem[1])
@@ -554,7 +554,7 @@ def buyShoppingCart(data):
         if OrderNum>9999:
             OrderNum=0
         for aktItem in data['shoppingCart']:
-            params=[int(aktItem['id']), int(aktItem['anzahl'])]
+            params=[int(aktItem['id']), int(aktItem['amount'])]
             if "Ticket" in aktItem['type']:
                 if 'Tag' in aktItem['type']:
                     params[0]="Tag"

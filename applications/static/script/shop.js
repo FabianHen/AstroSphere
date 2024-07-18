@@ -208,7 +208,7 @@ function removeItemFromCart(type, size, num) {
             return;
         }
     }
-    console.log(`Article ${type} nicht gefunden.`);
+    console.log(`Article ${type} not found.`);
 }
 
 /**
@@ -224,11 +224,11 @@ function createItems() {
         newHTMLItem += "' alt='item image' id='item_" + i + "Img'>\n";
         newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>" + shoppingCart[i].type + "</h3>\n";
         newHTMLItem += "\t\t<div class='line'></div>\n";
-        newHTMLItem += "\t\t<p class='description' id='item_" + i + "Desc'><b>description</b><br>" + shoppingCart[i].description + "</p>\n";
+        newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].description + "</p>\n";
         if (shoppingCart[i].size != "") {
-            newHTMLItem += "\t\t<p class='size' id='item_" + i + "Gr'>size: " + shoppingCart[i].size + "</p>\n";
+            newHTMLItem += "\t\t<p class='groesse' id='item_" + i + "Gr'>Größe: " + shoppingCart[i].size + "</p>\n";
         }
-        newHTMLItem += "\t\t<p class='price' id='item_" + i + "price'>price: " + shoppingCart[i].price + "</p>\n";
+        newHTMLItem += "\t\t<p class='preis' id='item_" + i + "price'>Preis: " + shoppingCart[i].price + "</p>\n";
         newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].amount + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
         newHTMLItem += "\t\t<img src='../static/images/trashcan_bold.svg' alt='delete' class='delete' onclick='deleteItem(" + i + ")' width='25' height='25'>\n"
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: none;'>Auf Lager</p>\n";
@@ -539,7 +539,7 @@ function processSnacks(data) {
                     <img class="product_image" src="${snack.IMAGE_PATH}" alt="${snack.BEZEICHNUNG} Bild" width="150" height="150">
                     <label class="product_name" for="">${snack.BEZEICHNUNG}</label>
                     <div>
-                        <label class="product_price" for="">${snack.VERKAUF_price_STK} €</label>
+                        <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
                       `
             if (!specialItems.includes(snack.BEZEICHNUNG)) {
                 tempHTML += `
@@ -551,12 +551,12 @@ function processSnacks(data) {
                             </select>
 
                         </div>
-                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.description}', document.getElementById('size_${snack.ID}').value, '${snack.VERKAUF_price_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
+                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', document.getElementById('size_${snack.ID}').value, '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
             else {
                 tempHTML += `</div>
-                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.description}', 'Standard', '${snack.VERKAUF_price_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
+                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', 'Standard', '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
 
@@ -577,15 +577,14 @@ function processSizeChange(data, sizeID, size) {
     var product_card = document.getElementById(sizeID).parentElement.parentElement;
     var bezeichnung = product_card.querySelector('.product_name').innerHTML;
     data.forEach(article => {
-        if (article.BEZEICHNUNG == bezeichnung && article.size == size) {
-            console.log(article.ID, article.BEZEICHNUNG, article.size)
+        if (article.BEZEICHNUNG == bezeichnung && article.GROESSE == size) {
             product_card.querySelector('.product_image').setAttribute('src', `${article.IMAGE_PATH}`);
             product_card.querySelector('.product_image').setAttribute('alt', `${article.BEZEICHNUNG}`);
             product_card.querySelector('.product_name').innerHTML = `${article.BEZEICHNUNG}`;
-            product_card.querySelector('.product_price').innerHTML = `${article.VERKAUF_price_STK}`;
+            product_card.querySelector('.product_price').innerHTML = `${article.VERKAUF_PREIS_STK}`;
             product_card.querySelector('.product_size').id = `size_${article.ID}`;
-            product_card.querySelector('.product_size').value = `${article.size}`;
-            product_card.querySelector('button').setAttribute('onclick', `add('${article.ID}', '${article.BEZEICHNUNG}', '${article.description}', document.getElementById('size_${article.ID}').value, '${article.VERKAUF_price_STK}', 1, '${article.IMAGE_PATH}')`);
+            product_card.querySelector('.product_size').value = `${article.GROESSE}`;
+            product_card.querySelector('button').setAttribute('onclick', `add('${article.ID}', '${article.BEZEICHNUNG}', '${article.BESCHREIBUNG}', document.getElementById('size_${article.ID}').value, '${article.VERKAUF_PREIS_STK}', 1, '${article.IMAGE_PATH}')`);
         }
     });
 }
@@ -661,7 +660,7 @@ function processMerch(data) {
                     <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild" width="150" height="150">
                     <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
                     <div>
-                        <label class="product_price" for="">${merch.VERKAUF_price_STK} €</label>
+                        <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
                             `
             if (!specialItems.includes(merch.BEZEICHNUNG)) {
                 tempHTML += `
@@ -673,12 +672,12 @@ function processMerch(data) {
                                 </optgroup>
                                 </select>
                         </div>
-                        <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.description}', document.getElementById('size_${merch.ID}').value, '${merch.VERKAUF_price_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
+                        <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', document.getElementById('size_${merch.ID}').value, '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
             else {
                 tempHTML += `</div>
-                                <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.description}', 'Standard', '${merch.VERKAUF_price_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
+                                <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', 'Standard', '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
                         </div>`;
             }
 
@@ -725,13 +724,13 @@ function processTickets(data) {
         if (!tempHTML.includes(ticket.STUFE)) {
             tempHTML += `
             <div class="ticket_card">
-                <div class="pricetag">${ticket.price}€</div>
+                <div class="pricetag">${ticket.PREIS}€</div>
                 <div class="ticket_column">
                     <h1>${ticket.STUFE}</h1>
                     <h2>This ticket allows you to visit all events in the next ${ticket.ZEITRAUM} day(s)</h2>
                     <p>Note that tickets are handed out at the register when showing your receit like other products.
                     </p>
-                    <button type="button" style="margin-top: auto" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.price}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
+                    <button type="button" style="margin-top: auto" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.PREIS}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
                 </div>
                 <div class="ticket_column" id="${ticket.STUFE}_events">
                     <div>
