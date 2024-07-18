@@ -439,14 +439,13 @@ async function bookRoom(index){
     try {
         const room = globalDataRooms[index];
         const dateInput = document.getElementById('bookRoomInput').value;
-         const elem_date = new Date(dateInput);
+         const date = new Date(dateInput);
 
         // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
-        const formattedDate = ('0' + elem_date.getDate()).slice(-2) + '/' +
-            ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
-            elem_date.getFullYear() + ' ' +
-            ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
-
+        const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
+            ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+            date.getFullYear();
+            
         if(searchForFreeRooms(dateInput, index)){
         const response = await fetch('/intern/rooms/book_room', {
             method: 'POST',
