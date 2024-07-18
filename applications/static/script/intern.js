@@ -74,20 +74,6 @@ async function initEventsPage() {
 
     dateInput.min = getCurrentDateTime();
 
-    function checkInputs() {
-        // Überprüfe, ob beide Eingabefelder Inhalt haben
-        if (name.value.trim() !== '' && description.value.trim() !== '') {
-            continue_thema.disabled = false;
-            nav_media.classList.remove('disabled');
-
-        } else {
-            continue_thema.disabled = true;
-            nav_media.classList.add('disabled');
-            nav_date.classList.add('disabled');
-            nav_room.classList.add('disabled');
-        }
-    }
-
     function checkDate() {
         // Überprüfe, ob beide Eingabefelder Inhalt haben
         if (dateInput.value.trim() !== '') {
@@ -116,6 +102,28 @@ async function initEventsPage() {
     dateInput.addEventListener('input', checkDate);
 
     generateEventTable(true, true);
+}
+
+function checkInputs() {
+    const name = document.getElementById('name');
+    const description = document.getElementById('description');
+    const continue_thema = document.getElementById('continue-thema');
+    const nav_thema = document.getElementById('nav-thema');
+    const nav_media = document.getElementById('nav-media');
+    const nav_date = document.getElementById('nav-date');
+    const nav_room = document.getElementById('nav-room');
+
+    // Überprüfe, ob beide Eingabefelder Inhalt haben
+    if (name.value.trim() !== '' && description.value.trim() !== '') {
+        continue_thema.disabled = false;
+        nav_media.classList.remove('disabled');
+
+    } else {
+        continue_thema.disabled = true;
+        nav_media.classList.add('disabled');
+        nav_date.classList.add('disabled');
+        nav_room.classList.add('disabled');
+    }
 }
 
 async function getEventDetails(eventId) {
@@ -241,6 +249,7 @@ function changeLeftComponent() {
     const nav_events = document.getElementById('nav-events');
     nav_create_event.classList.toggle('disabled');
     nav_events.classList.toggle('disabled');
+    resetEvents();
 }
 
 async function getMedium(mediaItem) {
@@ -1001,7 +1010,6 @@ async function saveEvent(roomID) {
         const name = document.getElementById('name');
         const beschreibung = document.getElementById('description');
         const date = document.getElementById('eventTime');
-        const mediaItems = document.querySelectorAll('.media-item active');
         console.log("Name: " + name.value);
         console.log("Beschreibung: " + beschreibung.value);
         console.log("Datum: " + date.value);
@@ -1009,30 +1017,49 @@ async function saveEvent(roomID) {
         const elem_date = new Date(date.value);
 
         // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
-        const formattedDate = ('0' + elem_date.getDate()).slice(-2) + '/' +
+        const formattedDate_event = ('0' + elem_date.getDate()).slice(-2) + '/' +
             ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
             elem_date.getFullYear() + ' ' +
             ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
+
+
+        const formattedDate_room = ('0' + elem_date.getDate()).slice(-2) + '/' +
+        ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
+        elem_date.getFullYear();
 
         const response = await fetch('/intern/events/book_event', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ datum: formattedDate, raum_id: roomID, name: name.value, beschreibung: beschreibung.value})
+            body: JSON.stringify({ datum: formattedDate_event, raum_id: roomID, name: name.value, beschreibung: beschreibung.value})
         });
 
         if (response.ok) {
             const result = await response.json();
             console.log('Event booked successfully:', result);
-            for (const medium_id of activeMedia) {
-                const response_medium = await fetch('/intern/events/book_medium', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ medium_id: parseInt(medium_id)})
-                });
+            
+            const response_room = await fetch('/intern/rooms/book_room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ raum_id: roomID, date: formattedDate_room})
+            });
+
+            if (response_room.ok) {
+                
+                for (const medium_id of activeMedia) {
+                    const response_medium = await fetch('/intern/events/book_medium', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ medium_id: parseInt(medium_id)})
+                    });
+                }
+
+                resetEvents();
             }
         } else {
             console.error('Server error:', response.status);
@@ -1041,6 +1068,17 @@ async function saveEvent(roomID) {
         console.error('Error:', error);
         return null;
     }
+}
+
+function resetEvents() {
+    document.getElementById('name').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('eventTime').value = '';
+    let mediaItems = document.querySelectorAll('.media-item');
+    mediaItems.forEach(mediaItem => { 
+         mediaItem.classList.remove('active');
+    });
+    checkInputs();
 }
 
 var globalDataTelescopes = [];
