@@ -19,6 +19,7 @@ function goBack() {
  */
 function collapseFilter(filter) {
     if (filter) {
+        // Clears the timers used for updating the ticket events
         clearInterval(event_day_timer)
         clearInterval(event_month_timer)
         clearInterval(event_year_timer)
@@ -28,11 +29,12 @@ function collapseFilter(filter) {
         }
         let content = document.getElementById(filter);
         if (content) {
+            // hide filters if they are open
             if (content.style.display == 'flex') {
                 content.style.display = 'none';
                 history.replaceState(null, '', document.location.origin + document.location.pathname);
+                //Show filters if they are not open and display corresponding items
             } else {
-                // document.getElementsByClassName('filter_content').forEach(f => { f.style.display = 'none'; });
                 content.style.display = 'flex';
                 history.replaceState(null, '', `?selected=${filter}`);
                 switch (filter) {
@@ -58,6 +60,7 @@ let sleep_timeout;
  */
 function resetTimers() {
     let sleepDiv = document.getElementById("sleepTimer")
+    // clear sleep timer if it has already been activated
     if (sleepDiv && sleepDiv.style.display == "flex") {
         sleepDiv.style.display = "none";
         clearTimeout(sleep_timeout);
@@ -73,15 +76,18 @@ function resetTimers() {
  */
 function sleepTimer() {
     clearTimeout(idle_timeout);
+    // one round = one second
     let rounds_total = SLEEPTIMER / 1000;
     let current_round = rounds_total;
     document.getElementById("sleepTimer").style.display = "flex";
     sleep_timeout = setInterval(function () {
         current_round--;
         const factor = 1 - (current_round / rounds_total);
+        // Calculate the current color of the timer
         const interpolatedColor = interpolateColor(STARTCOLOR, ENDCOLOR, factor);
         document.getElementById("timer").style.color = rgbToHex(interpolatedColor.r, interpolatedColor.g, interpolatedColor.b);
         document.getElementById("timer").innerHTML = current_round
+        // Send user back to home if the timer has finished
         if (current_round < 0) {
             clearInterval(sleep_timeout);
             document.getElementById("sleepTimer").style.display = "none";
@@ -133,24 +139,24 @@ window.addEventListener("load", function (e) {
 shoppingCart = [];
 var numberOfItems = 0;
 
-class Artikel {
-    constructor(id, type, beschreibung, größe, preis, anzahl, imagePath) {
+class Article {
+    constructor(id, type, description, size, price, amount, imagePath) {
         this.id = id;
         this.type = type;
-        this.beschreibung = beschreibung;
-        this.größe = größe;
-        this.preis = preis;
-        this.anzahl = anzahl;
+        this.description = description;
+        this.size = size;
+        this.price = price;
+        this.amount = amount;
         this.image = imagePath;
     }
 }
 
-class Kunde {
-    constructor(vorname, nachname, email, telefonnummer) {
-        this.vorname = vorname;
-        this.nachname = nachname;
+class Customer {
+    constructor(firstname, lastname, email, phonenumber) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
-        this.telefonnummer = telefonnummer;
+        this.phonenumber = phonenumber;
     }
 }
 
@@ -158,18 +164,19 @@ class Kunde {
  * Adds an item to the shopping cart. If this Item has been added to the shoppingcart previously, 
  * the amount of this item will be increased
  */
-function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath) {
-    aktItem = new Artikel(id, type, beschreibung, größe, preis, anzahl, imagePath);
+function addItemToCart(id, type, description, size, price, amount, imagePath) {
+    aktItem = new Article(id, type, description, size, price, amount, imagePath);
+    // Check if given article is already part of the shoppingcart
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        if (item.type == aktItem.type && item.größe == aktItem.größe) {
-            item.anzahl += aktItem.anzahl;
-            numberOfItems += aktItem.anzahl;
+        if (item.type == aktItem.type && item.size == aktItem.size) {
+            item.amount += aktItem.amount;
+            numberOfItems += aktItem.amount;
             createItems();
             return;
         }
     }
-    numberOfItems += aktItem.anzahl;
+    numberOfItems += aktItem.amount;
     shoppingCart.push(aktItem);
     createItems();
     var cart_badge = document.querySelector('.cart_badge');
@@ -180,26 +187,28 @@ function addItemToCart(id, type, beschreibung, größe, preis, anzahl, imagePath
 /**
  * Removes a given item from the cart and updates the cart badge 
  * @param {} type the type of the item
- * @param {*} größe the size of the item
+ * @param {*} size the size of the item
  * @param {*} num the amount to be removed
  */
-function removeItemFromCart(type, größe, num) {
+function removeItemFromCart(type, size, num) {
     for (let i = 0; i < shoppingCart.length; i++) {
         const item = shoppingCart[i];
-        if (item.type === type && item.größe == größe) {
-            item.anzahl - num;
-            if (item.anzahl <= 0) {
+        if (item.type === type && item.size == size) {
+            item.amount - num;
+            // Remove item from shoppingcart if none are left
+            if (item.amount <= 0) {
                 shoppingCart.splice(i, 1);
             }
             var cart_badge = document.querySelector('.cart_badge');
             cart_badge.innerHTML = shoppingCart.length;
+            // Hide NUmber over shoppingcart icon if the shoppingcart is empty
             if (shoppingCart.length == 0) {
                 cart_badge.style.display = 'none';
             }
             return;
         }
     }
-    console.log(`Artikel ${type} nicht gefunden.`);
+    console.log(`Article ${type} nicht gefunden.`);
 }
 
 /**
@@ -215,12 +224,12 @@ function createItems() {
         newHTMLItem += "' alt='item image' id='item_" + i + "Img'>\n";
         newHTMLItem += "\t\t<h3 id='item_" + i + "Name'>" + shoppingCart[i].type + "</h3>\n";
         newHTMLItem += "\t\t<div class='line'></div>\n";
-        newHTMLItem += "\t\t<p class='beschreibung' id='item_" + i + "Desc'><b>Beschreibung</b><br>" + shoppingCart[i].beschreibung + "</p>\n";
-        if (shoppingCart[i].größe != "") {
-            newHTMLItem += "\t\t<p class='groesse' id='item_" + i + "Gr'>Größe: " + shoppingCart[i].größe + "</p>\n";
+        newHTMLItem += "\t\t<p class='description' id='item_" + i + "Desc'><b>description</b><br>" + shoppingCart[i].description + "</p>\n";
+        if (shoppingCart[i].size != "") {
+            newHTMLItem += "\t\t<p class='size' id='item_" + i + "Gr'>size: " + shoppingCart[i].size + "</p>\n";
         }
-        newHTMLItem += "\t\t<p class='preis' id='item_" + i + "Preis'>Preis: " + shoppingCart[i].preis + "</p>\n";
-        newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].anzahl + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
+        newHTMLItem += "\t\t<p class='price' id='item_" + i + "price'>price: " + shoppingCart[i].price + "</p>\n";
+        newHTMLItem += "\t\t<input type='number' min='0' max='10' value='" + shoppingCart[i].amount + "'  class='numberOfItems' placeholder='Menge: 1' id='item_" + i + "Num' onchange='updateShoppingCart(true)'>\n";
         newHTMLItem += "\t\t<img src='../static/images/trashcan_bold.svg' alt='delete' class='delete' onclick='deleteItem(" + i + ")' width='25' height='25'>\n"
         newHTMLItem += "\t\t<p class='Lager' id='item_" + i + "L' style='display: none;'>Auf Lager</p>\n";
         newHTMLItem += "\t\t<p class='nLager' id='item_" + i + "nL' style='display: none;'>Nicht Auf Lager</p>\n";
@@ -243,22 +252,22 @@ function updateShoppingCart(updateNum) {
         const item = shoppingCart[i];
         const itemID = "item_" + i;
         const itemNumId = itemID + "Num";
-
+        // Removes Item from cart if there are none left
         if (updateNum == true) {
-            item.anzahl = document.getElementById(itemNumId).value;
-            if (item.anzahl <= 0) {
-                removeItemFromCart(item.type, item.größe, item.anzahl);
+            item.amount = document.getElementById(itemNumId).value;
+            if (item.amount <= 0) {
+                removeItemFromCart(item.type, item.size, item.amount);
             }
         }
+        document.getElementById(itemID + 'Num').value = item.amount;
 
-        document.getElementById(itemID + 'Num').value = item.anzahl;
-
-        if (!(item.anzahl * item.preis <= 0)) {
-            gesSumme += item.anzahl * item.preis;
+        if (!(item.amount * item.price <= 0)) {
+            gesSumme += item.amount * item.price;
         }
     }
     createItems();
     checkIfAvailable();
+    // Update number above shoppincart icon
     document.getElementById('gesKostenNum').textContent = gesSumme.toFixed(2) + "€";
     var cart_badge = document.querySelector('.cart_badge');
     cart_badge.innerHTML = shoppingCart.length;
@@ -283,24 +292,25 @@ function deleteItem(id) {
 function showOrder() {
     var htmlList = "";
     var price = 0;
+    // Creates an entry for every item bought
     for (let i = 0; i < shoppingCart.length; i++) {
         const aktItem = shoppingCart[i];
-        if (aktItem.anzahl > 0) {
+        if (aktItem.amount > 0) {
             htmlList += "<div class='boughtItem'>\n\t";
             htmlList += "<p>" + aktItem.type + "</p>\n\t";
-            if (aktItem.größe == null) {
+            if (aktItem.size == null) {
                 htmlList += "<p>-</p>\n\t";
             }
             else {
-                htmlList += "<p>" + aktItem.größe + "</p>\n\t";
+                htmlList += "<p>" + aktItem.size + "</p>\n\t";
             }
-            htmlList += "<p>" + aktItem.anzahl + "</p>\n\t";
-            htmlList += "<p>" + aktItem.preis + "</p>\n\t";
+            htmlList += "<p>" + aktItem.amount + "</p>\n\t";
+            htmlList += "<p>" + aktItem.price + "</p>\n\t";
             htmlList += "</div>\n";
-            price += aktItem.anzahl * aktItem.preis;
+            price += aktItem.amount * aktItem.price;
         }
     }
-    htmlList += "\n\t<div id='boughtItemPrice'>\n\t<p>gesamt Preis: " + price.toFixed(2) + "€</p>\n</div>";
+    htmlList += "\n\t<div id='boughtItemPrice'>\n\t<p>gesamt price: " + price.toFixed(2) + "€</p>\n</div>";
     document.getElementById('listboughtItems').innerHTML = htmlList;
     document.getElementById('buyItems').style.display = "block";
 }
@@ -338,7 +348,7 @@ function cancelUserInput() {
 }
 
 let isOrderPending = false;
-var newKunde = null;
+var newCustomer = null;
 var stop = false;
 
 /**
@@ -351,7 +361,7 @@ function handleUserData(event) {
     const lastName = document.getElementById('lastName').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
-    newKunde = new Kunde(firstName, lastName, email, phone);
+    newCustomer = new Customer(firstName, lastName, email, phone);
 
     document.getElementById('personalInformation').style.display = "none";
 
@@ -367,6 +377,7 @@ function handleUserData(event) {
  */
 async function buy_Order() {
     const paymentMethod = document.getElementById('payment-method').value;
+    //Show Error if no payment message is selected
     if (paymentMethod === "") {
         document.getElementById('purchaseN').innerHTML = "<h1>Sie haben noch keine Zahlungsmethode ausgewählt!</h1>";
         document.getElementById('purchaseN').style.display = "flex";
@@ -375,8 +386,8 @@ async function buy_Order() {
             document.getElementById('purchaseN').innerHTML = "<h1>Fehler: Bestellvorgang wurde abgebrochen!</h1>";
         }, 2500);
         return;
-    }
-
+    } S
+    // Ask for personal information if month or year ticket is selected
     for (var i = 0; i < shoppingCart.length; i++) {
         if (shoppingCart[i]['type'].includes("Ticket") && !shoppingCart[i]['type'].includes('Tag')) {
             document.getElementById('personalInformation').style.display = "block";
@@ -384,7 +395,7 @@ async function buy_Order() {
             return;
         }
     }
-    newKunde = null;
+    newCustomer = null;
     continueOrder();
 }
 
@@ -392,7 +403,7 @@ async function buy_Order() {
  * Trys to buy the tems from the shoppingcart. Shows order on screen if succesfull, shows error if not
  */
 async function continueOrder() {
-    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, newKunde);
+    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, newCustomer);
     if (result.success[0][0]) {
         document.getElementById('purchaseS').style.display = "flex";
         showOrder();
@@ -420,7 +431,7 @@ async function checkIfAvailable() {
     var result = await buyOrCheck("checkAvailableItems", { shoppingCart }, null);
     var boolArray = result.success;
     var everythingIsAvailable = true
-
+    //Gos through the list and display the available and not available tag to every article
     for (var i = 0; i < boolArray.length; i++) {
         var aktItemId = "item_" + i;
 
@@ -442,17 +453,17 @@ async function checkIfAvailable() {
  * Sends a POST request with the given data to the server and returns the response
  * @param {String} action 
  * @param {*} data 
- * @param {Kunde | null} kunde 
+ * @param {Customer | null} Customer 
  * @returns the servers response, `null` if the process failed
  */
-async function buyOrCheck(action, data, kunde) {
+async function buyOrCheck(action, data, Customer) {
     try {
         const response = await fetch('/shop/buyOrCheck', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ action: action, data: data, kunde: kunde })
+            body: JSON.stringify({ action: action, data: data, Customer: Customer })
         });
 
         if (response.ok) {
@@ -528,7 +539,7 @@ function processSnacks(data) {
                     <img class="product_image" src="${snack.IMAGE_PATH}" alt="${snack.BEZEICHNUNG} Bild" width="150" height="150">
                     <label class="product_name" for="">${snack.BEZEICHNUNG}</label>
                     <div>
-                        <label class="product_price" for="">${snack.VERKAUF_PREIS_STK} €</label>
+                        <label class="product_price" for="">${snack.VERKAUF_price_STK} €</label>
                       `
             if (!specialItems.includes(snack.BEZEICHNUNG)) {
                 tempHTML += `
@@ -540,12 +551,12 @@ function processSnacks(data) {
                             </select>
 
                         </div>
-                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', document.getElementById('size_${snack.ID}').value, '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
+                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.description}', document.getElementById('size_${snack.ID}').value, '${snack.VERKAUF_price_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
             else {
                 tempHTML += `</div>
-                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.BESCHREIBUNG}', 'Standard', '${snack.VERKAUF_PREIS_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
+                        <button type="button" onclick="add('${snack.ID}', '${snack.BEZEICHNUNG}', '${snack.description}', 'Standard', '${snack.VERKAUF_price_STK}', 1, '${snack.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
 
@@ -566,15 +577,15 @@ function processSizeChange(data, sizeID, size) {
     var product_card = document.getElementById(sizeID).parentElement.parentElement;
     var bezeichnung = product_card.querySelector('.product_name').innerHTML;
     data.forEach(article => {
-        if(article.BEZEICHNUNG == bezeichnung && article.GROESSE == size){
-            console.log(article.ID, article.BEZEICHNUNG, article.GROESSE)
+        if (article.BEZEICHNUNG == bezeichnung && article.size == size) {
+            console.log(article.ID, article.BEZEICHNUNG, article.size)
             product_card.querySelector('.product_image').setAttribute('src', `${article.IMAGE_PATH}`);
             product_card.querySelector('.product_image').setAttribute('alt', `${article.BEZEICHNUNG}`);
             product_card.querySelector('.product_name').innerHTML = `${article.BEZEICHNUNG}`;
-            product_card.querySelector('.product_price').innerHTML = `${article.VERKAUF_PREIS_STK}`;
+            product_card.querySelector('.product_price').innerHTML = `${article.VERKAUF_price_STK}`;
             product_card.querySelector('.product_size').id = `size_${article.ID}`;
-            product_card.querySelector('.product_size').value = `${article.GROESSE}`;
-            product_card.querySelector('button').setAttribute('onclick',`add('${article.ID}', '${article.BEZEICHNUNG}', '${article.BESCHREIBUNG}', document.getElementById('size_${article.ID}').value, '${article.VERKAUF_PREIS_STK}', 1, '${article.IMAGE_PATH}')`);
+            product_card.querySelector('.product_size').value = `${article.size}`;
+            product_card.querySelector('button').setAttribute('onclick', `add('${article.ID}', '${article.BEZEICHNUNG}', '${article.description}', document.getElementById('size_${article.ID}').value, '${article.VERKAUF_price_STK}', 1, '${article.IMAGE_PATH}')`);
         }
     });
 }
@@ -650,7 +661,7 @@ function processMerch(data) {
                     <img class="product_image" src="${merch.IMAGE_PATH}" alt="${merch.BEZEICHNUNG} Bild" width="150" height="150">
                     <label class="product_name" for="">${merch.BEZEICHNUNG}</label>
                     <div>
-                        <label class="product_price" for="">${merch.VERKAUF_PREIS_STK} €</label>
+                        <label class="product_price" for="">${merch.VERKAUF_price_STK} €</label>
                             `
             if (!specialItems.includes(merch.BEZEICHNUNG)) {
                 tempHTML += `
@@ -662,12 +673,12 @@ function processMerch(data) {
                                 </optgroup>
                                 </select>
                         </div>
-                        <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', document.getElementById('size_${merch.ID}').value, '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
+                        <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.description}', document.getElementById('size_${merch.ID}').value, '${merch.VERKAUF_price_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
                     </div>`;
             }
             else {
                 tempHTML += `</div>
-                                <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.BESCHREIBUNG}', 'Standard', '${merch.VERKAUF_PREIS_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
+                                <button type="button" onclick="add('${merch.ID}', '${merch.BEZEICHNUNG}', '${merch.description}', 'Standard', '${merch.VERKAUF_price_STK}', 1, '${merch.IMAGE_PATH}')">Add To Cart</button>
                         </div>`;
             }
 
@@ -714,13 +725,13 @@ function processTickets(data) {
         if (!tempHTML.includes(ticket.STUFE)) {
             tempHTML += `
             <div class="ticket_card">
-                <div class="pricetag">${ticket.PREIS}€</div>
+                <div class="pricetag">${ticket.price}€</div>
                 <div class="ticket_column">
                     <h1>${ticket.STUFE}</h1>
                     <h2>This ticket allows you to visit all events in the next ${ticket.ZEITRAUM} day(s)</h2>
                     <p>Note that tickets are handed out at the register when showing your receit like other products.
                     </p>
-                    <button type="button" style="margin-top: auto" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.PREIS}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
+                    <button type="button" style="margin-top: auto" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.price}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
                 </div>
                 <div class="ticket_column" id="${ticket.STUFE}_events">
                     <div>
@@ -751,7 +762,7 @@ async function setEventInfo() {
     const events_day = await getEvents("tag")
     const events_month = await getEvents("monat")
     const events_year = await getEvents("jahr")
-
+    // Events are update at different frequency because of the suspected amount of events of each ticket
     addEvents(events_day.slice(0, 5), display_day)
     if (events_day.length > 5) {
         event_day_timer = eventUpdateTimer(events_day, 8000, display_day)
@@ -819,7 +830,7 @@ function updateTimestamp(timestamp) {
     // Trenne den Datum- und Uhrzeitteil in seine Bestandteile
     let parts = date_time_part.split(' ');
 
-    // Setze den relevanten Teil (Datum und Zeit ohne Sekunden und Zeitzone) zusammen
+    // Setze den relevanten Teil (Datum und Zeit ohne SeCustomern und Zeitzone) zusammen
     let date = parts.slice(0, 4).join(' '); // Thu, 18 Jul 2024
     let time = parts[4].split(':').slice(0, 2).join(':'); // 15:00
 
@@ -864,14 +875,14 @@ async function getEvents(filter) {
  * Adds article with the given parameters to the shoppincart and displays info text for .75s
  * @param {*} id item id
  * @param {*} type item type
- * @param {*} beschreibung item description
- * @param {*} groesse item size
- * @param {*} preis item price
- * @param {*} anzahl item amount
+ * @param {*} description item description
+ * @param {*} size item size
+ * @param {*} price item price
+ * @param {*} amount item amount
  * @param {*} image item image
  */
-function add(id, type, beschreibung, groesse, preis, anzahl, image) {
-    addItemToCart(id, type, beschreibung, groesse, preis, anzahl, image);
+function add(id, type, description, size, price, amount, image) {
+    addItemToCart(id, type, description, size, price, amount, image);
     document.getElementById('putItemInCard').style.display = "block";
     setTimeout(function () {
         document.getElementById('putItemInCard').style.display = "none";

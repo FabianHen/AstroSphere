@@ -198,7 +198,7 @@ def book_room():
     try:
         data = request.json
         params= [int(data['raum_id']), data['date']]
-        procedure_result = execute_procedure_list_of_dicts("BUCHE_RAUM", params)
+        procedure_result = execute_procedure("BUCHE_RAUM", params)
         return jsonify(procedure_result)
     except Exception as e:
         print(f"Fehler: {e}")
@@ -265,7 +265,6 @@ def save_changes_planetsystem():
             return jsonify({"error": "No data provided"}), 400
         print(data_objects)
         params = [int(data_objects['ID']), int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("update_into_planetensystem", params)
         return jsonify(True)
     except Exception as e:
@@ -293,9 +292,7 @@ def add_changes_planet():
         data_objects = request.json
         if not data_objects:
             return jsonify({"error": "No data provided"}), 400
-
         params = [int(data_objects['PLANETENSYSTEM_ID']), int(data_objects['ZENTRUMSPLANET_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_TAGE']), float(data_objects['TEMPERATUR_CELSIUS']), float(data_objects['FALLBESCHLEUNIGUNG']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("insert_into_planet", params)
         return jsonify(True)
     except Exception as e:
@@ -310,7 +307,6 @@ def save_changes_planet():
             return jsonify({"error": "No data provided"}), 400
 
         params = [int(data_objects['ID']), int(data_objects['PLANETENSYSTEM_ID']), int(data_objects['ZENTRUMSPLANET_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_TAGE']), float(data_objects['TEMPERATUR_CELSIUS']), float(data_objects['FALLBESCHLEUNIGUNG']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("update_into_planet", params)
         return jsonify(True)
     except Exception as e:
@@ -340,14 +336,13 @@ def add_changes_starimage():
             return jsonify({"error": "No data provided"}), 400
 
         params = [data_objects['NAME'], int(data_objects['ANZAHL_STERNE']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("insert_into_sternenbild", params)
         return jsonify(True)
     except Exception as e:
         print(f"Fehler: {e}")
         return jsonify(False), 500
     
-app.route('/intern/planets/save_changes_starimage', methods=['POST'])
+@app.route('/intern/planets/save_changes_starimage', methods=['POST'])
 def save_changes_starimage():
     try:
         data_objects = request.json
@@ -355,7 +350,6 @@ def save_changes_starimage():
             return jsonify({"error": "No data provided"}), 400
 
         params = [int(data_objects['ID']), data_objects['NAME'], int(data_objects['ANZAHL_STERNE']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("update_into_sternenbild", params)
         return jsonify(True)
     except Exception as e:
@@ -385,7 +379,6 @@ def add_changes_star():
             return jsonify({"error": "No data provided"}), 400
 
         params = [int(data_objects['STERNENBILD_ID']), int(data_objects['PLANETENSYSTEM_ID']),data_objects['NAME'], data_objects['TYP'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['ENTFERNUNG_LJ']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("insert_into_stern", params)
         return jsonify(True)
     except Exception as e:
@@ -400,7 +393,6 @@ def save_changes_star():
             return jsonify({"error": "No data provided"}), 400
 
         params = [int(data_objects['ID']), int(data_objects['STERNENBILD_ID']), int(data_objects['PLANETENSYSTEM_ID']),data_objects['NAME'], data_objects['TYP'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['ENTFERNUNG_LJ']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("update_into_stern", params)
         return jsonify(True)
     except Exception as e:
@@ -430,7 +422,6 @@ def add_changes_comet():
             return jsonify({"error": "No data provided"}), 400
 
         params = [int(data_objects['GALAXIE_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_J']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("insert_into_komet", params)
         return jsonify(True)
     except Exception as e:
@@ -445,7 +436,6 @@ def save_changes_comet():
             return jsonify({"error": "No data provided"}), 400
 
         params = [int(data_objects['ID']), int(data_objects['GALAXIE_ID']), data_objects['NAME'], float(data_objects['DURCHMESSER_KM']), float(data_objects['MASSE_KG']), float(data_objects['UMLAUFZEIT_J']), data_objects['INFORMATIONEN']]
-        print(params)
         execute_procedure("update_into_komet", params)
         return jsonify(True)
     except Exception as e:
