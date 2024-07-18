@@ -579,6 +579,9 @@ async function searchForFreeRooms(booking,index){
     }
 }
 
+/**
+ * Toggles the menu used for the sidebar of the planetdata section
+ */
 function toggleMenu(menuId, link) {
     var submenu = document.getElementById(menuId);
     var allLinks = document.querySelectorAll('.menu a');
@@ -623,6 +626,9 @@ async function generateEventTable(fromAll, all){
     }
 }
 
+/**
+ * Gets every object of the planetsystemlist and gives it to the processing method
+ */
 async function getPlanetsystems() {
     try {
         response = await fetch("/intern/planets/planetsystemlist");
@@ -640,6 +646,10 @@ async function getPlanetsystems() {
     }
 }
 
+/**
+ * Processes the given data to generate a table for the specified attributes of every object
+ * @param {*} data contains the objects from which the value of every attriute is taken
+ */
 function processPlanetsystems(data) {
     var table = document.getElementById("planetsystemTable");
     var tempHTML = `<tr>
@@ -662,6 +672,9 @@ function processPlanetsystems(data) {
     table.innerHTML = tempHTML;
 }
 
+/**
+ * Searches planetsystems by the entered value of 'Bezeichnung' and updates the objectlist
+ */
 async function searchPlanetensystemByBezeichnung(){
     try {
         const bezeichnung = document.getElementById('searchPlanetensystemBezeichnungInput').value;
@@ -687,6 +700,9 @@ async function searchPlanetensystemByBezeichnung(){
     }
 }
 
+/**
+ * Gets every object of the planetlist and gives it to the processing method
+ */
 async function getPlanets() {
     try {
         response = await fetch("/intern/planets/planetlist");
@@ -704,6 +720,10 @@ async function getPlanets() {
     }
 }
 
+/**
+ * Processes the given data to generate a table for the specified attributes of every object
+ * @param {*} data contains the objects from which the value of every attriute is taken
+ */
 function processPlanets(data) {
     var table = document.getElementById("planetTable");
     var tempHTML = `<tr>
@@ -726,6 +746,9 @@ function processPlanets(data) {
     table.innerHTML = tempHTML;
 }
 
+/**
+ * Searches planets by the entered value of 'Bezeichnung' and updates the objectlist
+ */
 async function searchPlanetByBezeichnung(){
     try {
         const bezeichnung = document.getElementById('searchPlanetBezeichnungInput').value;
@@ -751,6 +774,9 @@ async function searchPlanetByBezeichnung(){
     }
 }
 
+/**
+ * Gets every object of the starimagelist and gives it to the processing method
+ */
 async function getStarimages() {
     try {
         response = await fetch("/intern/planets/starimagelist");
@@ -768,6 +794,10 @@ async function getStarimages() {
     }
 }
 
+/**
+ * Processes the given data to generate a table for the specified attributes of every object
+ * @param {*} data contains the objects from which the value of every attriute is taken
+ */
 function processStarimages(data) {
     var table = document.getElementById("starimageTable");
     var tempHTML = `<tr>
@@ -790,6 +820,9 @@ function processStarimages(data) {
     table.innerHTML = tempHTML;
 }
 
+/**
+ * Searches starimages by the entered value of 'Bezeichnung' and updates the objectlist
+ */
 async function searchSternenbildByBezeichnung(){
     try {
         const bezeichnung = document.getElementById('searchSternenbildBezeichnungInput').value;
@@ -815,6 +848,9 @@ async function searchSternenbildByBezeichnung(){
     }
 }
 
+/**
+ * Gets every object of the starlist and gives it to the processing method
+ */
 async function getStars() {
     try {
         response = await fetch("/intern/planets/starlist");
@@ -832,6 +868,10 @@ async function getStars() {
     }
 }
 
+/**
+ * Processes the given data to generate a table for the specified attributes of every object
+ * @param {*} data contains the objects from which the value of every attriute is taken
+ */
 function processStars(data) {
     var table = document.getElementById("starTable");
     var tempHTML = `<tr>
@@ -854,6 +894,9 @@ function processStars(data) {
     table.innerHTML = tempHTML;
 }
 
+/**
+ * Searches stars by the entered value of 'Bezeichnung' and updates the objectlist
+ */
 async function searchSternByBezeichnung(){
     try {
         const bezeichnung = document.getElementById('searchSternBezeichnungInput').value;
@@ -879,6 +922,9 @@ async function searchSternByBezeichnung(){
     }
 }
 
+/**
+ * Gets every object of the cometlist and gives it to the processing method
+ */
 async function getComets() {
     try {
         response = await fetch("/intern/planets/cometlist");
@@ -896,6 +942,10 @@ async function getComets() {
     }
 }
 
+/**
+ * Processes the given data to generate a table for the specified attributes of every object
+ * @param {*} data contains the objects from which the value of every attriute is taken
+ */
 function processComets(data) {
     var table = document.getElementById("cometTable");
     var tempHTML = `<tr>
@@ -918,6 +968,9 @@ function processComets(data) {
     table.innerHTML = tempHTML;
 }
 
+/**
+ * Searches comets by the entered value of 'Bezeichnung' and updates the objectlist
+ */
 async function searchKometByBezeichnung(){
     try {
         const bezeichnung = document.getElementById('searchKometBezeichnungInput').value;
@@ -1070,45 +1123,15 @@ async function searchTelescopeByName(){
                             </div>`;
 }
 
+/**
+ * Opens a modal to either add or edit an object of the opened category
+ * @param {*} id is the id of the not shown modal
+ * @param {*} object is the given object for generating the content of the modal
+ * @param {*} type defines which category the modal was opened in
+ */
 async function openModal(id, object, type) {
     var modal = document.getElementById(id);
     modal.style.display = "block";
-
-    if(id === "editObject") {
-        const form = document.getElementById('editForm2');
-        form.innerHTML = '';
-        for (const key in object) {
-            if (object.hasOwnProperty(key)) {
-                
-                    const label = document.createElement('label');
-                    label.setAttribute('for', key);
-                    label.textContent = key + ' ';
-
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'text');
-                    input.setAttribute('id', key);
-                    input.setAttribute('name', key);
-                    input.value = object[key];
-                    if (key === 'ID') {
-                        input.setAttribute('readonly', 'true');
-                    }
-
-                    form.appendChild(label);
-                    form.appendChild(input);
-                    form.appendChild(document.createElement('br'));
-                    form.appendChild(document.createElement('br'));
-                
-            }
-        }
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('class', 'button round');
-        button.setAttribute('onclick', `saveChanges('${type}'), closeModal('editObject')`);
-        button.textContent = 'Speichern';
-        form.appendChild(button);
-
-        modal.style.display = "block";
-    }
     
     if(id === "addObject") {
         const form = document.getElementById('editForm1');
@@ -1180,9 +1203,52 @@ async function openModal(id, object, type) {
                 form.appendChild(label);
           }
     }
+
+    if(id === "editObject") {
+        const form = document.getElementById('editForm2');
+        form.innerHTML = '';
+        for (const key in object) {
+            if (object.hasOwnProperty(key)) {
+                
+                    const label = document.createElement('label');
+                    label.setAttribute('for', key);
+                    label.textContent = key + ' ';
+
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'text');
+                    input.setAttribute('id', key);
+                    input.setAttribute('name', key);
+                    input.value = object[key];
+                    if (key === 'ID') {
+                        input.setAttribute('readonly', 'true');
+                    }
+
+                    form.appendChild(label);
+                    form.appendChild(input);
+                    form.appendChild(document.createElement('br'));
+                    form.appendChild(document.createElement('br'));
+                
+            }
+        }
+        const button = document.createElement('button');
+        button.setAttribute('type', 'button');
+        button.setAttribute('class', 'button round');
+        button.setAttribute('onclick', `saveChanges('${type}'), closeModal('editObject')`);
+        button.textContent = 'Speichern';
+        form.appendChild(button);
+
+        modal.style.display = "block";
+    }
 }
 
+/**
+ * Generates the content of a modal  
+ * @param {*} data are the objects of the category
+ * @param {*} form is the form of either the add or the edit modal
+ * @param {*} type defines which category the modal was opened in
+ */
 function generateModal(data, form, type){
+    //Take the first object as a template
     const fetched_object = data[0];
     for (const key in fetched_object) {
         if (fetched_object.hasOwnProperty(key)) {
@@ -1209,12 +1275,20 @@ function generateModal(data, form, type){
     form.appendChild(button);
 }
 
+/**
+ * Closes a opened modal
+ * @param {*} id is the id of the modal that has to be closed
+ */
 async function closeModal(id) {
     var modal = document.getElementById(id);
     modal.style.display = "none";
 
 }
 
+/**
+ * Adds the changes from the add modal
+ * @param {*} object is the category the changes are added to
+ */
 async function addChanges(object) {
     try {
         const form = document.getElementById('editForm1');
@@ -1232,6 +1306,10 @@ async function addChanges(object) {
     }
 }
 
+/**
+ * Saves the changes from the edit modal
+ * @param {*} object is the category the changes are saved into
+ */
 async function saveChanges(object) {
     try {
         const form = document.getElementById('editForm2');
@@ -1249,6 +1327,11 @@ async function saveChanges(object) {
     }
 }
 
+/**
+ * Responses to the added changes and adds them to the specified category
+ * @param {*} object is the category the changes are added to
+ * @param {*} dataObject is the object with the added changes
+ */
 async function responseAddedChanges(object, dataObject){
     let response;
     switch (object) {
@@ -1303,6 +1386,11 @@ async function responseAddedChanges(object, dataObject){
       return response;
 }
 
+/**
+ * Responses to the saved changes and saves them into the specified category
+ * @param {*} object is the category the changes are saved into
+ * @param {*} dataObject is the object with the saved changes
+ */
 async function responseSavedChanges(object, dataObject){
     let response;
     switch (object) {
