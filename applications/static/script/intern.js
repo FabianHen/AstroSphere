@@ -1,22 +1,35 @@
-
+// Array of all active Media
 let activeMedia = [];
-function showSection(sectionId) {
-    // Alle Inhaltsbereiche ausblenden
-    var sections = document.querySelectorAll('.mainContent');
-    sections.forEach(function(section) {
-        section.classList.remove('active');
-    });
 
-    // Den ausgewählten Inhaltsbereich anzeigen
-    var selectedSection = document.getElementById(sectionId);
-    selectedSection.classList.add('active');
-}
+/**
+ * Event listener for DOMContentLoaded.
+ * Initializes specific sections based on the presence of certain elements.
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+    if (document.getElementById('nav-events')) {
+        initEventsPage();
+    } else if (document.getElementById('nav-rooms')) {
+        await getRooms();
+    } else if (document.getElementById('nav-planets')) {
+        await getPlanetsystems();
+    } else if (document.getElementById('nav-telescopes')) {
+        await getTelescopes();
+    }
+});
 
-// Funktion, um das aktuelle Datum und die Uhrzeit im richtigen Format zu erhalten
+// =============================================================================================================================
+// SECTION: Events
+// =============================================================================================================================
+
+/**
+ * Gets the current date and time formatted as 'YYYY-MM-DDTHH:MM'.
+ *
+ * @returns {string} The formatted date and time.
+ */
 function getCurrentDateTime() {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Monate sind 0-basiert
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based
     const day = String(now.getDate()).padStart(2, '0');
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -24,19 +37,9 @@ function getCurrentDateTime() {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
-// Event-Listener für DOMContentLoaded
-document.addEventListener('DOMContentLoaded', async function() {
-    if ( document.getElementById('nav-events')){
-        initEventsPage();
-    } else if ( document.getElementById('nav-rooms')){
-        await getRooms();
-    } else if ( document.getElementById('nav-planets')){
-        await getPlanetsystems();
-    } else if ( document.getElementById('nav-telescopes')){
-        await getTelescopes();
-    }
-});
-
+/**
+ * Initializes the events page by setting up event listeners and loading necessary data.
+ */
 async function initEventsPage() {
     const mediaItem = document.getElementById('mediaGrid');
     const save_media = document.getElementById('save-media');
@@ -48,12 +51,10 @@ async function initEventsPage() {
                 if (activeMedia.length > 0) {
                     nav_date.classList.remove('disabled');
                     save_media.disabled = false;
-                    return
-                }
-                else {
+                    return;
+                } else {
                     nav_date.classList.add('disabled');
                     save_media.disabled = true;
-
                 }
             });
         });
@@ -68,18 +69,17 @@ async function initEventsPage() {
     const nav_date = document.getElementById('nav-date');
     const nav_room = document.getElementById('nav-room');
 
-    // Datum vom Eingabefeld abrufen
+    // Set the minimum date for the date input
     const dateInput = document.getElementById('eventTime');
     const date_btn = document.getElementById('date-btn');
 
     dateInput.min = getCurrentDateTime();
 
     function checkDate() {
-        // Überprüfe, ob beide Eingabefelder Inhalt haben
+        // Check if the date input has a value
         if (dateInput.value.trim() !== '') {
             date_btn.disabled = false;
             nav_room.classList.remove('disabled');
-
         } else {
             continue_thema.disabled = true;
             nav_room.classList.add('disabled');
@@ -92,11 +92,11 @@ async function initEventsPage() {
     });
 
     date_btn.addEventListener('click', () => {
-        filter('nav-room', 'room')
+        filter('nav-room', 'room');
         searchForFreeRooms();
     });
 
-    // Event-Listener für Änderungen in den Eingabefeldern hinzufügen
+    // Add event listeners for input changes
     name.addEventListener('input', checkInputs);
     description.addEventListener('input', checkInputs);
     dateInput.addEventListener('input', checkDate);
@@ -104,6 +104,9 @@ async function initEventsPage() {
     generateEventTable(true, true);
 }
 
+/**
+ * Checks the inputs of the name and description fields and enables or disables the continue button accordingly.
+ */
 function checkInputs() {
     const name = document.getElementById('name');
     const description = document.getElementById('description');
@@ -113,11 +116,10 @@ function checkInputs() {
     const nav_date = document.getElementById('nav-date');
     const nav_room = document.getElementById('nav-room');
 
-    // Überprüfe, ob beide Eingabefelder Inhalt haben
+    // Check if both name and description inputs have values
     if (name.value.trim() !== '' && description.value.trim() !== '') {
         continue_thema.disabled = false;
         nav_media.classList.remove('disabled');
-
     } else {
         continue_thema.disabled = true;
         nav_media.classList.add('disabled');
@@ -126,6 +128,13 @@ function checkInputs() {
     }
 }
 
+/**
+ * Fetches event details and related media from the server and displays them.
+ *
+ * @param {number} eventId - The ID of the event to fetch details for.
+ * @returns {Promise<Object[]>} The event details.
+ * @throws Will throw an error if the network response is not ok.
+ */
 async function getEventDetails(eventId) {
     try {
         var response = await fetch('/intern/events/allEvents');
@@ -134,7 +143,7 @@ async function getEventDetails(eventId) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: eventId})
+            body: JSON.stringify({ id: eventId })
         });
         if (response.ok && responseMedia.ok) {
             const data = await response.json();
@@ -144,17 +153,21 @@ async function getEventDetails(eventId) {
                     showEventDetails(event, mediaData);
                 }
             });
-            // showEventDetails(event);
             return data;
-        }
-        else {
+        } else {
             throw new Error('Network response was not ok');
         }
     } catch (error) {
-        throw new Error('Fehler beim Laden der Daten:', error);
+        throw new Error('Error loading data: ' + error);
     }
 }
 
+/**
+ * Displays the details of a specific event along with its media.
+ *
+ * @param {Object} event - The event object containing event details.
+ * @param {Object[]} media - An array of media objects related to the event.
+ */
 function showEventDetails(event, media) {
     const mainContent = document.getElementById('event-details');
 
@@ -189,69 +202,54 @@ function showEventDetails(event, media) {
     });
 }
 
+/**
+ * Loads media items into a specified HTML element.
+ *
+ * @param {HTMLElement} elem - The HTML element to load media items into.
+ * @param {Object[]} medien - An array of media objects to load.
+ */
 function loadMedia(elem, medien) {
-    // Datenbank lesen
+    // Load media items into the specified element
     medien.forEach(medium => {
-        var htmlElem =  `<a href='#' class='media-item' onclick='mediaPressed(this, ${medium.ID})'>`
-        htmlElem += `<img src="${medium.IMAGE_PATH}" alt="Media 1" width="150" height="150">`
-        if(medium.GALAXIE_NAME) {
-            htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>"
+        var htmlElem = `<a href='#' class='media-item' onclick='mediaPressed(this, ${medium.ID})'>`;
+        htmlElem += `<img src="${medium.IMAGE_PATH}" alt="Media 1" width="150" height="150">`;
+        if (medium.GALAXIE_NAME) {
+            htmlElem += "<h3>" + medium.GALAXIE_NAME + "</h3>";
         }
-        if(medium.PLANET_NAME) {
-            htmlElem += "<h3>" + medium.PLANET_NAME + "</h3>"
+        if (medium.PLANET_NAME) {
+            htmlElem += "<h3>" + medium.PLANET_NAME + "</h3>";
         }
-        if(medium.STERN_NAME) {
-            htmlElem += "<h3>" + medium.STERN_NAME + "</h3>"
+        if (medium.STERN_NAME) {
+            htmlElem += "<h3>" + medium.STERN_NAME + "</h3>";
         }
-        if(medium.NEBEL_NAME) {
-            htmlElem += "<h3>" + medium.NEBEL_NAME + "</h3>"
+        if (medium.NEBEL_NAME) {
+            htmlElem += "<h3>" + medium.NEBEL_NAME + "</h3>";
         }
-        if(medium.STERNENBILD_NAME) {
-            htmlElem += "<h3>" + medium.STERNENBILD_NAME + "</h3>"
+        if (medium.STERNENBILD_NAME) {
+            htmlElem += "<h3>" + medium.STERNENBILD_NAME + "</h3>";
         }
-        if(medium.PLANETENSYSTEM_NAME) {
-            htmlElem += "<h3>" + medium.PLANETENSYSTEM_NAME + "</h3>"
+        if (medium.PLANETENSYSTEM_NAME) {
+            htmlElem += "<h3>" + medium.PLANETENSYSTEM_NAME + "</h3>";
         }
-        if(medium.KOMET_NAME) {
-            htmlElem += "<h3>" + medium.KOMET_NAME + "</h3>"
+        if (medium.KOMET_NAME) {
+            htmlElem += "<h3>" + medium.KOMET_NAME + "</h3>";
         }
 
-        htmlElem += "<p>" + medium.FORMAT + "</p>"
-        htmlElem += "<p sytle='display: none'>" + medium.ID + "</p>"
-        htmlElem += "</a>"
+        htmlElem += "<p>" + medium.FORMAT + "</p>";
+        htmlElem += "<p style='display: none'>" + medium.ID + "</p>";
+        htmlElem += "</a>";
 
         elem.innerHTML += htmlElem;
     });
 }
 
-function filter(linkId, sectionId) {
-    // event.preventDefault();
-
-    // Alle Navigationslinks deaktivieren
-    var navLinks = document.querySelectorAll('.leftComponent a');
-    navLinks.forEach(function(link) {
-        if (link.id !== linkId){
-            link.classList.remove('active');
-        }
-        else {
-            link.classList.add('active');
-        }
-    });
-
-    // Den geklickten Navigationslink aktivieren
-    // event.target.classList.add('active');
-
-    showSection(sectionId);
-}
-
-function changeLeftComponent() {
-    const nav_create_event = document.getElementById('nav-create-event');
-    const nav_events = document.getElementById('nav-events');
-    nav_create_event.classList.toggle('disabled');
-    nav_events.classList.toggle('disabled');
-    resetEvents();
-}
-
+/**
+ * Fetches the media items from the server and loads them into the specified element.
+ *
+ * @param {HTMLElement} mediaItem - The HTML element to load media items into.
+ * @returns {Promise<Object[]>} The media data.
+ * @throws Will throw an error if the network response is not ok.
+ */
 async function getMedium(mediaItem) {
     try {
         var response = await fetch('/intern/events/medien');
@@ -259,46 +257,190 @@ async function getMedium(mediaItem) {
             const data = await response.json();
             loadMedia(mediaItem, data);
             return data;
-        }
-        else {
+        } else {
             throw new Error('Network response was not ok');
         }
-      } catch (error) {
-        throw new Error('Fehler beim Laden der Daten:', error);
-      }
+    } catch (error) {
+        throw new Error('Error loading data: ' + error);
+    }
 }
 
-function mediaPressed(elem, id){
+/**
+ * Toggles the 'active' class on a media element and adds/removes its ID from the active media array.
+ *
+ * @param {HTMLElement} elem - The HTML element representing the media item.
+ * @param {number} id - The ID of the media item.
+ */
+function mediaPressed(elem, id) {
     elem.classList.toggle('active');
     const index = activeMedia.indexOf(id);
     if (index === -1) {
-        // Element ist nicht vorhanden, füge es hinzu
+        // Element is not present, add it
         activeMedia.push(id);
     } else {
-        // Element ist vorhanden, entferne es
+        // Element is present, remove it
         activeMedia.splice(index, 1);
     }
 }
 
-function goToEvents() {
-    window.location.href = '/intern/events';
+/**
+ * Processes the events data and populates the event table with the information.
+ *
+ * @param {Object[]} data - The array of event objects.
+ * @param {boolean} all - Whether to display all events or only specific ones.
+ */
+function processEvents(data, all) {
+    var eventTable = document.getElementById('event-table');
+    var tempHTML = `<tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Room</th>
+                        <th>Action</th>
+                    </tr>`;
+    data.forEach(event => {
+        if (all) {
+            tempHTML += `<tr>
+                            <td class="roomName">${event.ID}</td>
+                            <td>${event.NAME}</td>
+                            <td>${event.DATUM}</td>
+                            <td>${event.RAUM_ID}</td>
+                            <td><button class="save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">More</button></td>
+                        </tr>`;
+        } else {
+            tempHTML += `<tr>
+                            <td>${event.ID}</td>
+                            <td>${event.NAME}</td>
+                            <td>${event.DATUM}</td>
+                            <td>${event.RAUM_ID}</td>
+                            <td><button class="save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">Edit</button></td>
+                        </tr>`;
+        }
+    });
+
+    eventTable.innerHTML = tempHTML;
 }
 
-async function goToRooms() {
-    window.location.href = '/intern/rooms';
+
+/**
+ * Generates the event table by fetching data from the server.
+ *
+ * @param {boolean} fromAll - Indicates whether to fetch all events or only the user's events.
+ * @param {boolean} all - Indicates whether to include past events.
+ * @returns {Promise<Object[]>} The event data.
+ * @throws Will throw an error if the network response is not ok.
+ */
+async function generateEventTable(fromAll, all) {
+    try {
+        var response = fromAll ? await fetch('/intern/events/allEvents') : await fetch('/intern/events/mineEvents');
+        
+        if (response.ok) {
+            var data = await response.json();
+            
+            if (!all) {
+                data = data.filter(event => {
+                    var currentDate = new Date();
+                    var eventDate = new Date(event.DATUM);
+                    return eventDate >= currentDate;
+                });
+            }
+            
+            processEvents(data, fromAll);
+            return data;
+        } else {
+            throw new Error('Network response was not ok');
+        }
+    } catch (error) {
+        throw new Error('Error loading data: ' + error);
+    }
 }
 
-function goToPlanets() {
-    window.location.href = '/intern/planets';
+/**
+ * Saves the event by sending a request to the server with event and room details.
+ *
+ * @param {number} roomID - The ID of the room to book.
+ * @returns {Promise<void>} 
+ */
+async function saveEvent(roomID) {
+    try {
+        const name = document.getElementById('name');
+        const beschreibung = document.getElementById('description');
+        const date = document.getElementById('eventTime');
+
+        // Convert the input date to a Date object
+        const elem_date = new Date(date.value);
+
+        // Convert date to the desired format for Oracle database: 'YYYY-MM-DD HH24:MI:SS'
+        const formattedDate_event = ('0' + elem_date.getDate()).slice(-2) + '/' +
+            ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
+            elem_date.getFullYear() + ' ' +
+            ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
+
+        const formattedDate_room = ('0' + elem_date.getDate()).slice(-2) + '/' +
+            ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
+            elem_date.getFullYear();
+
+        const response = await fetch('/intern/events/book_event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ datum: formattedDate_event, raum_id: roomID, name: name.value, beschreibung: beschreibung.value })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Event booked successfully:', result);
+
+            const response_room = await fetch('/intern/rooms/book_room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ raum_id: roomID, date: formattedDate_room })
+            });
+
+            if (response_room.ok) {
+                for (const medium_id of activeMedia) {
+                    await fetch('/intern/events/book_medium', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ medium_id: parseInt(medium_id) })
+                    });
+                }
+
+                resetEvents();
+            }
+        } else {
+            console.error('Server error:', response.status);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
-function goToTelescopes() {
-    window.location.href = '/intern/telescopes';
+/**
+ * Resets the event creation form and input fields.
+ */
+function resetEvents() {
+    document.getElementById('name').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('eventTime').value = '';
+    
+    let mediaItems = document.querySelectorAll('.media-item');
+    mediaItems.forEach(mediaItem => { 
+        mediaItem.classList.remove('active');
+    });
+    
+    checkInputs();
 }
 
-function goBackHome() {
-    window.location.href = '/';
-}
+
+// =============================================================================================================================
+// SECTION: Rooms
+// =============================================================================================================================
 
 var globalDataRooms = [];
 
@@ -335,38 +477,6 @@ async function getFreeRooms() {
         console.error('Error:', error);
         return null
     }
-}
-
-function processEvents(data, all) {
-    var eventTable = document.getElementById('event-table');
-    var tempHTML = `<tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Datum</th>
-                        <th>Raum</th>
-                        <th>Action</th>
-                    </tr>`;
-    data.forEach(event => {
-        if (all) {
-            tempHTML +=   `<tr>
-                                    <td class="roomName" >${event.ID}</td>
-                                    <td>${event.NAME}</td>
-                                    <td>${event.DATUM}</td>
-                                    <td>${event.RAUM_ID}</td>
-                                    <td><button class"save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">Mehr</button></td>
-                                </tr>`;
-        } else {
-            tempHTML += `<tr>
-                                    <td>${event.ID}</td>
-                                    <td>${event.NAME}</td>
-                                    <td>${event.DATUM}</td>
-                                    <td>${event.RAUM_ID}</td>
-                                    <td><button class"save-btn" onclick="getEventDetails(${event.ID}), filter('', 'event-details')">Bearbeiten</button></td>
-                                </tr>`;
-        }
-    });
-
-    eventTable.innerHTML = tempHTML;
 }
 
 function toDateInputValue(dateObject){
@@ -442,7 +552,6 @@ function processRooms(data,freeRooms, button) {
     });
     table.innerHTML = tempHTML;
 }
-
 
 async function bookRoom(index){
     try {
@@ -588,6 +697,10 @@ async function searchForFreeRooms(booking,index){
     }
 }
 
+// ===============================================================================================================================
+// SECTION: Planets
+// ===============================================================================================================================
+
 /**
  * Toggles the menu used for the sidebar of the planetdata section
  */
@@ -605,33 +718,6 @@ function toggleMenu(menuId, link) {
     } else {
         submenu.classList.add('hidden');
         link.classList.remove('selected');
-    }
-}
-
-async function generateEventTable(fromAll, all){
-    try {
-        if (fromAll) {
-            var response = await fetch('/intern/events/allEvents');
-        } else {
-            var response = await fetch('/intern/events/mineEvents');
-        }
-        if (response.ok) {
-            var data = await response.json();
-            if (!all) {
-                data = data.filter(event => {
-                    var currentDate = new Date();
-                    var eventDate = new Date(event.DATUM);
-                    return eventDate >= currentDate;
-                })
-            }
-            processEvents(data, fromAll);
-            return data;
-        }
-        else {
-            throw new Error('Network response was not ok');
-        }
-    } catch (error) {
-        throw new Error('Fehler beim Laden der Daten:', error);
     }
 }
 
@@ -1005,162 +1091,6 @@ async function searchKometByBezeichnung(){
     }
 }
 
-async function saveEvent(roomID) {
-    try {
-        const name = document.getElementById('name');
-        const beschreibung = document.getElementById('description');
-        const date = document.getElementById('eventTime');
-        console.log("Name: " + name.value);
-        console.log("Beschreibung: " + beschreibung.value);
-        console.log("Datum: " + date.value);
-        // Eingabedatum in ein Date-Objekt konvertieren
-        const elem_date = new Date(date.value);
-
-        // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
-        const formattedDate_event = ('0' + elem_date.getDate()).slice(-2) + '/' +
-            ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
-            elem_date.getFullYear() + ' ' +
-            ('0' + elem_date.getHours()).slice(-2) + ':' + ('0' + elem_date.getMinutes()).slice(-2) + ':' + ('0' + elem_date.getSeconds()).slice(-2);
-
-
-        const formattedDate_room = ('0' + elem_date.getDate()).slice(-2) + '/' +
-        ('0' + (elem_date.getMonth() + 1)).slice(-2) + '/' +
-        elem_date.getFullYear();
-
-        const response = await fetch('/intern/events/book_event', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ datum: formattedDate_event, raum_id: roomID, name: name.value, beschreibung: beschreibung.value})
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Event booked successfully:', result);
-            
-            const response_room = await fetch('/intern/rooms/book_room', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ raum_id: roomID, date: formattedDate_room})
-            });
-
-            if (response_room.ok) {
-                
-                for (const medium_id of activeMedia) {
-                    const response_medium = await fetch('/intern/events/book_medium', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ medium_id: parseInt(medium_id)})
-                    });
-                }
-
-                resetEvents();
-            }
-        } else {
-            console.error('Server error:', response.status);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
-}
-
-function resetEvents() {
-    document.getElementById('name').value = '';
-    document.getElementById('description').value = '';
-    document.getElementById('eventTime').value = '';
-    let mediaItems = document.querySelectorAll('.media-item');
-    mediaItems.forEach(mediaItem => { 
-         mediaItem.classList.remove('active');
-    });
-    checkInputs();
-}
-
-var globalDataTelescopes = [];
-
-async function getTelescopes() {
-    try {
-        response = await fetch("/intern/telescopes/telescopeList");
-        if (response.ok) {
-            const data = await response.json();
-            processTelescopes(data)
-            return data
-        } else {
-            console.error('Server error:', response.status);
-            return null
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        return null
-    }
-}
-
-function processTelescopes(data) {
-    var table = document.getElementById("telescopesTable");
-    globalDataTelescopes = data;
-        var tempHTML = `<tr>
-                            <th class="roomName">Name</th>
-                            <th>Typ</th>
-                            <th>Action</th>
-                        </tr>`;
-
-    data.forEach((telescope, index) => {
-        
-            tempHTML += `
-                <tr>
-                    <td class="roomName">${telescope.BEZEICHNUNG}</td>
-                    <td>${telescope.TYP}</td>
-                    <td><button class"save-btn" onclick="showTelescopeDetails(${index}), filter('', 'teslescope-details')">Mehr</button></td>
-                </tr>`;
-});
-    table.innerHTML = tempHTML;
-}
-
-async function searchTelescopeByName(){
-    try {
-        const bezeichnung = document.getElementById('searchTelescopeByNameInput').value;
-        const response = await fetch('/intern/telescopes/search_telescope_by_name', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ bezeichnung: bezeichnung})
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            processTelescopes(result);
-            return result;
-        } else {
-            console.error('Server error:', response.status);
-            return null;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
-}
-
- function showTelescopeDetails(index) {
-    const telescope = globalDataTelescopes[index];
-    const mainContent = document.getElementById('teslescope-details');
-
-    mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${telescope.BEZEICHNUNG}</h2>
-                            <div class="text-box">
-                                ${telescope.BESCHREIBUNG}
-                            </div>
-                            <h3 style="margin: 5px auto 0px 30px;">Details:</h3>
-                            <p style="margin: 5px auto 0px 60px;">ID: ${telescope.ID}</p>
-                            <p style="margin: 5px auto 0px 60px;">Typ: ${telescope.TYP}</p>
-                            <p style="margin: 5px auto 0px 60px;">Tagesmietpreis: ${telescope.TAGES_MIET_PREIS}</p>
-                            </div>`;
-}
-
 /**
  * Opens a modal to either add or edit an object of the opened category
  * @param {*} id is the id of the not shown modal
@@ -1481,4 +1411,162 @@ async function responseSavedChanges(object, dataObject){
             
       }
       return response;
+}
+
+// =============================================================================================================================
+// SECTION: Telescopes
+// =============================================================================================================================
+
+var globalDataTelescopes = [];
+
+async function getTelescopes() {
+    try {
+        response = await fetch("/intern/telescopes/telescopeList");
+        if (response.ok) {
+            const data = await response.json();
+            processTelescopes(data)
+            return data
+        } else {
+            console.error('Server error:', response.status);
+            return null
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+function processTelescopes(data) {
+    var table = document.getElementById("telescopesTable");
+    globalDataTelescopes = data;
+        var tempHTML = `<tr>
+                            <th class="roomName">Name</th>
+                            <th>Typ</th>
+                            <th>Action</th>
+                        </tr>`;
+
+    data.forEach((telescope, index) => {
+        
+            tempHTML += `
+                <tr>
+                    <td class="roomName">${telescope.BEZEICHNUNG}</td>
+                    <td>${telescope.TYP}</td>
+                    <td><button class"save-btn" onclick="showTelescopeDetails(${index}), filter('', 'teslescope-details')">Mehr</button></td>
+                </tr>`;
+});
+    table.innerHTML = tempHTML;
+}
+
+async function searchTelescopeByName(){
+    try {
+        const bezeichnung = document.getElementById('searchTelescopeByNameInput').value;
+        const response = await fetch('/intern/telescopes/search_telescope_by_name', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bezeichnung: bezeichnung})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            processTelescopes(result);
+            return result;
+        } else {
+            console.error('Server error:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+ function showTelescopeDetails(index) {
+    const telescope = globalDataTelescopes[index];
+    const mainContent = document.getElementById('teslescope-details');
+
+    mainContent.innerHTML = `<h2 style="margin: 30px auto 10px auto;">${telescope.BEZEICHNUNG}</h2>
+                            <div class="text-box">
+                                ${telescope.BESCHREIBUNG}
+                            </div>
+                            <h3 style="margin: 5px auto 0px 30px;">Details:</h3>
+                            <p style="margin: 5px auto 0px 60px;">ID: ${telescope.ID}</p>
+                            <p style="margin: 5px auto 0px 60px;">Typ: ${telescope.TYP}</p>
+                            <p style="margin: 5px auto 0px 60px;">Tagesmietpreis: ${telescope.TAGES_MIET_PREIS}</p>
+                            </div>`;
+}
+
+// =============================================================================================================================
+// SECTION: Navigation
+// =============================================================================================================================
+
+function goToEvents() {
+    window.location.href = '/intern/events';
+}
+
+async function goToRooms() {
+    window.location.href = '/intern/rooms';
+}
+
+function goToPlanets() {
+    window.location.href = '/intern/planets';
+}
+
+function goToTelescopes() {
+    window.location.href = '/intern/telescopes';
+}
+
+function goBackHome() {
+    window.location.href = '/';
+}
+
+/**
+ * Shows a specific section of the page by its ID.
+ * Hides all other sections.
+ *
+ * @param {string} sectionId - The ID of the section to show.
+ */
+function showSection(sectionId) {
+    // Hide all content sections
+    var sections = document.querySelectorAll('.mainContent');
+    sections.forEach(function(section) {
+        section.classList.remove('active');
+    });
+
+    // Show the selected content section
+    var selectedSection = document.getElementById(sectionId);
+    selectedSection.classList.add('active');
+}
+
+/**
+ * Filters the navigation links and shows the selected section.
+ *
+ * @param {string} linkId - The ID of the navigation link to activate.
+ * @param {string} sectionId - The ID of the section to display.
+ */
+function filter(linkId, sectionId) {
+    // Deactivate all navigation links
+    var navLinks = document.querySelectorAll('.leftComponent a');
+    navLinks.forEach(function(link) {
+        if (link.id !== linkId) {
+            link.classList.remove('active');
+        } else {
+            link.classList.add('active');
+        }
+    });
+
+    showSection(sectionId);
+}
+
+/**
+ * Toggles the visibility of the 'create event' and 'events' navigation links.
+ * Resets the events.
+ */
+function changeLeftComponent() {
+    const nav_create_event = document.getElementById('nav-create-event');
+    const nav_events = document.getElementById('nav-events');
+    nav_create_event.classList.toggle('disabled');
+    nav_events.classList.toggle('disabled');
+    resetEvents();
 }
