@@ -565,7 +565,8 @@ async function searchForFreeRooms(booking,index){
                 });
                 return roomIsFree;
             } else {
-                processRooms(result, freeRooms, true);
+                const toProcess = result.filter((r)=> r.ABTEILUNG_ID == 5);
+                processRooms(toProcess, freeRooms, true);
             }
             return result;
         } else {
