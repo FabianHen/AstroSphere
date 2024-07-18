@@ -932,7 +932,9 @@ sql_create_Views="""
 CREATE VIEW FREIE_RAEUME AS
 SELECT RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
 FROM RAUM LEFT JOIN VERMIETUNG_RAUM ON RAUM.id = VERMIETUNG_RAUM.raum_id
-WHERE (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < current_date
+LEFT JOIN VERMIETUNG_RAUM_AN_MITARBEITER ON RAUM.id = VERMIETUNG_RAUM_AN_MITARBEITER.id
+WHERE (VERMIETUNG_RAUM.datum + VERMIETUNG_RAUM.dauer_tage) < current_date OR
+    (VERMIETUNG_RAUM_AN_MITARBEITER.datum < current_date)
 GROUP BY RAUM.id, RAUM.bezeichnung, RAUM.kapazitat, RAUM.miet_preis
 ORDER BY RAUM.id;
 
