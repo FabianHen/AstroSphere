@@ -383,7 +383,7 @@ function processRooms(data,freeRooms, button) {
                             <th>Id</th>
                             <th>Kapazität</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Aktion</th>
                         </tr>`;
     }
 
@@ -408,7 +408,7 @@ function processRooms(data,freeRooms, button) {
                     <td><button class"save-btn" onclick="saveEvent(${raum.ID}), filter('nav-all', 'events-container'), changeLeftComponent()">Wälen</button></td>
                 </tr>`;
         } else {
-            if(raum.ABTEILUNG_ID == null || raum.ABTEILUNG_ID === 5 || raum.ABTEILUNG_ID === 7){
+            if(status !== "Abteilungsraum"){
                 const today = new Date();
                 const defaultValue = toDateInputValue(today);
                 tempHTML += `
@@ -446,7 +446,8 @@ async function bookRoom(index){
             ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
             date.getFullYear();
             
-        if(searchForFreeRooms(dateInput, index)){
+        const canBook = await searchForFreeRooms(true, index);
+        if( canBook){
         const response = await fetch('/intern/rooms/book_room', {
             method: 'POST',
             headers: {
@@ -462,6 +463,8 @@ async function bookRoom(index){
             console.error('Server error:', response.status);
             return null;
         }
+    } else {
+        alert("Raum ist zu dieser Zeit bereits gebucht.")
     }
     } catch (error) {
         console.error('Error:', error);
@@ -556,9 +559,11 @@ async function searchForFreeRooms(booking,index){
             const result = await response.json()
             const freeRooms = await getFreeRooms();
             if(booking){
-                return result.forEach((r) => {
-                    if(room.ID === r.ID) return true;
+                let roomIsFree = false; 
+                result.forEach((r) => {
+                    if(room.ID === r.ID) roomIsFree = true;
                 });
+                return roomIsFree;
             } else {
                 processRooms(result, freeRooms, true);
             }
