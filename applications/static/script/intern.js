@@ -442,8 +442,14 @@ function resetEvents() {
 // SECTION: Rooms
 // =============================================================================================================================
 
+// array to help all functions to access current rooms without needing to await a Promise
 var globalDataRooms = [];
 
+/**
+ * Fetches all rooms and processes them into HTML-elements
+ * 
+ * @returns {Promise<Object[]>}
+ */
 async function getRooms() {
     try {
         response = await fetch("/intern/rooms/roomlist");
@@ -463,6 +469,11 @@ async function getRooms() {
     }
 }
 
+/**
+ * fetches all currently free rooms
+ * 
+ * @returns {Promise<Object[]>}
+ */
 async function getFreeRooms() {
     try {
         response = await fetch("/intern/rooms/freeRooms");
@@ -479,12 +490,25 @@ async function getFreeRooms() {
     }
 }
 
+/**
+ * trandforms Date into a string-format accepted by HTML date-input component
+ * 
+ * @param {Date} dateObject 
+ * @returns {string}
+ */
 function toDateInputValue(dateObject){
     const local = new Date(dateObject);
     local.setMinutes(dateObject.getMinutes() - dateObject.getTimezoneOffset());
     return local.toJSON().slice(0,10);
 };
 
+/**
+ * transforms room-database-objects into HTML components
+ * 
+ * @param {Object[]} data - rooms to show
+ * @param {Object[]} freeRooms - rooms that are currently free
+ * @param {boolean} button - indicator to show slightly different content
+ */
 function processRooms(data,freeRooms, button) {
     var table = document.getElementById("roomTable");
 
@@ -553,13 +577,24 @@ function processRooms(data,freeRooms, button) {
     table.innerHTML = tempHTML;
 }
 
+/**
+ * tries to book a specific room
+ * 
+ * checks if room is available on wished date and then books it with
+ * writing into the databank
+ * 
+ * if the room is not available push an alert as response for the user
+ * 
+ * @param {number} index - index of room to book
+ * @returns {Promise<Object[]>}
+ */
 async function bookRoom(index){
     try {
         const room = globalDataRooms[index];
         const dateInput = document.getElementById('bookRoomInput').value;
          const date = new Date(dateInput);
 
-        // Datum in das gewünschte Format für Oracle-Datenbank konvertieren: 'YYYY-MM-DD HH24:MI:SS'
+        // Convert date to the desired format for Oracle database: 'DD/MM/YYYY'
         const formattedDate = ('0' + date.getDate()).slice(-2) + '/' +
             ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
             date.getFullYear();
@@ -590,15 +625,20 @@ async function bookRoom(index){
     }
 }
 
-async function searchRaumByBezeichnung(){
+/**
+ * Filters rooms by name input
+ * 
+ * @returns {Promise<Object[]>}
+ */
+async function searchRoomByName(){
     try {
-        const bezeichnung = document.getElementById('searchRaumBezeichnungInput').value;
-        const response = await fetch('/intern/rooms/search_room_bezeichnung', {
+        const name = document.getElementById('searchRoomByNameInput').value;
+        const response = await fetch('/intern/rooms/search_room_name', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ bezeichnung: bezeichnung})
+            body: JSON.stringify({ bezeichnung: name})
         });
 
         if (response.ok) {
@@ -617,6 +657,11 @@ async function searchRaumByBezeichnung(){
     }
 }
 
+/**
+ * filters rooms by capacity input
+ * 
+ * @returns {Promise<Object[]>}
+ */
 async function searchRaumByCapacity(){
     try {
         const capacity = document.getElementById('searchRaumCapacityInput').value;
@@ -644,6 +689,19 @@ async function searchRaumByCapacity(){
     }
 }
 
+/**
+ * searches for rooms that are available on a specific date
+ * 
+ * to prevent code duplication this function returns either a list of free rooms 
+ * for a specified date or a boolean which indicates whether a specific room
+ * is free during that day
+ * 
+ * second is true if it is called by bookRoom
+ * 
+ * @param {boolean} booking - indicator that bookRoom calls this 
+ * @param {number} index - index of wished room
+ * @returns {Promise<Object[]>}
+ */
 async function searchForFreeRooms(booking,index){
     try {
         let dateInput;
@@ -1417,8 +1475,14 @@ async function responseSavedChanges(object, dataObject){
 // SECTION: Telescopes
 // =============================================================================================================================
 
+// current telescope objects
 var globalDataTelescopes = [];
 
+/**
+ * fetch all telescope data from databank
+ * 
+ * @returns {Promise<Object[]>}
+ */
 async function getTelescopes() {
     try {
         response = await fetch("/intern/telescopes/telescopeList");
@@ -1436,6 +1500,11 @@ async function getTelescopes() {
     }
 }
 
+/**
+ * tranform database date into HTML components
+ * 
+ * @param {Object[]} data 
+ */
 function processTelescopes(data) {
     var table = document.getElementById("telescopesTable");
     globalDataTelescopes = data;
@@ -1457,6 +1526,11 @@ function processTelescopes(data) {
     table.innerHTML = tempHTML;
 }
 
+/**
+ * filter telescopes by names per stored procedure
+ * 
+ * @returns {Promise<Object[]>}
+ */
 async function searchTelescopeByName(){
     try {
         const bezeichnung = document.getElementById('searchTelescopeByNameInput').value;
@@ -1482,6 +1556,11 @@ async function searchTelescopeByName(){
     }
 }
 
+/**
+ * shows detailed view of specific telescope
+ * 
+ * @param {number} index - current telescope
+ */
  function showTelescopeDetails(index) {
     const telescope = globalDataTelescopes[index];
     const mainContent = document.getElementById('teslescope-details');

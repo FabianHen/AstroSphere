@@ -205,7 +205,7 @@ def book_room():
         return jsonify(False), 500
    
 
-@app.route('/intern/rooms/search_room_bezeichnung', methods=['POST'])
+@app.route('/intern/rooms/search_room_name', methods=['POST'])
 def get_room_by_bezeichnung():
     try:
         bezeichnung = request.json.get('bezeichnung')
