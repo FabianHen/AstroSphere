@@ -386,7 +386,7 @@ async function buy_Order() {
             document.getElementById('purchaseN').innerHTML = "<h1>Fehler: Bestellvorgang wurde abgebrochen!</h1>";
         }, 2500);
         return;
-    } S
+    }
     // Ask for personal information if month or year ticket is selected
     for (var i = 0; i < shoppingCart.length; i++) {
         if (shoppingCart[i]['type'].includes("Ticket") && !shoppingCart[i]['type'].includes('Tag')) {
