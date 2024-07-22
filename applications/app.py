@@ -144,7 +144,6 @@ def book_event():
         data = request.json
         params = [data['datum'], int(data['raum_id']), data['name'], data['beschreibung']]
 
-        print(params)
         procedure_result = execute_procedure("BUCHE_VERANSTALTUNG", params)
         return jsonify(procedure_result)
     except Exception as e:
@@ -155,7 +154,7 @@ def book_event_medium():
     try:
         data = request.json
         params = [data['medium_id']]
-        print(params)
+
         procedure_result = execute_procedure("BUCHE_VERANSTALTUNG_MEDIUM", params)
         return jsonify(procedure_result)
     except Exception as e:
@@ -263,7 +262,7 @@ def save_changes_planetsystem():
         data_objects = request.json
         if not data_objects:
             return jsonify({"error": "No data provided"}), 400
-        print(data_objects)
+
         params = [int(data_objects['ID']), int(data_objects['GALAXIE_ID']), data_objects['NAME'], data_objects['INFORMATIONEN']]
         execute_procedure("update_into_planetensystem", params)
         return jsonify(True)
@@ -510,10 +509,7 @@ def check_data(data):
                         available.append(False)
                     else:
                         available.append(True)
-                        print(int(databaseItem['BESTAND']))
                     if int(databaseItem['BESTAND'])<=10:
-                        snack_id = str(databaseItem['SNACK_ID'])
-                        quantity = str(7)
                         params = [databaseItem['SNACK_ID'], 7]
                         execute_procedure("nachbestellung_snack", params)
                         emailText = f"Nachbestellung von Merch\n ID: {merch_id}\n Anzahl: {quantity}"
@@ -532,7 +528,6 @@ def check_data(data):
 
                     if int(databaseItem['BESTAND']) <= 10:
                         params = [databaseItem['MERCHARTIKEL_ID'], 7]
-                        print(params)
                         execute_procedure("nachbestellung_merch", params)
 
                     merch_id = str(databaseItem['MERCHARTIKEL_ID'])
