@@ -403,7 +403,7 @@ async function buy_Order() {
  * Trys to buy the tems from the shoppingcart. Shows order on screen if succesfull, shows error if not
  */
 async function continueOrder() {
-    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, {newCustomer});
+    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, { newCustomer });
     if (result.success[0][0]) {
         document.getElementById('purchaseS').style.display = "flex";
         showOrder();
@@ -728,7 +728,7 @@ function processTickets(data) {
                 <div class="ticket_column">
                     <h1>${ticket.STUFE}</h1>
                     <h2>This ticket allows you to visit all events in the next ${ticket.ZEITRAUM} day(s)</h2>
-                    <p>Note that tickets are handed out at the register when showing your receit like other products.
+                    <p>Please note that you will not receive the ticket, like the other products, until you have handed in the receipt at the merch desk
                     </p>
                     <button type="button" style="margin-top: auto" onclick="add(${ticket.ZEITRAUM}, 'Ticket-${ticket.STUFE}', 'Ticket Gültigkeit: ${ticket.ZEITRAUM} Tage','', ${ticket.PREIS}, 1, '${ticket.IMAGE_PATH}')">Add To Cart</button>
                 </div>
