@@ -1,46 +1,46 @@
-# Astosphere Planetarium
+Astrosphere Planetarium
 
-Willkommen zu Astosphere, dem Planetarium-Projekt!
+Welcome to Astosphere, the planetarium project!
 
 
-## Anforderungen
+## Requirements
 
-Um diese Software nutzen zu können, benötigen Sie Folgendes:
+To use this software, you will need the following:
 
-1. **Oracle Client**: Stellen Sie sicher, dass der Oracle Client auf Ihrem System installiert ist.
-2. **Netzwerkzugriff**: Sie müssen sich im Hochschulnetzwerk befinden oder über ein VPN mit dem Hochschulnetzwerk verbunden sein.
+1. **Oracle Client**: Make sure the Oracle Client is installed on your system.
+2. **Network access**: You must be in the university network or connected to the university network via a VPN to access the DB.
 
 
 ## Quickstart
 
-Es gibt zwei Möglichkeiten, die Anwendung zu starten:
+There are two ways to start the application:
 
-### Option 1: Ausführen der .exe-Datei
+### Option 1: Run the .exe file
 
-1. **Ausführen der .exe-Datei**: Doppelklicken Sie auf die .exe-Datei, um den Python Flask Server zu starten.
-2. **Antiviren-Software**: Möglicherweise müssen Sie Ihre Antiviren-Software anpassen, um die Ausführung der .exe-Datei zuzulassen.
-3. **Zugriff auf die Anwendung**: Öffnen Sie Ihren Browser und gehen Sie zu `http://localhost:5000`.
+1. **Running the .exe file**: Double-click the .exe file to start Python Flask Server.
+2. **Anti-virus software**: You may need to customize your Anti-Virus Software to allow the .exe file to run.
+3. **Access the application**: Open your browser and go to "http://localhost:5000".
 
-### Option 2: Manuelles Starten mit Python
+### Option 2: Manually start with Python
 
-1. **Python installieren**: Stellen Sie sicher, dass Python auf Ihrem System installiert ist.
-2. **Abhängigkeiten installieren**: Öffnen Sie ein Terminal oder eine Eingabeaufforderung und führen Sie die folgenden Befehle aus:
+1. **Install Python**: Make sure Python is installed on your system.
+2. **Install dependencies**: Open a terminal or command prompt and run the following command:<br><br>
     ```sh
     pip install flask cx_Oracle
     ```
-   Hinweis: Für cx_Oracle kann es erforderlich sein, dass die C++-Desktopentwicklungstools installiert sind.
-3. **Starten der Anwendung**: Navigieren Sie in Ihrem Terminal zu dem Verzeichnis, in dem sich `app.py` befindet, und führen Sie den folgenden Befehl aus:
+    Note: cx_Oracle may require the C++ desktop development tools to be installed.<br><br>
+3. **Launch the application**: Navigate to the directory in your terminal where the `app.py` is located and run the following command:<br><br>
     ```sh
     python app.py
     ```
-4. **Zugriff auf die Anwendung**: Öffnen Sie Ihren Browser und gehen Sie zu `http://localhost:5000`.
+4. **Access the application**: Open your browser and go to "http://localhost:5000".
 
 
-## Anwendung verwenden
+## Use the application
 
-Nach dem Start der Anwendung können Sie die verschiedenen Funktionen und Features über die Benutzeroberfläche im Browser erkunden.
+After launching the application, you can explore the various functions and features through the user interface in the browser.
 
 
-## Unterstützung
+## Support
 
-Bei Fragen oder Problemen melden Sie sich gerne bei einem Mitglied unserer Gruppe.
+If you have any questions or problems, please contact a member of our group.
