@@ -478,8 +478,19 @@ def buyOrCheck():
         elif action == "buyShoppingCart":
             result=[buyShoppingCart(data)]
             if newKunde!=None:
-                params=[newKunde['nachname'], newKunde['vorname'], newKunde['email'], newKunde['telefonnummer']]
-                execute_procedure("new_customer", params)
+                newCustomer = newKunde.get('newCustomer')
+
+                if newCustomer:
+                    params = [
+                        newCustomer['lastname'],
+                        newCustomer['firstname'],
+                        newCustomer['email'],
+                        newCustomer['phonenumber']
+                    ]
+                    execute_procedure("new_customer", params)
+                else:
+                    print("Fehlende Kundendaten: newCustomer nicht gefunden")
+                    return jsonify(success=False, error="Fehlende Kundendaten"), 400
 
         return jsonify(success=result)
     except Exception as e:

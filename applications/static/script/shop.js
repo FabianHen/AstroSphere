@@ -403,7 +403,7 @@ async function buy_Order() {
  * Trys to buy the tems from the shoppingcart. Shows order on screen if succesfull, shows error if not
  */
 async function continueOrder() {
-    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, newCustomer);
+    var result = await buyOrCheck("buyShoppingCart", { shoppingCart }, {newCustomer});
     if (result.success[0][0]) {
         document.getElementById('purchaseS').style.display = "flex";
         showOrder();
